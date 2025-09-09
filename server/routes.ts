@@ -306,16 +306,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const { cardId: submittedCardId } = message;
             const player = await storage.getPlayer(ws.playerId);
             const submittingRoom = await storage.getRoom(ws.roomId);
+            const playerDeck = await storage.getGameDeck(ws.roomId);
 
-            if (!player || !submittingRoom) break;
+            if (!player || !submittingRoom || !playerDeck) break;
 
             const hand: CaptionCard[] = JSON.parse(player.hand as string);
             const submittedCard = hand.find(c => c.id === submittedCardId);
 
             if (!submittedCard) break;
 
+            // Remove submitted card from hand and replace with new card from deck
+            const updatedHand = hand.filter(c => c.id !== submittedCardId);
+            const availableCards: CaptionCard[] = JSON.parse(playerDeck.captionDeck as string);
+            
+            if (availableCards.length > 0) {
+              const newCard = availableCards.shift();
+              if (newCard) {
+                updatedHand.push(newCard);
+                await storage.updateGameDeck(ws.roomId, {
+                  captionDeck: JSON.stringify(availableCards)
+                });
+              }
+            }
+
             await storage.updatePlayer(ws.playerId, {
-              hasSubmittedCard: true
+              hasSubmittedCard: true,
+              hand: JSON.stringify(updatedHand)
             });
 
             const currentSubmissions = JSON.parse(submittingRoom.submittedCards as string);

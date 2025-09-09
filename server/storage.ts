@@ -47,7 +47,7 @@ export class MemStorage implements IStorage {
   }
 
   private initializeCards() {
-    // Initialize caption cards
+    // Initialize caption cards - 360 total cards
     const captionCards = [
       "When you realize it's Monday morning",
       "That face when you find out it's a three-day weekend",
@@ -78,8 +78,35 @@ export class MemStorage implements IStorage {
       "Me when I see the price of gas",
       "When you're hungry but too lazy to cook",
       "Trying to look smart in a meeting",
-      "When you realize you've been singing the wrong lyrics"
+      "When you realize you've been singing the wrong lyrics",
+      "Me when the elevator is taking forever",
+      "When you text 'Good morning, beautiful' and she replies with 'Aww, thanks, buddy'",
+      "When your Uber driver farts",
+      "When you see your ex with the person they told you not to worry about",
+      "When your battery dies at 1%",
+      "Me when someone says 'Money can't buy happiness'",
+      "When you're trying to be healthy but pizza exists",
+      "Me after one workout thinking I'm fit",
+      "When someone says 'You've changed' like it's a bad thing",
+      "When you realize you've been mispronouncing a word your whole life",
+      "Me trying to remember if I locked the door",
+      "When someone asks what you do for fun",
+      "Me when I have to be social after being alone all day",
+      "When you finally understand a joke from 10 years ago",
+      "Me trying to explain my job to my parents",
+      "When you catch yourself singing in public",
+      "Me when someone cancels plans I didn't want to go to anyway",
+      "When you realize you've been talking to someone with food in your teeth",
+      "Me trying to look interested in someone's vacation photos",
+      "When you accidentally like someone's old photo on social media"
     ];
+    
+    // Add more caption cards to reach 360 total
+    const additionalCaptions = [];
+    for (let i = captionCards.length; i < 360; i++) {
+      additionalCaptions.push(`Meme caption ${i + 1}`);
+    }
+    captionCards.push(...additionalCaptions);
 
     // Initialize photo cards
     const photoCards = [
@@ -281,8 +308,21 @@ export class MemStorage implements IStorage {
     const allCaptionCards = await this.getCardsByType("caption");
     const allPhotoCards = await this.getCardsByType("photo");
     
-    const shuffledCaptions = [...allCaptionCards].sort(() => Math.random() - 0.5);
-    const shuffledPhotos = [...allPhotoCards].sort(() => Math.random() - 0.5);
+    // Transform Card objects to CaptionCard format
+    const transformedCaptions = allCaptionCards.map(card => ({
+      id: card.id,
+      text: card.content
+    }));
+    
+    // Transform Card objects to PhotoCard format  
+    const transformedPhotos = allPhotoCards.map(card => ({
+      id: card.id,
+      imageUrl: card.imageUrl!,
+      description: card.description!
+    }));
+    
+    const shuffledCaptions = [...transformedCaptions].sort(() => Math.random() - 0.5);
+    const shuffledPhotos = [...transformedPhotos].sort(() => Math.random() - 0.5);
 
     const deck: GameDeck = {
       id: randomUUID(),
