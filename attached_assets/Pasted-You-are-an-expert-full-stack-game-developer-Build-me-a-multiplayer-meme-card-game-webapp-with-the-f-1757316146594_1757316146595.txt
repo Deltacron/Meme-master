@@ -1,0 +1,121 @@
+You are an expert full-stack game developer.
+Build me a multiplayer meme card game webapp with the following rules and features:
+
+🎮 Game Rules & Flow
+
+Players & Rooms
+
+Players can create or join a room with a unique link.
+
+Minimum 3 players required to start a game.
+
+When the game starts:
+
+Each player receives a folded number card.
+
+Players reveal one by one.
+
+The lowest number becomes the first Judge.
+
+Gameplay Rounds
+
+Card Distribution:
+
+If there are exactly 3 players, each non-Judge player gets 4 Caption Cards.
+
+If there are more than 3 players, each non-Judge player gets 7 Caption Cards.
+
+Judge Turn:
+
+The Judge selects a Photo Card from the deck and places it on the easel.
+
+Player Turn:
+
+Each player submits 1 Caption Card.
+
+Players also have the option each round to exchange one card from their hand with a new card from the deck (before submitting).
+
+Judge Selection:
+
+Judge shuffles submitted Caption Cards, reveals them, and picks the funniest.
+
+Winner gets the Photo Card as a Trophy.
+
+Round End
+
+Winner celebrates (animation/alert).
+
+Everyone’s hand is refilled back to 4 or 7 cards depending on total players.
+
+Judge role rotates clockwise.
+
+Winning Condition
+
+First player with 5 Trophies (Photo Cards) wins the game.
+
+🏗️ Technical Architecture
+
+Frontend: React (Next.js or Vite) + TailwindCSS.
+
+Backend: Node.js with Express + Socket.IO for real-time multiplayer.
+
+Database: Supabase/Postgres (or SQLite for prototype).
+
+Storage: Photo Cards (images) in Supabase Storage or a local folder.
+
+Hosting: Full-stack deployment on Replit.
+
+📦 Core Features to Implement
+
+Room System
+
+Create/Join room with link.
+
+Lobby screen shows players.
+
+Host can start game.
+
+Judge & Turn Logic
+
+Round 1: number card reveal for Judge.
+
+Later rounds: Judge rotates clockwise.
+
+Card System
+
+Caption Deck = text cards.
+
+Photo Deck = image cards.
+
+Hand management (4 or 7 cards depending on players).
+
+Option to exchange 1 card per round.
+
+Gameplay UI
+
+Player hand display.
+
+Judge photo selection screen.
+
+Caption card submission UI.
+
+Reveal & Winner selection screen.
+
+Trophy counter scoreboard.
+
+Game End
+
+Winner screen when a player reaches 5 trophies.
+
+📊 Data Models
+
+Player: { id, name, hand[], trophies }
+
+Room: { id, players[], judgeId, status }
+
+Card: { id, type (caption/photo), content }
+
+Game: { roomId, roundNumber, currentJudge, decks, discardPile }
+
+⚡ Task:
+Generate the full-stack codebase for this game with React frontend, Node.js + Socket.IO backend, and simple Supabase/SQLite storage. Make sure game state syncs across all players in real-time.
