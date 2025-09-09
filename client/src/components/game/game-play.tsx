@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { type Player, type GameState, type CaptionCard, type PhotoCard } from "@shared/schema";
@@ -24,6 +24,7 @@ export function GamePlay({
 }: GamePlayProps) {
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const [exchangeCardId, setExchangeCardId] = useState<string | null>(null);
+  const [availablePhotoCards, setAvailablePhotoCards] = useState<PhotoCard[]>([]);
 
   const currentPlayer = gameState.players.find(p => p.id === currentPlayerId);
   const isJudge = gameState.room.currentJudgeId === currentPlayerId;
@@ -35,24 +36,31 @@ export function GamePlay({
     : null;
   const submittedCards = JSON.parse(gameState.room.submittedCards as string);
   
-  // Sample photo cards for judge selection
-  const samplePhotoCards: PhotoCard[] = [
-    {
-      id: "1",
-      imageUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
-      description: "Cool cat with sunglasses"
-    },
-    {
-      id: "2", 
-      imageUrl: "https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
-      description: "Surprised looking dog"
-    },
-    {
-      id: "3",
-      imageUrl: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300", 
-      description: "Confused looking dog"
+  // Fetch available photo cards for judge
+  useEffect(() => {
+    if (isJudge && !selectedPhotoCard) {
+      fetchPhotoCards();
     }
-  ];
+  }, [isJudge, selectedPhotoCard]);
+
+  const fetchPhotoCards = async () => {
+    try {
+      const response = await fetch('/api/cards/photo');
+      if (response.ok) {
+        const cards = await response.json();
+        // Get 6 random photo cards for selection
+        const shuffled = cards.sort(() => 0.5 - Math.random());
+        const selectedCards = shuffled.slice(0, 6).map((card: any) => ({
+          id: card.id,
+          imageUrl: card.imageUrl,
+          description: card.description
+        }));
+        setAvailablePhotoCards(selectedCards);
+      }
+    } catch (error) {
+      console.error('Failed to fetch photo cards:', error);
+    }
+  };
 
   const handleCardSelection = (cardId: string) => {
     setSelectedCardId(selectedCardId === cardId ? null : cardId);
@@ -136,20 +144,28 @@ export function GamePlay({
               {isJudge && !selectedPhotoCard && (
                 <div data-testid="photo-selection">
                   <p className="text-muted-foreground mb-4">Choose a photo card for this round:</p>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl">
-                    {samplePhotoCards.map((card) => (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl">
+                    {availablePhotoCards.map((card) => (
                       <div
                         key={card.id}
                         onClick={() => onSelectPhotoCard(card.id)}
-                        className="game-card rounded-xl p-4 cursor-pointer hover:scale-105 transition-all"
+                        className="relative group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2"
                         data-testid={`photo-card-option-${card.id}`}
                       >
-                        <img 
-                          src={card.imageUrl} 
-                          alt={card.description}
-                          className="w-full h-32 object-cover rounded-lg mb-2"
-                        />
-                        <p className="text-xs text-white/80">{card.description}</p>
+                        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-4 shadow-2xl border border-slate-700 hover:border-blue-400 transition-all duration-300">
+                          <div className="relative overflow-hidden rounded-xl mb-3">
+                            <img 
+                              src={card.imageUrl} 
+                              alt={card.description}
+                              className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          </div>
+                          <p className="text-sm text-slate-300 font-medium text-center leading-tight">{card.description}</p>
+                          <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <Check className="w-4 h-4 text-white" />
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -158,15 +174,23 @@ export function GamePlay({
 
               {/* Selected Photo Card (visible to all players) */}
               {selectedPhotoCard && (
-                <div data-testid="selected-photo-card">
-                  <img 
-                    src={selectedPhotoCard.imageUrl} 
-                    alt={selectedPhotoCard.description}
-                    className="rounded-xl shadow-lg max-w-md mx-auto"
-                  />
-                  <p className="text-lg text-muted-foreground mt-4">
-                    {selectedPhotoCard.description}
-                  </p>
+                <div data-testid="selected-photo-card" className="relative">
+                  <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 shadow-2xl border border-slate-700 max-w-lg mx-auto">
+                    <div className="relative overflow-hidden rounded-xl mb-4">
+                      <img 
+                        src={selectedPhotoCard.imageUrl} 
+                        alt={selectedPhotoCard.description}
+                        className="w-full h-64 object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                    </div>
+                    <p className="text-white font-medium text-center text-lg leading-relaxed">
+                      {selectedPhotoCard.description}
+                    </p>
+                    <div className="mt-3 text-center">
+                      <span className="text-xs text-slate-400 font-mono uppercase tracking-wider">Photo Card</span>
+                    </div>
+                  </div>
                 </div>
               )}
             </CardContent>
@@ -216,7 +240,7 @@ export function GamePlay({
                 )}
 
                 {/* Caption Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {playerHand.map((card) => (
                     <div
                       key={card.id}
@@ -235,22 +259,40 @@ export function GamePlay({
                         }
                       }}
                       className={cn(
-                        "game-card rounded-xl p-4 cursor-pointer transition-all hover:scale-105",
-                        selectedCardId === card.id && "selected",
-                        exchangeCardId === card.id && "border-accent",
+                        "relative group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2",
                         currentPlayer?.hasSubmittedCard && "opacity-50 cursor-not-allowed"
                       )}
                       data-testid={`caption-card-${card.id}`}
                     >
-                      <p className="text-white font-medium">{card.text}</p>
-                      <div className="mt-3 flex items-center justify-between">
-                        <span className="text-xs text-white/60">Caption Card</span>
-                        {selectedCardId === card.id && (
-                          <Check className="h-4 w-4 text-green-400" data-testid="card-selected-icon" />
-                        )}
-                        {exchangeCardId === card.id && (
-                          <RotateCcw className="h-4 w-4 text-accent" data-testid="card-exchange-icon" />
-                        )}
+                      <div className={cn(
+                        "bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 shadow-2xl border-2 transition-all duration-300 min-h-[160px] flex flex-col justify-between",
+                        selectedCardId === card.id ? "border-green-400 bg-gradient-to-br from-green-900/20 to-slate-800" : "border-slate-700 hover:border-blue-400",
+                        exchangeCardId === card.id && "border-orange-400 bg-gradient-to-br from-orange-900/20 to-slate-800"
+                      )}>
+                        <div className="flex-1 flex items-center justify-center">
+                          <p className="text-white font-medium text-center leading-relaxed">{card.text}</p>
+                        </div>
+                        
+                        <div className="mt-4 flex items-center justify-between">
+                          <div className="text-xs text-slate-400 font-mono uppercase tracking-wider">Caption Card</div>
+                          <div className="flex items-center space-x-2">
+                            {selectedCardId === card.id && (
+                              <div className="flex items-center space-x-1 text-green-400">
+                                <Check className="h-4 w-4" data-testid="card-selected-icon" />
+                                <span className="text-xs font-medium">Selected</span>
+                              </div>
+                            )}
+                            {exchangeCardId === card.id && (
+                              <div className="flex items-center space-x-1 text-orange-400">
+                                <RotateCcw className="h-4 w-4" data-testid="card-exchange-icon" />
+                                <span className="text-xs font-medium">Exchange</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {/* Hover effect overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                       </div>
                     </div>
                   ))}
@@ -307,16 +349,24 @@ export function GamePlay({
                   Judge's Decision
                 </h3>
                 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {submittedCards.map((card: any, index: number) => (
                     <div
                       key={index}
                       onClick={() => onSelectWinner(card.playerId)}
-                      className="bg-muted rounded-lg p-4 cursor-pointer hover:bg-accent/10 transition-all"
+                      className="relative group cursor-pointer transform transition-all duration-300 hover:scale-102"
                       data-testid={`submitted-card-${index}`}
                     >
-                      <p className="text-foreground font-medium">{card.text}</p>
-                      <div className="mt-2 text-xs text-muted-foreground">Anonymous submission</div>
+                      <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-5 shadow-xl border border-slate-700 hover:border-yellow-400 transition-all duration-300">
+                        <p className="text-white font-medium leading-relaxed mb-3">{card.text}</p>
+                        <div className="flex items-center justify-between">
+                          <div className="text-xs text-slate-400 font-mono uppercase tracking-wider">Anonymous Submission</div>
+                          <div className="text-xs text-yellow-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            Click to select winner
+                          </div>
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                      </div>
                     </div>
                   ))}
                 </div>
