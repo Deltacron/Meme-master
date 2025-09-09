@@ -65,7 +65,7 @@ export class MemStorage implements IStorage {
   }
 
   private initializeCards() {
-    // Initialize caption cards - 360 total cards
+    // Initialize caption cards - actual quality content
     const captionCards = [
       "Oh great, another Monday. Just what I needed.",
       "Sure, pineapple totally belongs on pizza… said no one sane.",
@@ -228,14 +228,8 @@ export class MemStorage implements IStorage {
       "That joy when you step on a Lego. Pure pain.",
     ];
 
-    // Add more caption cards to reach 360 total
-    const additionalCaptions = [];
-    for (let i = captionCards.length; i < 360; i++) {
-      additionalCaptions.push(`Meme caption ${i + 1}`);
-    }
-    captionCards.push(...additionalCaptions);
 
-    // Initialize photo cards - 75 total cards
+    // Initialize photo cards - actual quality images
     const photoCards = [
       {
         imageUrl:
@@ -550,15 +544,6 @@ export class MemStorage implements IStorage {
       },
     ];
 
-    // Add more photo cards to reach 75 total
-    const additionalPhotos = [];
-    for (let i = photoCards.length; i < 75; i++) {
-      additionalPhotos.push({
-        imageUrl: `https://images.unsplash.com/photo-151488828697${4 + i}?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300`,
-        description: `Meme photo ${i + 1}`,
-      });
-    }
-    photoCards.push(...additionalPhotos);
 
     captionCards.forEach((text) => {
       const id = randomUUID();
