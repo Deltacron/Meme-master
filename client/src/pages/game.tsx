@@ -22,7 +22,7 @@ export default function Game({ params }: GameProps) {
     selectPhotoCard,
     submitCaptionCard,
     exchangeCard,
-    selectWinner
+    selectWinner,
   } = useGameState();
 
   useEffect(() => {
@@ -38,6 +38,21 @@ export default function Game({ params }: GameProps) {
       setLocation("/");
     }
   }, []);
+
+  // Update current player when game state changes
+  useEffect(() => {
+    if (gameState && currentPlayer) {
+      const updatedCurrentPlayer = gameState.players.find(
+        (p) => p.id === currentPlayer.id,
+      );
+      if (
+        updatedCurrentPlayer &&
+        JSON.stringify(updatedCurrentPlayer) !== JSON.stringify(currentPlayer)
+      ) {
+        setCurrentPlayer(updatedCurrentPlayer);
+      }
+    }
+  }, [gameState, currentPlayer]);
 
   const handlePlayAgain = () => {
     // Reset game state and return to lobby
@@ -56,25 +71,23 @@ export default function Game({ params }: GameProps) {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin w-12 h-12 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-lg font-semibold text-foreground">Loading game...</p>
+          <p className="text-lg font-semibold text-foreground">
+            Loading game...
+          </p>
         </div>
       </div>
     );
   }
 
-  // Find current player in game state
-  const updatedCurrentPlayer = gameState.players.find(p => p.id === currentPlayer.id);
-  if (updatedCurrentPlayer) {
-    setCurrentPlayer(updatedCurrentPlayer);
-  }
-
   // Check if all players have revealed their number cards
-  const allRevealed = gameState.players.every(p => p.numberCard !== null);
-  
+  const allRevealed = gameState.players.every((p) => p.numberCard !== null);
+
   // Find judge player (lowest number card)
-  const judgePlayer = allRevealed 
-    ? gameState.players.reduce((lowest, player) => 
-        (player.numberCard || 999) < (lowest.numberCard || 999) ? player : lowest
+  const judgePlayer = allRevealed
+    ? gameState.players.reduce((lowest, player) =>
+        (player.numberCard || 999) < (lowest.numberCard || 999)
+          ? player
+          : lowest,
       )
     : null;
 
@@ -82,7 +95,7 @@ export default function Game({ params }: GameProps) {
   const gameTime = "12:34";
 
   if (gameState.room.status === "finished") {
-    const winner = gameState.players.find(p => p.trophies >= 5);
+    const winner = gameState.players.find((p) => p.trophies >= 5);
     if (winner) {
       return (
         <GameEnd
@@ -126,8 +139,12 @@ export default function Game({ params }: GameProps) {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-foreground mb-4">Game Status: {gameState.room.status}</h1>
-        <p className="text-muted-foreground">Waiting for game state to update...</p>
+        <h1 className="text-2xl font-bold text-foreground mb-4">
+          Game Status: {gameState.room.status}
+        </h1>
+        <p className="text-muted-foreground">
+          Waiting for game state to update...
+        </p>
       </div>
     </div>
   );

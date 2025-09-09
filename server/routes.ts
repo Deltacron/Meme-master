@@ -14,6 +14,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
   const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
 
+  console.log('🔌 WebSocket server created on path: /ws');
+
   // Generate room code
   function generateRoomCode(): string {
     return randomBytes(3).toString('hex').toUpperCase();
@@ -37,7 +39,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     const captionCards: CaptionCard[] = JSON.parse(deck.captionDeck as string);
     const cardsPerPlayer = players.length === 3 ? 4 : 7;
-    
+
     let cardIndex = 0;
     for (const player of players) {
       const hand = captionCards.slice(cardIndex, cardIndex + cardsPerPlayer);
@@ -84,7 +86,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { hostId } = insertRoomSchema.parse(req.body);
       let code: string;
       let existingRoom;
-      
+
       // Generate unique room code
       do {
         code = generateRoomCode();
@@ -105,7 +107,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { code } = req.params;
       const room = await storage.getRoomByCode(code);
-      
+
       if (!room) {
         return res.status(404).json({ error: "Room not found" });
       }
@@ -117,15 +119,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/cards/photo", async (req, res) => {
+    try {
+      const photoCards = await storage.getCardsByType("photo");
+      res.json(photoCards);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to get photo cards" });
+    }
+  });
+
   app.post("/api/rooms/:code/join", async (req, res) => {
     try {
       const { code } = req.params;
-      const { name } = insertPlayerSchema.parse(req.body);
-      
+      const { name, isHost } = req.body;
+
+      console.log(`👤 Player joining room ${code}:`, { name, isHost });
+
       const room = await storage.getRoomByCode(code);
       if (!room) {
         return res.status(404).json({ error: "Room not found" });
       }
+
+      console.log(`🏠 Current room hostId: ${room.hostId}`);
 
       if (room.status !== "waiting") {
         return res.status(400).json({ error: "Game already in progress" });
@@ -135,6 +150,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         roomId: room.id,
         name
       });
+
+      console.log(`✅ Player created: ${player.id} (${player.name})`);
+
+      // If this is the host (room creator), update the room's hostId
+      if (isHost && room.hostId === "temp-host-id") {
+        console.log(`🔄 Updating room ${room.code} host from ${room.hostId} to ${player.id}`);
+        await storage.updateRoom(room.id, {
+          hostId: player.id
+        });
+        console.log(`🏠 Successfully updated room ${room.code} host to player ${player.id} (${player.name})`);
+      } else {
+        console.log(`❌ Not updating host: isHost=${isHost}, currentHostId=${room.hostId}`);
+      }
 
       const gameState = await getGameState(room.id);
       broadcastToRoom(room.id, {
@@ -151,19 +179,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // WebSocket handling
   wss.on('connection', (ws: SocketWithData) => {
+    console.log('🔌 New WebSocket connection established');
+
     ws.on('message', async (data) => {
       try {
         const message = JSON.parse(data.toString());
-        
+
         switch (message.type) {
           case 'join_room':
             console.log('WebSocket join_room received:', message);
             ws.playerId = message.playerId;
             ws.roomId = message.roomId;
-            
+
             const gameState = await getGameState(message.roomId);
             console.log('Game state found:', !!gameState, 'for room:', message.roomId);
-            
+
             if (gameState) {
               console.log('Sending game state to WebSocket client');
               ws.send(JSON.stringify({
@@ -181,15 +211,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           case 'start_game':
             if (!ws.roomId) break;
-            
+
             const room = await storage.getRoom(ws.roomId);
             const players = await storage.getPlayersByRoom(ws.roomId);
-            
+
             if (!room || players.length < 3) break;
-            
+
             // Assign random number cards for judge selection
             const numberCards = shuffleArray(Array.from({length: players.length}, (_, i) => i + 1));
-            
+
             for (let i = 0; i < players.length; i++) {
               await storage.updatePlayer(players[i].id, {
                 numberCard: numberCards[i]
@@ -209,7 +239,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           case 'reveal_number_card':
             if (!ws.playerId || !ws.roomId) break;
-            
+
             const updatedState = await getGameState(ws.roomId);
             broadcastToRoom(ws.roomId, {
               type: 'number_card_revealed',
@@ -220,16 +250,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           case 'start_round':
             if (!ws.roomId) break;
-            
+
             const roomForRound = await storage.getRoom(ws.roomId);
             const playersForRound = await storage.getPlayersByRoom(ws.roomId);
-            
+
             if (!roomForRound) break;
 
             // Find judge (lowest number card)
             const lowestNumber = Math.min(...playersForRound.map(p => p.numberCard || 999));
             const judge = playersForRound.find(p => p.numberCard === lowestNumber);
-            
+
             if (!judge) break;
 
             await storage.updateRoom(ws.roomId, {
@@ -249,10 +279,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           case 'select_photo_card':
             if (!ws.roomId) break;
-            
+
             const { cardId } = message;
             const card = await storage.getCard(cardId);
-            
+
             if (!card) break;
 
             await storage.updateRoom(ws.roomId, {
@@ -272,16 +302,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           case 'submit_caption_card':
             if (!ws.playerId || !ws.roomId) break;
-            
+
             const { cardId: submittedCardId } = message;
             const player = await storage.getPlayer(ws.playerId);
             const submittingRoom = await storage.getRoom(ws.roomId);
-            
+
             if (!player || !submittingRoom) break;
 
             const hand: CaptionCard[] = JSON.parse(player.hand as string);
             const submittedCard = hand.find(c => c.id === submittedCardId);
-            
+
             if (!submittedCard) break;
 
             await storage.updatePlayer(ws.playerId, {
@@ -308,16 +338,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           case 'exchange_card':
             if (!ws.playerId || !ws.roomId) break;
-            
+
             const { cardId: exchangeCardId } = message;
             const exchangingPlayer = await storage.getPlayer(ws.playerId);
             const deck = await storage.getGameDeck(ws.roomId);
-            
+
             if (!exchangingPlayer || !deck || exchangingPlayer.hasExchangedCard) break;
 
             const playerHand: CaptionCard[] = JSON.parse(exchangingPlayer.hand as string);
             const deckCards: CaptionCard[] = JSON.parse(deck.captionDeck as string);
-            
+
             if (deckCards.length === 0) break;
 
             // Remove card from hand and add to discard
@@ -325,7 +355,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             if (cardIndex === -1) break;
 
             const discardedCard = playerHand.splice(cardIndex, 1)[0];
-            
+
             // Take new card from deck
             const newCard = deckCards.shift();
             if (!newCard) break;
@@ -350,11 +380,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           case 'select_winner':
             if (!ws.roomId) break;
-            
+
             const { winnerId } = message;
             const winningPlayer = await storage.getPlayer(winnerId);
             const winningRoom = await storage.getRoom(ws.roomId);
-            
+
             if (!winningPlayer || !winningRoom) break;
 
             // Award trophy
@@ -411,7 +441,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     ws.on('close', async () => {
       if (ws.playerId && ws.roomId) {
         await storage.updatePlayer(ws.playerId, { isOnline: false });
-        
+
         const gameState = await getGameState(ws.roomId);
         broadcastToRoom(ws.roomId, {
           type: 'player_disconnected',

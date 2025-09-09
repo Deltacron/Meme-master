@@ -29,23 +29,25 @@ export default function Home() {
 
     setIsLoading(true);
     try {
+      // Create room with temporary host ID, then join and update
       const response = await apiRequest("POST", "/api/rooms", {
-        hostId: "temp-host-id", // This would normally be generated from auth
+        hostId: "temp-host-id", // Will be updated when first player joins
       });
-      
+
       const { room } = await response.json();
-      
+
       // Join the room as a player
       const joinResponse = await apiRequest("POST", `/api/rooms/${room.code}/join`, {
-        name: playerName.trim()
+        name: playerName.trim(),
+        isHost: true // Mark this player as the host
       });
-      
+
       const { player } = await joinResponse.json();
-      
+
       // Store player info in localStorage
       localStorage.setItem("currentPlayer", JSON.stringify(player));
       localStorage.setItem("playerName", playerName.trim());
-      
+
       setLocation(`/lobby/${room.code}`);
     } catch (error) {
       toast({
@@ -82,13 +84,13 @@ export default function Home() {
       const response = await apiRequest("POST", `/api/rooms/${roomCode.trim().toUpperCase()}/join`, {
         name: playerName.trim()
       });
-      
+
       const { player } = await response.json();
-      
+
       // Store player info in localStorage
       localStorage.setItem("currentPlayer", JSON.stringify(player));
       localStorage.setItem("playerName", playerName.trim());
-      
+
       setLocation(`/lobby/${roomCode.trim().toUpperCase()}`);
     } catch (error) {
       toast({
@@ -135,7 +137,7 @@ export default function Home() {
                   data-testid="player-name-input"
                 />
               </div>
-              
+
               <Button
                 onClick={handleCreateRoom}
                 disabled={isLoading}
@@ -172,7 +174,7 @@ export default function Home() {
                   data-testid="room-code-input"
                 />
               </div>
-              
+
               <Button
                 onClick={handleJoinRoom}
                 disabled={isLoading}
