@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { type Player, type GameState, type CaptionCard, type PhotoCard } from "@shared/schema";
-import { Trophy, Gavel, NotebookPen, RotateCcw, Check } from "lucide-react";
+import { Trophy, Gavel, NotebookPen, RotateCcw, Check, Medal } from "lucide-react";
+import { WinnerAnnouncement } from "./winner-announcement";
 import { cn } from "@/lib/utils";
 
 interface GamePlayProps {
@@ -25,6 +26,7 @@ export function GamePlay({
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const [exchangeCardId, setExchangeCardId] = useState<string | null>(null);
   const [availablePhotoCards, setAvailablePhotoCards] = useState<PhotoCard[]>([]);
+  const [showWinner, setShowWinner] = useState<{winner: Player, caption: string} | null>(null);
 
   const currentPlayer = gameState.players.find(p => p.id === currentPlayerId);
   const isJudge = gameState.room.currentJudgeId === currentPlayerId;
@@ -42,6 +44,21 @@ export function GamePlay({
       fetchPhotoCards();
     }
   }, [isJudge, selectedPhotoCard]);
+
+  // Listen for round winner announcements  
+  useEffect(() => {
+    const handleWinnerSelected = (data: any) => {
+      if (data.winner) {
+        setShowWinner({
+          winner: data.winner,
+          caption: data.winningCaption || "Great meme!"
+        });
+      }
+    };
+
+    // This would typically come from WebSocket, but for now we'll handle it in the parent
+    // The parent component should pass winner data when available
+  }, []);
 
   const fetchPhotoCards = async () => {
     try {
@@ -90,39 +107,57 @@ export function GamePlay({
 
   return (
     <>
-      {/* Top Navigation */}
-      <div className="bg-card border-b border-border sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
+      {/* Winner Announcement Overlay */}
+      {showWinner && (
+        <WinnerAnnouncement
+          winner={showWinner.winner}
+          winningCaption={showWinner.caption}
+          onComplete={() => setShowWinner(null)}
+        />
+      )}
+      
+      {/* Top Navigation - Material Design */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg sticky top-0 z-40">
+        <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-6">
-              <h1 className="text-2xl font-bold text-foreground">
-                Round <span data-testid="current-round">{gameState.room.currentRound}</span>
-              </h1>
+            <div className="flex items-center space-x-8">
+              <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-4 py-2">
+                <h1 className="text-2xl font-bold text-white">
+                  Round <span data-testid="current-round">{gameState.room.currentRound}</span>
+                </h1>
+              </div>
               <div className="flex items-center space-x-4">
-                <span className="text-muted-foreground">Judge:</span>
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-sm">
+                <span className="text-blue-100 font-medium">Judge:</span>
+                <div className="flex items-center space-x-3 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
+                  <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
                     <span data-testid="judge-initials">
                       {judgePlayer?.name.charAt(0).toUpperCase()}
                     </span>
                   </div>
-                  <span className="font-semibold text-foreground" data-testid="judge-name">
+                  <span className="font-semibold text-white" data-testid="judge-name">
                     {judgePlayer?.name}
                   </span>
+                  <Gavel className="w-5 h-5 text-amber-300" />
                 </div>
               </div>
             </div>
             
-            {/* Scoreboard */}
-            <div className="flex items-center space-x-4">
-              {gameState.players.map((player) => (
-                <div key={player.id} className="flex items-center space-x-2">
-                  <span className="text-sm text-muted-foreground" data-testid={`player-name-${player.id}`}>
-                    {player.name}
-                  </span>
-                  <div className="flex items-center text-secondary">
-                    <Trophy className="trophy-icon h-4 w-4 mr-1" />
-                    <span className="font-semibold" data-testid={`player-trophies-${player.id}`}>
+            {/* Scoreboard - Material Design */}
+            <div className="flex items-center space-x-6">
+              {gameState.players.map((player, index) => (
+                <div key={player.id} className="flex items-center space-x-3 bg-white/20 backdrop-blur-sm rounded-2xl px-4 py-3 transition-all hover:bg-white/30">
+                  <div className="flex items-center space-x-2">
+                    <div className={cn(
+                      "w-3 h-3 rounded-full",
+                      index === 0 ? "bg-amber-400" : index === 1 ? "bg-gray-300" : "bg-orange-400"
+                    )} />
+                    <span className="text-sm text-white font-medium" data-testid={`player-name-${player.id}`}>
+                      {player.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center text-amber-300 bg-black/20 rounded-full px-3 py-1">
+                    <Trophy className="h-4 w-4 mr-1" />
+                    <span className="font-bold text-sm" data-testid={`player-trophies-${player.id}`}>
                       {player.trophies}
                     </span>
                   </div>
@@ -133,12 +168,17 @@ export function GamePlay({
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Photo Card Display */}
-        <div className="text-center mb-8">
-          <Card className="inline-block p-8 shadow-lg">
-            <CardContent className="p-0">
-              <h2 className="text-2xl font-semibold text-foreground mb-6">Photo Card</h2>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-900">
+        <div className="container mx-auto px-4 py-8 max-w-7xl">
+          {/* Photo Card Display - Material Design */}
+          <div className="text-center mb-12">
+            <div className="inline-block bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-2xl border border-slate-200 dark:border-slate-700">
+              <div className="p-0">
+                <div className="flex items-center justify-center space-x-2 mb-6">
+                  <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
+                  <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Photo Card</h2>
+                  <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full" />
+                </div>
               
               {/* Judge selects photo (only visible to judge) */}
               {isJudge && !selectedPhotoCard && (
@@ -193,9 +233,9 @@ export function GamePlay({
                   </div>
                 </div>
               )}
-            </CardContent>
-          </Card>
-        </div>
+              </div>
+            </div>
+          </div>
 
         {/* Game Phase Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

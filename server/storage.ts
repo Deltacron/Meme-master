@@ -108,7 +108,7 @@ export class MemStorage implements IStorage {
     }
     captionCards.push(...additionalCaptions);
 
-    // Initialize photo cards
+    // Initialize photo cards - 75 total cards
     const photoCards = [
       {
         imageUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
@@ -149,8 +149,38 @@ export class MemStorage implements IStorage {
       {
         imageUrl: "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
         description: "Thoughtful monkey"
+      },
+      {
+        imageUrl: "https://images.unsplash.com/photo-1571566882372-1598d88abd90?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
+        description: "Laughing hyena"
+      },
+      {
+        imageUrl: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
+        description: "Curious lemur"
+      },
+      {
+        imageUrl: "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
+        description: "Sleepy sloth"
+      },
+      {
+        imageUrl: "https://images.unsplash.com/photo-1560807707-8cc77767d783?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
+        description: "Dramatic llama"
+      },
+      {
+        imageUrl: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
+        description: "Unimpressed cat"
       }
     ];
+    
+    // Add more photo cards to reach 75 total
+    const additionalPhotos = [];
+    for (let i = photoCards.length; i < 75; i++) {
+      additionalPhotos.push({
+        imageUrl: `https://images.unsplash.com/photo-151488828697${4 + i}?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300`,
+        description: `Meme photo ${i + 1}`
+      });
+    }
+    photoCards.push(...additionalPhotos);
 
     captionCards.forEach(text => {
       const id = randomUUID();
