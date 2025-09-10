@@ -512,6 +512,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
               });
             }
             break;
+
+          case 'restart_game':
+            if (!ws.roomId) break;
+
+            console.log('🔄 Restarting game for room:', ws.roomId);
+            
+            // Reset room to waiting state
+            await storage.updateRoom(ws.roomId, {
+              status: "waiting",
+              currentJudgeId: null,
+              currentRound: 0,
+              selectedPhotoCard: null,
+              submittedCards: "[]"
+            });
+
+            // Reset all players
+            const roomPlayers = await storage.getPlayersByRoom(ws.roomId);
+            for (const player of roomPlayers) {
+              await storage.updatePlayer(player.id, {
+                hand: "[]",
+                trophies: 0,
+                numberCard: null,
+                hasSubmittedCard: false,
+                hasExchangedCard: false
+              });
+            }
+
+            // Recreate game deck with fresh cards
+            await storage.deleteGameDeck(ws.roomId);
+            await storage.createGameDeck(ws.roomId);
+
+            const restartedGameState = await getGameState(ws.roomId);
+            broadcastToRoom(ws.roomId, {
+              type: 'game_restarted',
+              gameState: restartedGameState
+            });
+            break;
         }
       } catch (error) {
         console.error('WebSocket error:', error);

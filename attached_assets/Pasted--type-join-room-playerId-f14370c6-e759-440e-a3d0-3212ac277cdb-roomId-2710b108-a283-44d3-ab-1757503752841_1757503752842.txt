@@ -1,0 +1,150 @@
+{type: 'join_room', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4'}
+index-DSRiHjWn.js:227 ✅ Message sent successfully
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_state', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'player_disconnected', playerId: '880724c8-be60-4bfc-9113-3aee3b35c263', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'player_disconnected', playerId: '880724c8-be60-4bfc-9113-3aee3b35c263', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'player_disconnected', playerId: '880724c8-be60-4bfc-9113-3aee3b35c263', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'player_disconnected', playerId: 'cc8837bf-7c05-40d4-a703-4db53b35d6b6', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'player_disconnected', playerId: 'cc8837bf-7c05-40d4-a703-4db53b35d6b6', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'player_disconnected', playerId: '880724c8-be60-4bfc-9113-3aee3b35c263', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'player_disconnected', playerId: 'cc8837bf-7c05-40d4-a703-4db53b35d6b6', gameState: {…}}
+index-DSRiHjWn.js:227 🔌 WebSocket connection closed: 1006 
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'player_disconnected', playerId: 'cc8837bf-7c05-40d4-a703-4db53b35d6b6', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'player_disconnected', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'player_disconnected', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', gameState: {…}}
+index-DSRiHjWn.js:227 Attempting to reconnect... (1/5)
+index-DSRiHjWn.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-DSRiHjWn.js:227 ✅ Connected to WebSocket successfully
+index-DSRiHjWn.js:227 🔄 Reconnected successfully, refreshing game state
+index-DSRiHjWn.js:227 📤 Sending WebSocket message: {type: 'join_room', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4'}
+index-DSRiHjWn.js:227 ✅ Message sent successfully
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_state', gameState: {…}}
+index-DSRiHjWn.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: 'c8a98db7-df0f-4d15-a6bd-e8f024020593'}
+index-DSRiHjWn.js:227 ✅ Message sent successfully
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'photo_card_selected', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'photo_card_selected', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📤 Sending WebSocket message: {type: 'select_winner', winnerId: '880724c8-be60-4bfc-9113-3aee3b35c263'}
+index-DSRiHjWn.js:227 ✅ Message sent successfully
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'round_winner_selected', winner: {…}, gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'round_winner_selected', winner: {…}, gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'photo_card_selected', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'photo_card_selected', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📤 Sending WebSocket message: {type: 'submit_caption_card', cardId: 'ff2eb65b-8fca-47b5-b3ef-eca707f82530'}
+index-DSRiHjWn.js:227 ✅ Message sent successfully
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_finished', winner: {…}, gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_finished', winner: {…}, gameState: {…}}
+index-DSRiHjWn.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-DSRiHjWn.js:227 📤 Sending WebSocket message: {type: 'join_room', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4'}
+index-DSRiHjWn.js:227 ⏳ WebSocket is connecting, queuing message
+index-DSRiHjWn.js:227 ✅ Connected to WebSocket successfully
+index-DSRiHjWn.js:227 📦 Sending 1 queued messages
+index-DSRiHjWn.js:227 📤 Sending queued message: {type: 'join_room', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4'}
+index-DSRiHjWn.js:227 ✅ Queued message sent successfully
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_state', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'judge_selection_started', gameState: {…}}
+index-DSRiHjWn.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-DSRiHjWn.js:227 📤 Sending WebSocket message: {type: 'join_room', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4'}
+index-DSRiHjWn.js:227 ⏳ WebSocket is connecting, queuing message
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'judge_selection_started', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'judge_selection_started', gameState: {…}}
+index-DSRiHjWn.js:227 ✅ Connected to WebSocket successfully
+index-DSRiHjWn.js:227 🔄 Reconnected successfully, refreshing game state
+index-DSRiHjWn.js:227 📤 Sending WebSocket message: {type: 'join_room', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4'}
+index-DSRiHjWn.js:227 ✅ Message sent successfully
+index-DSRiHjWn.js:227 📦 Sending 1 queued messages
+index-DSRiHjWn.js:227 📤 Sending queued message: {type: 'join_room', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4'}
+index-DSRiHjWn.js:227 ✅ Queued message sent successfully
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_state', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_state', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'round_started', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'round_started', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'round_started', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'round_started', gameState: {…}}
+index-DSRiHjWn.js:227 Join room timeout - stopping loading state
+(anonymous) @ index-DSRiHjWn.js:227
+setTimeout
+w @ index-DSRiHjWn.js:227
+T @ index-DSRiHjWn.js:227
+(anonymous) @ index-DSRiHjWn.js:227
+emit @ index-DSRiHjWn.js:227
+socket.onopen @ index-DSRiHjWn.js:227Understand this warning
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📤 Sending WebSocket message: {type: 'submit_caption_card', cardId: '171fa41b-b8e8-4a6c-ba13-04b190d4eb3c'}
+index-DSRiHjWn.js:227 ✅ Message sent successfully
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_finished', winner: {…}, gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_finished', winner: {…}, gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_finished', winner: {…}, gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_finished', winner: {…}, gameState: {…}}
+index-DSRiHjWn.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-DSRiHjWn.js:227 📤 Sending WebSocket message: {type: 'join_room', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4'}
+index-DSRiHjWn.js:227 ⏳ WebSocket is connecting, queuing message
+index-DSRiHjWn.js:227 ✅ Connected to WebSocket successfully
+index-DSRiHjWn.js:227 📦 Sending 1 queued messages
+index-DSRiHjWn.js:227 📤 Sending queued message: {type: 'join_room', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4'}
+index-DSRiHjWn.js:227 ✅ Queued message sent successfully
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_state', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'judge_selection_started', gameState: {…}}
+index-DSRiHjWn.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-DSRiHjWn.js:227 📤 Sending WebSocket message: {type: 'join_room', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4'}
+index-DSRiHjWn.js:227 ⏳ WebSocket is connecting, queuing message
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'judge_selection_started', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'judge_selection_started', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'judge_selection_started', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'judge_selection_started', gameState: {…}}
+index-DSRiHjWn.js:227 ✅ Connected to WebSocket successfully
+index-DSRiHjWn.js:227 🔄 Reconnected successfully, refreshing game state
+index-DSRiHjWn.js:227 📤 Sending WebSocket message: {type: 'join_room', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4'}
+index-DSRiHjWn.js:227 ✅ Message sent successfully
+index-DSRiHjWn.js:227 📦 Sending 1 queued messages
+index-DSRiHjWn.js:227 📤 Sending queued message: {type: 'join_room', playerId: 'f14370c6-e759-440e-a3d0-3212ac277cdb', roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4'}
+index-DSRiHjWn.js:227 ✅ Queued message sent successfully
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_state', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'round_started', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'round_started', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'round_started', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'round_started', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'round_started', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'round_started', gameState: {…}}
+index-DSRiHjWn.js:227 Join room timeout - stopping loading state
+(anonymous) @ index-DSRiHjWn.js:227
+setTimeout
+w @ index-DSRiHjWn.js:227
+T @ index-DSRiHjWn.js:227
+(anonymous) @ index-DSRiHjWn.js:227
+emit @ index-DSRiHjWn.js:227
+socket.onopen @ index-DSRiHjWn.js:227Understand this warning
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}gameState: {room: {…}, players: Array(3), deck: {…}}type: "card_submitted"[[Prototype]]: Object
+index-DSRiHjWn.js:227 📤 Sending WebSocket message: {type: 'submit_caption_card', cardId: '4c8bb581-f6b4-43a9-a169-5ad9ec214b25'}
+index-DSRiHjWn.js:227 ✅ Message sent successfully
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'card_submitted', gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_finished', winner: {…}, gameState: {…}}gameState: {room: {…}, players: Array(3), deck: {…}}type: "game_finished"winner: {roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4', name: 'im three', id: '880724c8-be60-4bfc-9113-3aee3b35c263', isOnline: true, hand: '[{"id":"007a8d9f-8b3e-4b9f-a0c6-acee0a31cc5b","tex…c moment when your laptop updates mid-meeting."}]', …}[[Prototype]]: Object
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_finished', winner: {…}, gameState: {…}}gameState: {room: {…}, players: Array(3), deck: {…}}type: "game_finished"winner: {roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4', name: 'im three', id: '880724c8-be60-4bfc-9113-3aee3b35c263', isOnline: true, hand: '[{"id":"007a8d9f-8b3e-4b9f-a0c6-acee0a31cc5b","tex…c moment when your laptop updates mid-meeting."}]', …}[[Prototype]]: Object
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_finished', winner: {…}, gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_finished', winner: {…}, gameState: {…}}
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_finished', winner: {…}, gameState: {…}}gameState: {room: {…}, players: Array(3), deck: {…}}type: "game_finished"winner: {roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4', name: 'im three', id: '880724c8-be60-4bfc-9113-3aee3b35c263', isOnline: true, hand: '[{"id":"007a8d9f-8b3e-4b9f-a0c6-acee0a31cc5b","tex…c moment when your laptop updates mid-meeting."}]', …}[[Prototype]]: Object
+index-DSRiHjWn.js:227 📨 WebSocket message received: {type: 'game_finished', winner: {…}, gameState: {…}}gameState: {room: {…}, players: Array(3), deck: {…}}type: "game_finished"winner: {roomId: '2710b108-a283-44d3-ab32-de7e5bacc1f4', name: 'im three', id: '880724c8-be60-4bfc-9113-3aee3b35c263', isOnline: true, hand: '[{"id":"007a8d9f-8b3e-4b9f-a0c6-acee0a31cc5b","tex…c moment when your laptop updates mid-meeting."}]', …}[[Prototype]]: Object

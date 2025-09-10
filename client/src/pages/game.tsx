@@ -23,6 +23,7 @@ export default function Game({ params }: GameProps) {
     submitCaptionCard,
     exchangeCard,
     selectWinner,
+    restartGame,
   } = useGameState();
 
   useEffect(() => {
@@ -55,7 +56,8 @@ export default function Game({ params }: GameProps) {
   }, [gameState, currentPlayer]);
 
   const handlePlayAgain = () => {
-    // Reset game state and return to lobby
+    // Reset game state on server and return to lobby
+    restartGame();
     setLocation(`/lobby/${params.code}`);
   };
 

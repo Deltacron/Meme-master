@@ -54,6 +54,10 @@ export function useGameState() {
       setGameState(data.gameState);
     };
 
+    const handleGameRestarted = (data: any) => {
+      setGameState(data.gameState);
+    };
+
     const handlePlayerDisconnected = (data: any) => {
       setGameState(data.gameState);
       
@@ -115,6 +119,7 @@ export function useGameState() {
     on('card_exchanged', handleCardExchanged);
     on('round_winner_selected', handleRoundWinnerSelected);
     on('game_finished', handleGameFinished);
+    on('game_restarted', handleGameRestarted);
     on('player_disconnected', handlePlayerDisconnected);
     on('error', handleError);
     on('connection_status', handleConnectionStatusChange);
@@ -130,6 +135,7 @@ export function useGameState() {
       off('card_exchanged', handleCardExchanged);
       off('round_winner_selected', handleRoundWinnerSelected);
       off('game_finished', handleGameFinished);
+      off('game_restarted', handleGameRestarted);
       off('player_disconnected', handlePlayerDisconnected);
       off('error', handleError);
       off('connection_status', handleConnectionStatusChange);
@@ -178,6 +184,10 @@ export function useGameState() {
     send('select_winner', { winnerId });
   };
 
+  const restartGame = () => {
+    send('restart_game');
+  };
+
   return {
     gameState,
     currentPlayer,
@@ -193,6 +203,7 @@ export function useGameState() {
     selectPhotoCard,
     submitCaptionCard,
     exchangeCard,
-    selectWinner
+    selectWinner,
+    restartGame
   };
 }
