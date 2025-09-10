@@ -184,6 +184,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     ws.on('message', async (data) => {
       try {
         const message = JSON.parse(data.toString());
+        console.log('📨 WebSocket message received:', message.type, message);
 
         switch (message.type) {
           case 'join_room':
@@ -278,13 +279,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
             break;
 
           case 'select_photo_card':
-            if (!ws.roomId) break;
+            console.log('🎯 Photo card selection received:', message);
+            if (!ws.roomId) {
+              console.log('❌ No roomId in WebSocket connection');
+              break;
+            }
 
             const { cardId } = message;
+            console.log('🃏 Looking for card ID:', cardId);
             const card = await storage.getCard(cardId);
 
-            if (!card) break;
+            if (!card) {
+              console.log('❌ Card not found:', cardId);
+              break;
+            }
 
+            console.log('✅ Card found, updating room with selected photo card');
             await storage.updateRoom(ws.roomId, {
               selectedPhotoCard: JSON.stringify({
                 id: card.id,
@@ -294,6 +304,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             });
 
             const photoSelectedState = await getGameState(ws.roomId);
+            console.log('📤 Broadcasting photo card selected to room:', ws.roomId);
             broadcastToRoom(ws.roomId, {
               type: 'photo_card_selected',
               gameState: photoSelectedState

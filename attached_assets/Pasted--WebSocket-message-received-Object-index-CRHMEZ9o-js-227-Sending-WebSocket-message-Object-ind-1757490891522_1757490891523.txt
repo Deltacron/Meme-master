@@ -1,0 +1,65 @@
+📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 🔌 WebSocket connection closed: 1006 
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 Attempting to reconnect... (1/5)
+index-CRHMEZ9o.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-CRHMEZ9o.js:227 ✅ Connected to WebSocket successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 🔌 WebSocket connection closed: 1006 
+index-CRHMEZ9o.js:227 Attempting to reconnect... (1/5)
+index-CRHMEZ9o.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-CRHMEZ9o.js:227 ✅ Connected to WebSocket successfully
+index-CRHMEZ9o.js:227 🔌 WebSocket connection closed: 1006 
+index-CRHMEZ9o.js:227 Attempting to reconnect... (1/5)
+index-CRHMEZ9o.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-CRHMEZ9o.js:227 ✅ Connected to WebSocket successfully
+index-CRHMEZ9o.js:227 🔌 WebSocket connection closed: 1006 
+index-CRHMEZ9o.js:227 Attempting to reconnect... (1/5)
+index-CRHMEZ9o.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-CRHMEZ9o.js:227 ✅ Connected to WebSocket successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '1bda831c-5bc3-4d37-b976-5fafe9066413'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '1bda831c-5bc3-4d37-b976-5fafe9066413'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '1bda831c-5bc3-4d37-b976-5fafe9066413'}cardId: "1bda831c-5bc3-4d37-b976-5fafe9066413"type: "select_photo_card"[[Prototype]]: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '15da5073-ec43-48a4-9c89-85537a2c7015'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '15da5073-ec43-48a4-9c89-85537a2c7015'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '15da5073-ec43-48a4-9c89-85537a2c7015'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '1bda831c-5bc3-4d37-b976-5fafe9066413'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '7e87e6e1-d987-4289-81d7-0d0b340c93d4'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '15da5073-ec43-48a4-9c89-85537a2c7015'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '15da5073-ec43-48a4-9c89-85537a2c7015'}cardId: "15da5073-ec43-48a4-9c89-85537a2c7015"type: "select_photo_card"[[Prototype]]: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '7e87e6e1-d987-4289-81d7-0d0b340c93d4'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: 'eb6996ce-5791-4403-8fd9-249c7d8c7d17'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '0d44f73f-d49e-4e24-b931-ce2184168edf'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '1bda831c-5bc3-4d37-b976-5fafe9066413'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '3eaf1cd7-6396-4c00-b14c-8efa15ca8e87'}cardId: "3eaf1cd7-6396-4c00-b14c-8efa15ca8e87"type: "select_photo_card"[[Prototype]]: Object
