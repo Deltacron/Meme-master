@@ -1,0 +1,114 @@
+📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 🔌 WebSocket connection closed: 1006 
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 Attempting to reconnect... (1/5)
+index-CRHMEZ9o.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-CRHMEZ9o.js:227 ✅ Connected to WebSocket successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 🔌 WebSocket connection closed: 1006 
+index-CRHMEZ9o.js:227 Attempting to reconnect... (1/5)
+index-CRHMEZ9o.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-CRHMEZ9o.js:227 ✅ Connected to WebSocket successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '0ed55b55-3b6b-4316-a305-709907280a5c'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: 'dc791d20-ee76-4259-b816-f99636ae6973'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '0ed55b55-3b6b-4316-a305-709907280a5c'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: 'dc791d20-ee76-4259-b816-f99636ae6973'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '0ed55b55-3b6b-4316-a305-709907280a5c'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '0ed55b55-3b6b-4316-a305-709907280a5c'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: 'dc791d20-ee76-4259-b816-f99636ae6973'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '0ed55b55-3b6b-4316-a305-709907280a5c'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully

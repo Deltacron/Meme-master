@@ -58,14 +58,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   }
 
-  // Broadcast to room
+  // Broadcast to room with error handling
   function broadcastToRoom(roomId: string, message: any) {
+    let sentCount = 0;
+    let failedCount = 0;
+    
     wss.clients.forEach((client) => {
       const socket = client as SocketWithData;
       if (socket.readyState === WebSocket.OPEN && socket.roomId === roomId) {
-        socket.send(JSON.stringify(message));
+        try {
+          socket.send(JSON.stringify(message));
+          sentCount++;
+        } catch (error) {
+          console.error('Failed to send message to client:', error);
+          failedCount++;
+        }
       }
     });
+    
+    console.log(`📡 Broadcast to room ${roomId}: sent to ${sentCount} clients, failed ${failedCount}`);
   }
 
   // Get game state
@@ -181,9 +192,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
   wss.on('connection', (ws: SocketWithData) => {
     console.log('🔌 New WebSocket connection established');
 
+    // Connection cleanup on close
+    ws.on('close', (code, reason) => {
+      console.log(`🔌 WebSocket connection closed: ${code} ${reason}`);
+    });
+
+    ws.on('error', (error) => {
+      console.error('🔌 WebSocket error:', error);
+    });
+
+    // Track last processed message to prevent duplicates
+    let lastMessageId = '';
+
     ws.on('message', async (data) => {
       try {
         const message = JSON.parse(data.toString());
+        const messageId = `${message.type}-${message.cardId || message.winnerId || Date.now()}`;
+        
+        // Prevent duplicate message processing
+        if (messageId === lastMessageId) {
+          console.log('🔄 Duplicate message ignored:', messageId);
+          return;
+        }
+        lastMessageId = messageId;
+        
         console.log('📨 WebSocket message received:', message.type, message);
 
         switch (message.type) {
