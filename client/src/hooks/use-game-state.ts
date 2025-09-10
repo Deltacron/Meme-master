@@ -57,15 +57,8 @@ export function useGameState() {
     const handlePlayerDisconnected = (data: any) => {
       setGameState(data.gameState);
       
-      // Check if the disconnected player is the current player
-      if (currentPlayer && data.playerId === currentPlayer.id) {
-        toast({
-          title: "⚠️ Connection Lost",
-          description: "You've been disconnected. Trying to reconnect...",
-          variant: "destructive",
-        });
-      } else {
-        // Another player disconnected
+      // Only show toast for other players disconnecting (not for yourself)
+      if (currentPlayer && data.playerId !== currentPlayer.id) {
         const disconnectedPlayerName = gameState?.players.find(p => p.id === data.playerId)?.name || 'A player';
         toast({
           title: "👋 Player Left",
@@ -85,19 +78,25 @@ export function useGameState() {
     };
 
     const handleConnectionStatusChange = (status: 'connected' | 'connecting' | 'disconnected') => {
+      const prevStatus = connectionStatus;
       setConnectionStatus(status);
       
-      if (status === 'connected') {
-        toast({
-          title: "✅ Connected",
-          description: "Successfully reconnected to the game!",
-        });
-      } else if (status === 'connecting') {
-        toast({
-          title: "🔄 Reconnecting...",
-          description: "Attempting to reconnect to the game.",
-        });
-      } else if (status === 'disconnected') {
+      if (status === 'connected' && prevStatus !== 'connected') {
+        // Force component reload on successful reconnection to fix UI responsiveness
+        if (currentPlayer?.id && gameState?.room.id) {
+          console.log('🔄 Reconnected successfully, refreshing game state');
+          joinRoom(currentPlayer.id, gameState.room.id);
+        }
+        
+        // Only show connected toast if we were previously disconnected
+        if (prevStatus === 'disconnected' || prevStatus === 'connecting') {
+          toast({
+            title: "✅ Connected",
+            description: "Successfully reconnected to the game!",
+          });
+        }
+      } else if (status === 'disconnected' && prevStatus === 'connected') {
+        // Only show disconnected toast when actually losing connection
         toast({
           title: "⚠️ Disconnected", 
           description: "Connection lost. Please refresh the page to reconnect.",
