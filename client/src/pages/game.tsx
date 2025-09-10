@@ -56,9 +56,9 @@ export default function Game({ params }: GameProps) {
   }, [gameState, currentPlayer]);
 
   const handlePlayAgain = () => {
-    // Reset game state on server and return to lobby
+    // Reset game state on server - all players will be redirected automatically
     restartGame();
-    setLocation(`/lobby/${params.code}`);
+    // Note: Don't redirect here, let the game_restarted message handle it for all players
   };
 
   const handleNewRoom = () => {

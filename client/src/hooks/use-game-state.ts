@@ -56,6 +56,14 @@ export function useGameState() {
 
     const handleGameRestarted = (data: any) => {
       setGameState(data.gameState);
+      
+      // Redirect ALL players to lobby when game is restarted
+      const roomCode = data.gameState?.room?.code;
+      if (roomCode) {
+        console.log('🔄 Game restarted, redirecting to lobby:', roomCode);
+        // Use window.location to ensure all players get redirected
+        window.location.href = `/lobby/${roomCode}`;
+      }
     };
 
     const handlePlayerDisconnected = (data: any) => {
