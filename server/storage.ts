@@ -225,7 +225,8 @@ export class MemStorage implements IStorage {
       "That time when you say 'you too' to the cashier.",
       "Me pretending I’ll only watch one episode.",
       "When someone says 'trust the process.' Okay, guru.",
-      "That joy when you step on a Lego. Pure pain.",
+      "That joy when you step on a Lego. Pure pain.", 
+      "That joy when you step on a Lego. Pure pain.", 
     ];
 
     // Add more caption cards to reach 360 total
