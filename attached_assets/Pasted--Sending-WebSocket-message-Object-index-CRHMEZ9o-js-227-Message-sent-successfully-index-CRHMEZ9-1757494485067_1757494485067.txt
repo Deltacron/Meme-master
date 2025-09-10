@@ -1,0 +1,59 @@
+📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: ObjectgameState: {room: {…}, players: Array(3), deck: {…}}playerId: "2c6639a2-c458-415d-9292-511549ce4794"type: "player_disconnected"[[Prototype]]: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: ObjectgameState: {room: {…}, players: Array(3), deck: {…}}playerId: "2c6639a2-c458-415d-9292-511549ce4794"type: "player_disconnected"[[Prototype]]: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: ObjectgameState: {room: {…}, players: Array(3), deck: {…}}playerId: "f77d31c4-3b6a-4c78-8280-abbb6050bc46"type: "player_disconnected"[[Prototype]]: Object
+index-CRHMEZ9o.js:227 📨 WebSocket message received: ObjectgameState: {room: {…}, players: Array(3), deck: {…}}playerId: "f77d31c4-3b6a-4c78-8280-abbb6050bc46"type: "player_disconnected"[[Prototype]]: Object
+index-CRHMEZ9o.js:227 🔌 WebSocket connection closed: 1006 
+index-CRHMEZ9o.js:227 📨 WebSocket message received: Object
+index-CRHMEZ9o.js:227 Attempting to reconnect... (1/5)
+index-CRHMEZ9o.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-CRHMEZ9o.js:227 ✅ Connected to WebSocket successfully
+index-CRHMEZ9o.js:227 🔌 WebSocket connection closed: 1006 
+index-CRHMEZ9o.js:227 Attempting to reconnect... (1/5)
+index-CRHMEZ9o.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-CRHMEZ9o.js:227 ✅ Connected to WebSocket successfully
+index-CRHMEZ9o.js:227 🔌 WebSocket connection closed: 1006 
+index-CRHMEZ9o.js:227 Attempting to reconnect... (1/5)
+index-CRHMEZ9o.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-CRHMEZ9o.js:227 ✅ Connected to WebSocket successfully
+index-CRHMEZ9o.js:227 🔌 WebSocket connection closed: 1006 
+index-CRHMEZ9o.js:227 Attempting to reconnect... (1/5)
+index-CRHMEZ9o.js:227 🔌 Attempting to connect to WebSocket: wss://memematch.replit.app/ws
+index-CRHMEZ9o.js:227 ✅ Connected to WebSocket successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: Object
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '32051d7c-001f-4805-9b3a-92abcf42f808'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '0635dd82-8862-4bd5-8cfd-a308a593b795'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '0635dd82-8862-4bd5-8cfd-a308a593b795'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully
+index-CRHMEZ9o.js:227 📤 Sending WebSocket message: {type: 'select_photo_card', cardId: '0635dd82-8862-4bd5-8cfd-a308a593b795'}
+index-CRHMEZ9o.js:227 ✅ Message sent successfully

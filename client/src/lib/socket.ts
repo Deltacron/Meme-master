@@ -5,6 +5,7 @@ export class SocketManager {
   private maxReconnectAttempts = 5;
   private reconnectDelay = 1000;
   private messageQueue: Array<{ type: string; data: any }> = [];
+  private isConnected = false;
 
   connect(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -17,6 +18,8 @@ export class SocketManager {
       this.socket.onopen = () => {
         console.log("✅ Connected to WebSocket successfully");
         this.reconnectAttempts = 0;
+        this.isConnected = true;
+        this.emit('connection_status', 'connected');
 
         // Send any queued messages
         if (this.messageQueue.length > 0) {
@@ -52,6 +55,8 @@ export class SocketManager {
           event.reason,
         );
         this.socket = null;
+        this.isConnected = false;
+        this.emit('connection_status', 'disconnected');
         this.handleReconnect();
       };
 
@@ -65,14 +70,22 @@ export class SocketManager {
   private handleReconnect() {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
+      this.emit('connection_status', 'connecting');
+      
       setTimeout(() => {
         console.log(
           `Attempting to reconnect... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`,
         );
         this.connect().catch(() => {
-          // Reconnection failed, will try again
+          // Reconnection failed, will try again if attempts remaining
+          if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+            this.emit('connection_status', 'disconnected');
+            console.error('❌ Max reconnection attempts reached. Please refresh the page.');
+          }
         });
       }, this.reconnectDelay * this.reconnectAttempts);
+    } else {
+      this.emit('connection_status', 'disconnected');
     }
   }
 

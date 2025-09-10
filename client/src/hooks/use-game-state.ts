@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSocket } from './use-socket';
+import { useToast } from '@/hooks/use-toast';
 import { type GameState, type Player } from '@shared/schema';
 
 export function useGameState() {
@@ -7,7 +8,9 @@ export function useGameState() {
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected');
   const { send, on, off } = useSocket();
+  const { toast } = useToast();
 
   useEffect(() => {
     const handleGameState = (data: any) => {
@@ -53,11 +56,54 @@ export function useGameState() {
 
     const handlePlayerDisconnected = (data: any) => {
       setGameState(data.gameState);
+      
+      // Check if the disconnected player is the current player
+      if (currentPlayer && data.playerId === currentPlayer.id) {
+        toast({
+          title: "⚠️ Connection Lost",
+          description: "You've been disconnected. Trying to reconnect...",
+          variant: "destructive",
+        });
+      } else {
+        // Another player disconnected
+        const disconnectedPlayerName = gameState?.players.find(p => p.id === data.playerId)?.name || 'A player';
+        toast({
+          title: "👋 Player Left",
+          description: `${disconnectedPlayerName} has disconnected from the game.`,
+        });
+      }
     };
 
     const handleError = (data: any) => {
       setError(data.message);
       setIsLoading(false);
+      toast({
+        title: "❌ Connection Error",
+        description: data.message || "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    };
+
+    const handleConnectionStatusChange = (status: 'connected' | 'connecting' | 'disconnected') => {
+      setConnectionStatus(status);
+      
+      if (status === 'connected') {
+        toast({
+          title: "✅ Connected",
+          description: "Successfully reconnected to the game!",
+        });
+      } else if (status === 'connecting') {
+        toast({
+          title: "🔄 Reconnecting...",
+          description: "Attempting to reconnect to the game.",
+        });
+      } else if (status === 'disconnected') {
+        toast({
+          title: "⚠️ Disconnected", 
+          description: "Connection lost. Please refresh the page to reconnect.",
+          variant: "destructive",
+        });
+      }
     };
 
     on('game_state', handleGameState);
@@ -72,6 +118,7 @@ export function useGameState() {
     on('game_finished', handleGameFinished);
     on('player_disconnected', handlePlayerDisconnected);
     on('error', handleError);
+    on('connection_status', handleConnectionStatusChange);
 
     return () => {
       off('game_state', handleGameState);
@@ -86,6 +133,7 @@ export function useGameState() {
       off('game_finished', handleGameFinished);
       off('player_disconnected', handlePlayerDisconnected);
       off('error', handleError);
+      off('connection_status', handleConnectionStatusChange);
     };
   }, [on, off]);
 
@@ -136,6 +184,7 @@ export function useGameState() {
     currentPlayer,
     isLoading,
     error,
+    connectionStatus,
     setCurrentPlayer,
     setError,
     joinRoom,

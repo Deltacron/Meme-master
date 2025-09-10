@@ -193,8 +193,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.log('🔌 New WebSocket connection established');
 
     // Connection cleanup on close
-    ws.on('close', (code, reason) => {
+    ws.on('close', async (code, reason) => {
       console.log(`🔌 WebSocket connection closed: ${code} ${reason}`);
+      
+      // If player was in a room, mark them as offline and notify others
+      if (ws.playerId && ws.roomId) {
+        console.log(`👋 Player ${ws.playerId} disconnected from room ${ws.roomId}`);
+        
+        try {
+          await storage.updatePlayer(ws.playerId, { isOnline: false });
+          
+          const updatedGameState = await getGameState(ws.roomId);
+          if (updatedGameState) {
+            broadcastToRoom(ws.roomId, {
+              type: 'player_disconnected',
+              playerId: ws.playerId,
+              gameState: updatedGameState
+            });
+          }
+        } catch (error) {
+          console.error('Error handling player disconnect:', error);
+        }
+      }
     });
 
     ws.on('error', (error) => {
@@ -223,6 +243,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             console.log('WebSocket join_room received:', message);
             ws.playerId = message.playerId;
             ws.roomId = message.roomId;
+
+            // Mark player as online when they connect
+            if (ws.playerId) {
+              await storage.updatePlayer(ws.playerId, { isOnline: true });
+            }
 
             const gameState = await getGameState(message.roomId);
             console.log('Game state found:', !!gameState, 'for room:', message.roomId);
