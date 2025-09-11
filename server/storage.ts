@@ -12,6 +12,7 @@ import {
   type PhotoCard,
 } from "@shared/schema";
 import { randomUUID } from "crypto";
+import { getImagesFromBucket, testSupabaseConnection } from "./lib/supabase";
 
 export interface IStorage {
   // User methods
@@ -61,10 +62,11 @@ export class MemStorage implements IStorage {
   private gameDecks: Map<string, GameDeck> = new Map();
 
   constructor() {
-    this.initializeCards();
+    // Initialize cards asynchronously - this will handle Supabase connection
+    this.initializeCards().catch(console.error);
   }
 
-  private initializeCards() {
+  private async initializeCards() {
     // Initialize caption cards - 360 total cards
     const captionCards = [
       "Oh great, another Monday. Just what I needed.",
@@ -556,7 +558,45 @@ export class MemStorage implements IStorage {
       });
     });
 
-    photoCards.forEach((photo) => {
+    // Try to fetch images from Supabase, fall back to hardcoded Unsplash images
+    await this.initializePhotoCards(photoCards);
+  }
+
+  private async initializePhotoCards(fallbackPhotos: Array<{imageUrl: string, description: string}>) {
+    try {
+      console.log('🔍 Attempting to load images from Supabase...');
+      
+      // Test Supabase connection first
+      const isSupabaseConnected = await testSupabaseConnection();
+      
+      if (isSupabaseConnected) {
+        // Try to get images from Supabase
+        const supabaseImages = await getImagesFromBucket('photocards');
+        
+        if (supabaseImages.length > 0) {
+          console.log(`✅ Using ${supabaseImages.length} custom images from Supabase`);
+          
+          // Use Supabase images
+          supabaseImages.forEach((image, index) => {
+            const id = randomUUID();
+            this.cards.set(id, {
+              id,
+              type: "photo",
+              content: `Custom meme image ${index + 1}`, // Simple description since user said no need for descriptions
+              imageUrl: image.publicUrl,
+              description: `Custom meme image ${index + 1}`,
+            });
+          });
+          return; // Success - we're done
+        }
+      }
+    } catch (error) {
+      console.warn('⚠️ Failed to load from Supabase, falling back to Unsplash:', error);
+    }
+    
+    // Fallback to Unsplash images if Supabase fails or has no images
+    console.log('📸 Using fallback Unsplash images');
+    fallbackPhotos.forEach((photo) => {
       const id = randomUUID();
       this.cards.set(id, {
         id,
