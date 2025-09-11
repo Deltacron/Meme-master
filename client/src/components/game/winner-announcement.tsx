@@ -14,8 +14,8 @@ export function WinnerAnnouncement({ winner, winningCaption, onComplete }: Winne
 
   useEffect(() => {
     const timer1 = setTimeout(() => setStage(1), 500);
-    const timer2 = setTimeout(() => setStage(2), 3500);
-    const timer3 = setTimeout(() => onComplete(), 4000);
+    const timer2 = setTimeout(() => setStage(2), 4500);
+    const timer3 = setTimeout(() => onComplete(), 5000);
 
     return () => {
       clearTimeout(timer1);
@@ -48,38 +48,44 @@ export function WinnerAnnouncement({ winner, winningCaption, onComplete }: Winne
         {/* Main announcement card */}
         <div className="bg-gradient-to-br from-amber-50 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 rounded-3xl p-8 shadow-2xl border border-amber-200 dark:border-amber-700">
           {/* Winner badge */}
-          <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-bold text-lg shadow-lg mb-6 animate-pulse">
-            <Crown className="w-6 h-6" />
-            <span>Round Winner!</span>
-            <Crown className="w-6 h-6" />
+          <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-8 py-4 rounded-full font-bold text-xl shadow-lg mb-6 animate-pulse">
+            <Crown className="w-8 h-8" />
+            <span>🏆 ROUND WINNER! 🏆</span>
+            <Crown className="w-8 h-8" />
           </div>
 
           {/* Winner name */}
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+          <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-yellow-600 via-orange-500 to-red-500 bg-clip-text text-transparent mb-6 animate-bounce">
             {winner.name}
           </h2>
 
-          {/* Trophy count */}
-          <div className="flex items-center justify-center space-x-2 mb-6">
-            <Trophy className="w-8 h-8 text-yellow-500" />
-            <span className="text-3xl font-bold text-gray-700 dark:text-gray-200">
-              {winner.trophies}
-            </span>
-            <span className="text-xl text-gray-600 dark:text-gray-400">
-              {winner.trophies === 1 ? 'Trophy' : 'Trophies'}
-            </span>
-          </div>
+                     {/* Trophy count with celebration */}
+           <div className="flex items-center justify-center space-x-3 mb-6 bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 rounded-2xl p-4">
+             <div className="flex items-center space-x-2">
+               <Trophy className="w-10 h-10 text-yellow-500 animate-bounce" />
+               <span className="text-4xl font-bold text-gray-700 dark:text-gray-200">
+                 {winner.trophies + 1}
+               </span>
+               <span className="text-xl text-gray-600 dark:text-gray-400">
+                 {(winner.trophies + 1) === 1 ? 'Trophy' : 'Trophies'}
+               </span>
+             </div>
+             {(winner.trophies + 1) >= 3 && (
+               <div className="text-2xl animate-bounce delay-300">🔥</div>
+             )}
+           </div>
 
           {/* Winning caption */}
-          <div className="bg-white/80 dark:bg-gray-800/80 rounded-2xl p-6 shadow-inner">
-            <p className="text-lg md:text-xl font-medium text-gray-800 dark:text-gray-200 italic leading-relaxed">
+          <div className="bg-white/90 dark:bg-gray-800/90 rounded-2xl p-6 shadow-lg border-2 border-yellow-300 dark:border-yellow-600">
+            <div className="text-sm text-yellow-600 dark:text-yellow-400 font-semibold mb-2">WINNING CAPTION:</div>
+            <p className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-200 italic leading-relaxed">
               "{winningCaption}"
             </p>
           </div>
 
-          {/* Celebration text */}
-          <div className="mt-6 text-lg text-gray-600 dark:text-gray-400 animate-bounce">
-            🎉 Congratulations! 🎉
+          {/* Celebration text with countdown */}
+          <div className="mt-6 text-xl text-gray-600 dark:text-gray-400 animate-bounce">
+            🎉 Next round starting soon... 🎉
           </div>
         </div>
       </div>

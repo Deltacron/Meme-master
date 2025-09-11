@@ -6,7 +6,7 @@ import { useSocket } from "@/hooks/use-socket";
 import { useGameState } from "@/hooks/use-game-state";
 import { useToast } from "@/hooks/use-toast";
 import { type Player } from "@shared/schema";
-import { Copy, Play, Trophy, Info, Users } from "lucide-react";
+import { Copy, Play, Trophy, Info, Users, Crown, Star, Sparkles, Zap, Shield, Gamepad2, Rocket, Target } from "lucide-react";
 
 interface LobbyProps {
   params: { code: string };
@@ -71,129 +71,262 @@ export default function Lobby({ params }: LobbyProps) {
 
   if (!gameState || !currentPlayer) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin w-12 h-12 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-lg font-semibold text-foreground">Loading game...</p>
+      <div className="min-h-screen relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        </div>
+        <div className="relative z-10 min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="relative mb-6">
+              <div className="animate-spin w-16 h-16 border-4 border-purple-400 border-t-transparent rounded-full mx-auto mb-4 shadow-2xl"></div>
+              <Sparkles className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-purple-300 animate-pulse" />
+            </div>
+            <p className="text-2xl font-bold text-white mb-2">🎮 Loading Epic Lobby...</p>
+            <p className="text-purple-200">Preparing your meme battle arena!</p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Game Lobby</h1>
-          <Card className="inline-block p-4 bg-muted">
-            <div className="flex items-center space-x-3">
-              <span className="text-sm text-muted-foreground">Room Code:</span>
-              <span className="text-xl font-mono font-semibold text-foreground" data-testid="room-code">
-                {params.code}
-              </span>
-              <Button
-                onClick={copyRoomCode}
-                variant="ghost"
-                size="sm"
-                className="text-accent hover:text-accent/80"
-                data-testid="copy-room-code"
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
-            </div>
-          </Card>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Epic Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        
+        {/* Floating Gaming Elements */}
+        <div className="absolute top-20 left-10 animate-bounce delay-1000">
+          <Crown className="w-8 h-8 text-amber-400 opacity-60 animate-pulse" />
         </div>
+        <div className="absolute top-40 right-20 animate-bounce delay-2000">
+          <Trophy className="w-10 h-10 text-yellow-500 animate-spin-slow" />
+        </div>
+        <div className="absolute bottom-32 left-20 animate-bounce delay-3000">
+          <Star className="w-6 h-6 text-blue-400 animate-ping" />
+        </div>
+        <div className="absolute top-1/3 right-10 animate-bounce delay-500">
+          <Gamepad2 className="w-12 h-12 text-purple-400 animate-pulse" />
+        </div>
+        <div className="absolute bottom-20 right-40 animate-bounce delay-4000">
+          <Sparkles className="w-8 h-8 text-pink-400 animate-pulse" />
+        </div>
+      </div>
 
-        {/* Players Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {gameState.players.map((player) => (
-            <Card key={player.id} className="shadow-lg">
-              <CardContent className="p-6">
+      <div className="relative z-10 min-h-screen">
+        <div className="container mx-auto px-4 py-8 max-w-6xl">
+          {/* Epic Header */}
+          <div className="text-center mb-12">
+            <div className="relative mb-8">
+              <h1 className="text-6xl md:text-7xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl mb-4">
+                🏰 Battle Arena
+              </h1>
+              <div className="absolute -top-4 -right-8 animate-spin-slow">
+                <Crown className="w-12 h-12 text-yellow-400 drop-shadow-lg" />
+              </div>
+              <div className="absolute -bottom-2 -left-8 animate-bounce">
+                <Shield className="w-10 h-10 text-blue-400 drop-shadow-lg" />
+              </div>
+            </div>
+            
+            {/* Epic Room Code Card */}
+            <div className="relative inline-block">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl blur-xl opacity-30 animate-pulse" />
+              <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-6 shadow-2xl">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-lg">
-                    <span data-testid={`player-initials-${player.id}`}>
-                      {player.name.charAt(0).toUpperCase()}
+                  <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-3">
+                    <Target className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <span className="text-lg font-bold text-gray-600 block">🎯 Room Code</span>
+                    <span className="text-3xl font-mono font-black bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent" data-testid="room-code">
+                      {params.code}
                     </span>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-foreground" data-testid={`player-name-${player.id}`}>
-                      {player.name}
-                      {player.id === currentPlayer.id && " (You)"}
-                      {player.id === gameState.room.hostId && " (Host)"}
+                  <Button
+                    onClick={copyRoomCode}
+                    className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white p-4 rounded-2xl shadow-lg transform hover:scale-110 transition-all duration-200"
+                    data-testid="copy-room-code"
+                  >
+                    <Copy className="h-6 w-6" />
+                  </Button>
+                </div>
+                <p className="text-gray-500 text-sm mt-2 font-medium">Share this code with your friends!</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Epic Warriors Section */}
+          <div className="mb-12">
+            <div className="text-center mb-8">
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
+                ⚔️ Battle Warriors
+              </h2>
+              <p className="text-white/80 text-lg font-medium">Meme masters ready for combat!</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {gameState.players.map((player, index) => {
+                const isCurrentPlayer = player.id === currentPlayer.id;
+                const isHost = player.id === gameState.room.hostId;
+                const colors = [
+                  "from-purple-500 to-pink-500",
+                  "from-blue-500 to-cyan-500", 
+                  "from-green-500 to-emerald-500",
+                  "from-yellow-500 to-orange-500",
+                  "from-red-500 to-rose-500",
+                  "from-indigo-500 to-purple-500",
+                  "from-teal-500 to-blue-500",
+                  "from-orange-500 to-red-500"
+                ];
+                const playerColor = colors[index % colors.length];
+                
+                return (
+                  <div key={player.id} className="relative group">
+                    <div className={`absolute inset-0 bg-gradient-to-r ${playerColor} rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-300`} />
+                    <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-6 shadow-2xl transform group-hover:scale-105 transition-all duration-300">
+                      {/* Player Header */}
+                      <div className="flex items-center space-x-4 mb-4">
+                        <div className={`relative w-16 h-16 bg-gradient-to-r ${playerColor} rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg`}>
+                          <span data-testid={`player-initials-${player.id}`}>
+                            {player.name.charAt(0).toUpperCase()}
+                          </span>
+                          {isHost && (
+                            <div className="absolute -top-2 -right-2 bg-yellow-400 rounded-full p-1">
+                              <Crown className="w-4 h-4 text-yellow-900" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-bold text-gray-800 text-lg flex items-center" data-testid={`player-name-${player.id}`}>
+                            {player.name}
+                            {isCurrentPlayer && " 🎮"}
+                            {isHost && " 👑"}
+                          </h3>
+                          <div className="flex items-center space-x-2">
+                            <div className={`w-3 h-3 rounded-full ${player.isOnline ? "bg-green-500 animate-pulse" : "bg-gray-400"}`} data-testid={`player-status-${player.id}`} />
+                            <span className={`text-sm font-medium ${player.isOnline ? "text-green-600" : "text-gray-500"}`}>
+                              {player.isOnline ? "⚡ Ready to Battle!" : "💤 Offline"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Player Stats */}
+                      <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <Trophy className="w-6 h-6 text-yellow-500" />
+                            <span className="text-gray-600 font-medium">Trophies</span>
+                          </div>
+                          <span className="text-2xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent" data-testid={`player-trophies-${player.id}`}>
+                            {player.trophies}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      {/* Special Effects */}
+                      {isCurrentPlayer && (
+                        <div className="absolute -top-1 -right-1">
+                          <div className="bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-bold animate-bounce">
+                            YOU
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Epic Game Status */}
+          <div className="mb-8">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur-xl opacity-30 animate-pulse" />
+              <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-8 shadow-2xl">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center mb-2">
+                      <Rocket className="mr-3 h-8 w-8 text-blue-500 animate-bounce" />
+                      🚀 Battle Status
                     </h3>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm text-muted-foreground">
-                        {player.isOnline ? "Ready" : "Offline"}
-                      </span>
-                      <div 
-                        className={`w-2 h-2 rounded-full ${player.isOnline ? "bg-green-500" : "bg-gray-400"}`}
-                        data-testid={`player-status-${player.id}`}
-                      />
+                    <div className="flex items-center space-x-4">
+                      <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl px-4 py-2">
+                        <span className="text-lg font-bold text-blue-700">
+                          <span data-testid="player-count">{gameState.players.length}</span> Warriors Ready
+                        </span>
+                      </div>
+                      <div className="bg-gradient-to-r from-amber-100 to-orange-100 rounded-2xl px-4 py-2">
+                        <span className="text-sm font-medium text-amber-700">
+                          Minimum: 3 Players
+                        </span>
+                      </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="flex items-center text-secondary">
-                      <Trophy className="h-4 w-4 mr-1" />
-                      <span className="font-semibold" data-testid={`player-trophies-${player.id}`}>
-                        {player.trophies}
-                      </span>
-                    </div>
+                    {isHost ? (
+                      <Button
+                        onClick={handleStartGame}
+                        disabled={!canStart}
+                        className={`px-8 py-4 text-xl font-bold rounded-2xl shadow-2xl transform transition-all duration-300 ${
+                          canStart 
+                            ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white hover:scale-110 hover:shadow-green-500/50" 
+                            : "bg-gray-400 text-gray-600 cursor-not-allowed"
+                        }`}
+                        data-testid="start-game-button"
+                      >
+                        <Play className="mr-3 h-6 w-6" />
+                        {canStart ? "🎮 Launch Battle!" : "Need More Warriors"}
+                      </Button>
+                    ) : (
+                      <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl px-6 py-4">
+                        <span className="text-purple-700 font-medium">⏳ Waiting for host to launch...</span>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Epic Battle Rules */}
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl blur-xl opacity-20" />
+            <div className="relative bg-white/90 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-8 shadow-2xl">
+              <h3 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6 flex items-center justify-center">
+                <Info className="mr-3 h-8 w-8 text-indigo-500 animate-pulse" />
+                ⚔️ Battle Rules
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-4 border-2 border-blue-200">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                    <span className="font-bold text-blue-800">📸 Judge shows a photo card</span>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-4 border-2 border-purple-200">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">2</div>
+                    <span className="font-bold text-purple-800">✍️ Players submit funny captions</span>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-4 border-2 border-green-200">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">3</div>
+                    <span className="font-bold text-green-800">🎯 Judge picks the funniest</span>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-4 border-2 border-yellow-200">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold">🏆</div>
+                    <span className="font-bold text-yellow-800">👑 First to 5 trophies wins!</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-
-        {/* Game Status */}
-        <Card className="mb-8 shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-foreground flex items-center">
-                  <Users className="mr-2 h-5 w-5" />
-                  Game Status
-                </h3>
-                <p className="text-muted-foreground">
-                  <span data-testid="player-count">{gameState.players.length}</span> players joined • 
-                  <span className="ml-1">3 minimum required</span>
-                </p>
-              </div>
-              <div className="text-right">
-                {isHost ? (
-                  <Button
-                    onClick={handleStartGame}
-                    disabled={!canStart}
-                    className="bg-primary text-primary-foreground px-6 py-3 hover:bg-primary/90 disabled:opacity-50"
-                    data-testid="start-game-button"
-                  >
-                    <Play className="mr-2 h-4 w-4" />
-                    Start Game
-                  </Button>
-                ) : (
-                  <span className="text-muted-foreground">Waiting for host to start...</span>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Quick Rules Reminder */}
-        <Card className="bg-muted">
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center">
-              <Info className="mr-2 h-5 w-5" />
-              Quick Rules
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-muted-foreground">
-              <div>• Judge shows a photo card</div>
-              <div>• Players submit funny captions</div>
-              <div>• Judge picks the funniest</div>
-              <div>• First to 5 trophies wins!</div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

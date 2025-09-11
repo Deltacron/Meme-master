@@ -29,6 +29,7 @@ export const players = pgTable("players", {
   hand: jsonb("hand").default("[]"),
   trophies: integer("trophies").notNull().default(0),
   numberCard: integer("number_card"),
+  hiddenNumberCard: integer("hidden_number_card"),
   hasSubmittedCard: boolean("has_submitted_card").notNull().default(false),
   hasExchangedCard: boolean("has_exchanged_card").notNull().default(false),
   joinedAt: timestamp("joined_at").notNull().default(sql`now()`),

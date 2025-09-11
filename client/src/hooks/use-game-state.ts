@@ -48,6 +48,12 @@ export function useGameState() {
 
     const handleRoundWinnerSelected = (data: any) => {
       setGameState(data.gameState);
+      
+      // Emit custom event for winner announcement
+      if (data.winner) {
+        const customEvent = new CustomEvent('round_winner_selected', { detail: data });
+        window.dispatchEvent(customEvent);
+      }
     };
 
     const handleGameFinished = (data: any) => {

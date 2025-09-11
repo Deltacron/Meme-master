@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
-import { storage } from "./storage";
+import { storage } from "./storage.js";
 import { insertRoomSchema, insertPlayerSchema, type GameState, type CaptionCard, type PhotoCard } from "@shared/schema";
 import { randomBytes } from "crypto";
 
@@ -275,12 +275,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
             if (!room || players.length < 3) break;
 
-            // Assign random number cards for judge selection
+            // Assign random number cards for judge selection but keep them hidden
             const numberCards = shuffleArray(Array.from({length: players.length}, (_, i) => i + 1));
 
+            // Store the hidden number cards in a separate field and reset revealed status
             for (let i = 0; i < players.length; i++) {
               await storage.updatePlayer(players[i].id, {
-                numberCard: numberCards[i]
+                numberCard: null, // Keep hidden until revealed
+                hiddenNumberCard: numberCards[i] // Store the actual number
               });
             }
 
@@ -297,6 +299,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           case 'reveal_number_card':
             if (!ws.playerId || !ws.roomId) break;
+
+            const revealingPlayer = await storage.getPlayer(ws.playerId);
+            if (!revealingPlayer || !revealingPlayer.hiddenNumberCard) break;
+
+            // Reveal the hidden number card
+            await storage.updatePlayer(ws.playerId, {
+              numberCard: revealingPlayer.hiddenNumberCard
+            });
 
             const updatedState = await getGameState(ws.roomId);
             broadcastToRoom(ws.roomId, {
@@ -534,6 +544,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 hand: "[]",
                 trophies: 0,
                 numberCard: null,
+                hiddenNumberCard: null,
                 hasSubmittedCard: false,
                 hasExchangedCard: false
               });

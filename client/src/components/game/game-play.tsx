@@ -45,6 +45,31 @@ export function GamePlay({
     }
   }, [isJudge, selectedPhotoCard]);
 
+  // Listen for round winner announcements
+  useEffect(() => {
+    const handleRoundWinnerSelected = (event: any) => {
+      const data = event.detail;
+      if (data.winner) {
+        // Find the winning caption from submitted cards
+        const winningCaption = submittedCards.find((card: any) => 
+          card.playerId === data.winner.id
+        )?.text || "Amazing meme!";
+        
+        setShowWinner({
+          winner: data.winner,
+          caption: winningCaption
+        });
+      }
+    };
+
+    // Add event listener to window for custom events
+    window.addEventListener('round_winner_selected', handleRoundWinnerSelected);
+
+    return () => {
+      window.removeEventListener('round_winner_selected', handleRoundWinnerSelected);
+    };
+  }, [submittedCards]);
+
   const fetchPhotoCards = async () => {
     try {
       const response = await fetch('/api/cards/photo');
@@ -190,6 +215,66 @@ export function GamePlay({
                 </div>
               )}
 
+              {!isJudge && !selectedPhotoCard && (
+                <div className="relative" data-testid="waiting-for-judge">
+                  <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl p-8 shadow-2xl border-2 border-amber-200 dark:border-amber-700 max-w-2xl mx-auto">
+                    {/* Animated Judge Icon */}
+                    <div className="flex justify-center mb-6">
+                      <div className="relative">
+                        <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center shadow-2xl animate-pulse">
+                          <Gavel className="w-10 h-10 text-white animate-bounce" />
+                        </div>
+                        <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center animate-ping">
+                          <div className="w-4 h-4 bg-white rounded-full" />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Waiting Message */}
+                    <div className="text-center">
+                      <h3 className="text-2xl font-bold text-amber-700 dark:text-amber-300 mb-3">
+                        🎭 Judge is Selecting...
+                      </h3>
+                      <p className="text-lg text-amber-600 dark:text-amber-400 font-medium mb-4">
+                        <span className="font-bold">{judgePlayer?.name}</span> is choosing the perfect photo card for this round
+                      </p>
+                      <div className="flex items-center justify-center space-x-2 text-amber-500 dark:text-amber-400">
+                        <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" />
+                        <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce delay-100" />
+                        <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce delay-200" />
+                        <span className="text-sm font-medium ml-2">Please wait...</span>
+                      </div>
+                    </div>
+                    
+                    {/* Game Phase Indicator */}
+                    <div className="mt-6 bg-white/50 dark:bg-slate-800/50 rounded-xl p-4">
+                      <div className="flex items-center justify-center space-x-3">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">1</span>
+                          </div>
+                          <span className="text-sm font-medium text-amber-700 dark:text-amber-300">Photo Selection</span>
+                        </div>
+                        <div className="w-8 h-0.5 bg-amber-300" />
+                        <div className="flex items-center space-x-2 opacity-50">
+                          <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">2</span>
+                          </div>
+                          <span className="text-sm font-medium text-slate-500">Caption Submission</span>
+                        </div>
+                        <div className="w-8 h-0.5 bg-slate-300" />
+                        <div className="flex items-center space-x-2 opacity-50">
+                          <div className="w-6 h-6 bg-slate-400 rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">3</span>
+                          </div>
+                          <span className="text-sm font-medium text-slate-500">Winner Selection</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {selectedPhotoCard && (
                 <div data-testid="selected-photo-card" className="relative">
                   <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 shadow-2xl border border-slate-700 max-w-lg mx-auto">
@@ -210,6 +295,54 @@ export function GamePlay({
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+
+          {/* Enhanced Round Status */}
+          <div className="mb-8">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700 max-w-4xl mx-auto">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-lg">R{gameState.room.currentRound}</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-white">Round {gameState.room.currentRound}</h3>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      {!selectedPhotoCard ? (
+                        <>🎭 <span className="font-medium">{judgePlayer?.name}</span> is selecting a photo card...</>
+                      ) : !allPlayersSubmitted ? (
+                        <>📝 Players are submitting their funniest captions...</>
+                      ) : (
+                        <>⚖️ <span className="font-medium">{judgePlayer?.name}</span> is choosing the winner...</>
+                      )}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="text-right">
+                  <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">Current Phase</div>
+                  <div className="flex items-center space-x-2">
+                    {!selectedPhotoCard ? (
+                      <><Gavel className="w-4 h-4 text-amber-500" /><span className="font-medium text-amber-600 dark:text-amber-400">Photo Selection</span></>
+                    ) : !allPlayersSubmitted ? (
+                      <><NotebookPen className="w-4 h-4 text-blue-500" /><span className="font-medium text-blue-600 dark:text-blue-400">Caption Submission</span></>
+                    ) : (
+                      <><Trophy className="w-4 h-4 text-green-500" /><span className="font-medium text-green-600 dark:text-green-400">Winner Selection</span></>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Progress Bar */}
+              <div className="mt-4 bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                <div 
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-500"
+                  style={{ 
+                    width: !selectedPhotoCard ? '33%' : !allPlayersSubmitted ? '66%' : '100%' 
+                  }}
+                />
+              </div>
             </div>
           </div>
 

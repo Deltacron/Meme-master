@@ -12,7 +12,7 @@ import {
   type PhotoCard,
 } from "@shared/schema";
 import { randomUUID } from "crypto";
-import { getImagesFromBucket, testSupabaseConnection } from "./lib/supabase";
+import { getImagesFromBucket, testSupabaseConnection } from "./lib/supabase.js";
 
 export interface IStorage {
   // User methods
@@ -689,6 +689,7 @@ export class MemStorage implements IStorage {
       hand: "[]",
       trophies: 0,
       numberCard: null,
+      hiddenNumberCard: null,
       hasSubmittedCard: false,
       hasExchangedCard: false,
       joinedAt: new Date(),
