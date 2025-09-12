@@ -12,10 +12,10 @@ export class SocketManager {
   connect(): Promise<void> {
     return new Promise((resolve, reject) => {
       // Use config for WebSocket URL
-      const wsUrl = import.meta.env.VITE_WS_URL || 
-        (import.meta.env.DEV ? 'ws://localhost:5000/ws' : `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}/ws`);
+      const wsUrl = `${config.wsUrl}/ws`;
 
       console.log("🔌 Attempting to connect to WebSocket:", wsUrl);
+      console.log("🔍 Config wsUrl:", config.wsUrl);
       this.socket = new WebSocket(wsUrl);
 
       this.socket.onopen = () => {
