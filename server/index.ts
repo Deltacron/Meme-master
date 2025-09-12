@@ -25,7 +25,7 @@ app.use((req, res, next) => {
     'http://localhost:3001',
     'http://localhost:5173',
     'https://meme-master-rose.vercel.app',
-    // Add your actual Vercel domain here (replace with your real domain)
+    // Production Vercel domain
   ];
   
   if (allowedOrigins.includes(origin as string) || !origin) {
