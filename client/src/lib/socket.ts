@@ -1,3 +1,5 @@
+import { config } from './config';
+
 export class SocketManager {
   private socket: WebSocket | null = null;
   private listeners: Map<string, Function[]> = new Map();
@@ -9,8 +11,9 @@ export class SocketManager {
 
   connect(): Promise<void> {
     return new Promise((resolve, reject) => {
-      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-      const wsUrl = `${protocol}//${window.location.host}/ws`;
+      // Use config for WebSocket URL
+      const wsUrl = import.meta.env.VITE_WS_URL || 
+        (import.meta.env.DEV ? 'ws://localhost:5000/ws' : `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}/ws`);
 
       console.log("🔌 Attempting to connect to WebSocket:", wsUrl);
       this.socket = new WebSocket(wsUrl);

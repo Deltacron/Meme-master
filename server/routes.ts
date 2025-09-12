@@ -4,6 +4,7 @@ import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage.js";
 import { insertRoomSchema, insertPlayerSchema, type GameState, type CaptionCard, type PhotoCard } from "@shared/schema";
 import { randomBytes } from "crypto";
+import { testSupabaseConnection, getImagesFromBucket } from "./lib/supabase.js";
 
 interface SocketWithData extends WebSocket {
   playerId?: string;
@@ -91,6 +92,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     return { room, players, deck };
   }
 
+  // Health check endpoint
+  app.get("/", (req, res) => {
+    res.json({ 
+      status: "ok", 
+      message: "Meme Master Backend is running!",
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  app.get("/health", (req, res) => {
+    res.json({ 
+      status: "healthy", 
+      uptime: process.uptime(),
+      timestamp: new Date().toISOString()
+    });
+  });
+
   // API Routes
   app.post("/api/rooms", async (req, res) => {
     try {
@@ -136,6 +154,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(photoCards);
     } catch (error) {
       res.status(500).json({ error: "Failed to get photo cards" });
+    }
+  });
+
+  // Debug endpoint to test Supabase connection
+  app.get("/api/debug/supabase", async (req, res) => {
+    try {
+      console.log('🔍 Testing Supabase connection...');
+      const isConnected = await testSupabaseConnection();
+      
+      let images: Array<{name: string, publicUrl: string}> = [];
+      let imageCount = 0;
+      
+      if (isConnected) {
+        try {
+          images = await getImagesFromBucket('photocards');
+          imageCount = images.length;
+        } catch (error) {
+          console.error('Error fetching images:', error);
+        }
+      }
+      
+      res.json({
+        connected: isConnected,
+        imageCount,
+        message: isConnected 
+          ? `✅ Supabase connected successfully. Found ${imageCount} images in bucket.`
+          : '❌ Supabase not connected. Check your environment variables.',
+        images: images.slice(0, 5).map(img => ({ name: img.name, url: img.publicUrl })) // First 5 for preview
+      });
+    } catch (error) {
+      console.error('Supabase debug error:', error);
+      res.status(500).json({ 
+        connected: false, 
+        error: error instanceof Error ? error.message : 'Unknown error',
+        message: '❌ Error testing Supabase connection'
+      });
     }
   });
 

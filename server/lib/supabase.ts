@@ -1,13 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+  console.warn('⚠️ Missing Supabase environment variables (SUPABASE_URL, SUPABASE_ANON_KEY)');
+  console.warn('⚠️ Supabase integration will be disabled - falling back to Unsplash images');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
 export interface SupabaseImage {
   name: string;
@@ -16,6 +17,11 @@ export interface SupabaseImage {
 
 export async function getImagesFromBucket(bucketName: string = 'photocards'): Promise<SupabaseImage[]> {
   try {
+    if (!supabase) {
+      console.warn('⚠️ Supabase not configured, cannot fetch images');
+      return [];
+    }
+
     console.log(`🔍 Fetching images from Supabase bucket: ${bucketName}`);
     
     // Get all files recursively (including in subfolders)
@@ -52,6 +58,11 @@ export async function getImagesFromBucket(bucketName: string = 'photocards'): Pr
 
 async function listAllFiles(bucketName: string, prefix: string = ''): Promise<string[]> {
   const allFiles: string[] = [];
+  
+  if (!supabase) {
+    console.warn('⚠️ Supabase not configured, cannot list files');
+    return allFiles;
+  }
   
   try {
     const { data: items, error } = await supabase.storage
@@ -105,6 +116,11 @@ function isImageFile(filename: string): boolean {
 
 export async function testSupabaseConnection(): Promise<boolean> {
   try {
+    if (!supabase) {
+      console.log('⚠️ Supabase not configured - skipping connection test');
+      return false;
+    }
+
     console.log('🔗 Testing Supabase connection...');
     
     // Test actual bucket access instead of just listing buckets
