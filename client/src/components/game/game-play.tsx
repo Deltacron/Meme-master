@@ -5,6 +5,7 @@ import { type Player, type GameState, type CaptionCard, type PhotoCard } from "@
 import { Trophy, Gavel, NotebookPen, RotateCcw, Check, Medal } from "lucide-react";
 import { WinnerAnnouncement } from "./winner-announcement";
 import { cn } from "@/lib/utils";
+import { getApiUrl } from "@/lib/config";
 
 interface GamePlayProps {
   gameState: GameState;
@@ -72,7 +73,7 @@ export function GamePlay({
 
   const fetchPhotoCards = async () => {
     try {
-      const response = await fetch('/api/cards/photo');
+      const response = await fetch(getApiUrl('/api/cards/photo'));
       if (response.ok) {
         const cards = await response.json();
         const shuffled = cards.sort(() => 0.5 - Math.random());
