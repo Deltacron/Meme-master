@@ -9,7 +9,7 @@
     "dev:client": "vite",
     "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist --resolve-extensions=.ts,.js",
     "build:client": "vite build",
-    "build:server": "esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist --resolve-extensions=.ts,.js",
+    "build:server": "esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist --resolve-extensions=.ts,.js --external:vite --external:@vitejs/plugin-react --external:autoprefixer --external:postcss --external:tailwindcss --external:typescript --external:concurrently --external:tsx",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "check": "tsc",
     "db:push": "drizzle-kit push"

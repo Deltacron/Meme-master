@@ -1,7 +1,17 @@
 import 'dotenv/config';
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes.js";
-import { setupVite, serveStatic, log } from "./vite.js";
+
+// Simple log function for production
+function log(message: string) {
+  const formattedTime = new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+  console.log(`${formattedTime} [express] ${message}`);
+}
 
 const app = express();
 app.use(express.json());
@@ -52,6 +62,8 @@ app.use((req, res, next) => {
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
   if (app.get("env") === "development") {
+    // Dynamically import vite only in development
+    const { setupVite } = await import("./vite.js");
     await setupVite(app, server);
   }
   // Note: In production, we don't serve static files - frontend is deployed separately
