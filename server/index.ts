@@ -14,6 +14,37 @@ function log(message: string) {
 }
 
 const app = express();
+
+// CORS Configuration
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  
+  // Allow requests from development and production frontends
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:5173',
+    'https://meme-master-rose.vercel.app',
+    // Add your actual Vercel domain here (replace with your real domain)
+  ];
+  
+  if (allowedOrigins.includes(origin as string) || !origin) {
+    res.header('Access-Control-Allow-Origin', origin || '*');
+  }
+  
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+    return;
+  }
+  
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
