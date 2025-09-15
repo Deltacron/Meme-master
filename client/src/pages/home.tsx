@@ -111,18 +111,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         
         {/* Floating Elements */}
-        <div className="absolute top-10 left-10 animate-bounce delay-1000">
-          <div className="w-8 h-8 bg-yellow-400 rounded-full opacity-60 animate-pulse" />
-        </div>
-        <div className="absolute top-32 right-20 animate-bounce delay-2000">
-          <Crown className="w-10 h-10 text-amber-400 animate-spin-slow" />
-        </div>
-        <div className="absolute bottom-20 left-20 animate-bounce delay-3000">
-          <Trophy className="w-12 h-12 text-yellow-500 animate-pulse" />
-        </div>
-        <div className="absolute top-1/2 right-10 animate-bounce delay-500">
-          <Star className="w-6 h-6 text-blue-400 animate-ping" />
-        </div>
+       
         <div className="absolute bottom-40 right-40 animate-bounce delay-4000">
           <Sparkles className="w-8 h-8 text-purple-400 animate-pulse" />
         </div>
@@ -136,7 +125,7 @@ export default function Home() {
               <h1 className="text-7xl md:text-8xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl animate-pulse">
                 🎭 Meme Masters
               </h1>
-              <div className="absolute -top-4 -right-4 animate-spin-slow">
+              <div className="absolute top-4 -right-4 animate-bounce">
                 <Crown className="w-16 h-16 text-yellow-400 drop-shadow-lg" />
               </div>
               <div className="absolute -bottom-2 -left-4 animate-bounce">
