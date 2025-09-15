@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { type Player } from "@shared/schema";
-import { Trophy, Crown, Sparkles } from "lucide-react";
+import { Trophy, Crown, Sparkles, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface WinnerAnnouncementProps {
@@ -46,7 +46,17 @@ export function WinnerAnnouncement({ winner, winningCaption, onComplete }: Winne
         </div>
         
         {/* Main announcement card */}
-        <div className="bg-gradient-to-br from-amber-50 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 rounded-3xl p-8 shadow-2xl border border-amber-200 dark:border-amber-700">
+        <div className="bg-gradient-to-br from-amber-50 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 rounded-3xl p-8 shadow-2xl border border-amber-200 dark:border-amber-700 relative">
+          
+          {/* Close Button */}
+          <button
+            onClick={onComplete}
+            className="absolute top-4 right-4 w-10 h-10 bg-white/90 hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110 z-10"
+            aria-label="Close announcement"
+          >
+            <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+          </button>
+          
           {/* Winner badge */}
           <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-8 py-4 rounded-full font-bold text-xl shadow-lg mb-6 animate-pulse">
             <Crown className="w-8 h-8" />
