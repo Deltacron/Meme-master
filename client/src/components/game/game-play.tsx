@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { type Player, type GameState, type CaptionCard, type PhotoCard } from "@shared/schema";
 import { Trophy, NotebookPen, RotateCcw, Check, Medal, Crown, Star, Sparkles, Gamepad2 } from "lucide-react";
-import { WinnerAnnouncement } from "./winner-announcement";
 import { ActivityFeed } from "./activity-feed";
 
 import { cn } from "@/lib/utils";
@@ -44,7 +43,6 @@ export function GamePlay({
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const [exchangeCardId, setExchangeCardId] = useState<string | null>(null);
   const [availablePhotoCards, setAvailablePhotoCards] = useState<PhotoCard[]>([]);
-  const [showWinner, setShowWinner] = useState<{winner: Player, caption: string} | null>(null);
   const [showActivityFeed, setShowActivityFeed] = useState(true);
 
 
@@ -65,30 +63,7 @@ export function GamePlay({
     }
   }, [isJudge, selectedPhotoCard]);
 
-  // Listen for round winner announcements
-  useEffect(() => {
-    const handleRoundWinnerSelected = (event: any) => {
-      const data = event.detail;
-      if (data.winner) {
-        // Find the winning caption from submitted cards
-        const winningCaption = submittedCards.find((card: any) => 
-          card.playerId === data.winner.id
-        )?.text || "Amazing meme!";
-        
-        setShowWinner({
-          winner: data.winner,
-          caption: winningCaption
-        });
-      }
-    };
-
-    // Add event listener to window for custom events
-    window.addEventListener('round_winner_selected', handleRoundWinnerSelected);
-
-    return () => {
-      window.removeEventListener('round_winner_selected', handleRoundWinnerSelected);
-    };
-  }, [submittedCards]);
+  // Winner announcements are now handled by toast notifications in useGameState hook
 
   const fetchPhotoCards = async () => {
     try {
@@ -136,14 +111,6 @@ export function GamePlay({
 
   return (
     <>
-      {showWinner && (
-        <WinnerAnnouncement
-          winner={showWinner.winner}
-          winningCaption={showWinner.caption}
-          onComplete={() => setShowWinner(null)}
-        />
-      )}
-
        <ActivityFeed
         gameState={gameState}
         currentPlayerId={currentPlayerId}
@@ -480,7 +447,7 @@ export function GamePlay({
                     </div>
 
                     {/* Card Exchange Section */}
-                    {currentPlayer && !currentPlayer.hasExchangedCard && (
+                    {/* {currentPlayer && !currentPlayer.hasExchangedCard && (
                       <div className="mb-8 relative">
                         <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl blur-md opacity-20" />
                         <div className="relative bg-white/90 backdrop-blur-sm border-2 border-white/50 rounded-2xl p-4 shadow-lg">
@@ -511,7 +478,7 @@ export function GamePlay({
                           </div>
                         </div>
                       </div>
-                    )}
+                    )} */}
 
                     {/* Caption Cards Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
