@@ -49,10 +49,36 @@ export function useGameState() {
     const handleRoundWinnerSelected = (data: any) => {
       setGameState(data.gameState);
       
-      // Emit custom event for winner announcement
+      // Show winner toast for old flow (deprecated)
       if (data.winner) {
-        const customEvent = new CustomEvent('round_winner_selected', { detail: data });
-        window.dispatchEvent(customEvent);
+        toast({
+          title: `🏆 ${data.winner.name} Wins!`,
+          description: "Trophy awarded! Moving to next round...",
+        });
+      }
+    };
+
+    const handleRoundContinues = (data: any) => {
+      setGameState(data.gameState);
+      
+      // Show quick winner notification for continuous flow
+      if (data.winner) {
+        toast({
+          title: `🏆 ${data.winner.name} Wins!`,
+          description: "Trophy awarded! Same judge continues...",
+        });
+      }
+    };
+
+    const handleJudgeRotated = (data: any) => {
+      setGameState(data.gameState);
+      
+      // Show judge rotation notification
+      if (data.newJudge && data.winner) {
+        toast({
+          title: `🏆 ${data.winner.name} Wins!`,
+          description: `${data.newJudge.name} is now the judge!`,
+        });
       }
     };
 
@@ -132,6 +158,8 @@ export function useGameState() {
     on('card_submitted', handleCardSubmitted);
     on('card_exchanged', handleCardExchanged);
     on('round_winner_selected', handleRoundWinnerSelected);
+    on('round_continues', handleRoundContinues);
+    on('judge_rotated', handleJudgeRotated);
     on('game_finished', handleGameFinished);
     on('game_restarted', handleGameRestarted);
     on('player_disconnected', handlePlayerDisconnected);
@@ -148,6 +176,8 @@ export function useGameState() {
       off('card_submitted', handleCardSubmitted);
       off('card_exchanged', handleCardExchanged);
       off('round_winner_selected', handleRoundWinnerSelected);
+      off('round_continues', handleRoundContinues);
+      off('judge_rotated', handleJudgeRotated);
       off('game_finished', handleGameFinished);
       off('game_restarted', handleGameRestarted);
       off('player_disconnected', handlePlayerDisconnected);

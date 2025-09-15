@@ -447,19 +447,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
             if (!submittedCard) break;
 
-            // Remove submitted card from hand and replace with new card from deck
+            // Remove submitted card from hand (don't replace - players lose cards each round)
             const updatedHand = hand.filter(c => c.id !== submittedCardId);
-            const availableCards: CaptionCard[] = JSON.parse(playerDeck.captionDeck as string);
-            
-            if (availableCards.length > 0) {
-              const newCard = availableCards.shift();
-              if (newCard) {
-                updatedHand.push(newCard);
-                await storage.updateGameDeck(ws.roomId, {
-                  captionDeck: JSON.stringify(availableCards)
-                });
-              }
-            }
 
             await storage.updatePlayer(ws.playerId, {
               hasSubmittedCard: true,
@@ -532,6 +521,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const { winnerId } = message;
             const winningPlayer = await storage.getPlayer(winnerId);
             const winningRoom = await storage.getRoom(ws.roomId);
+            const allPlayers = await storage.getPlayersByRoom(ws.roomId);
 
             if (!winningPlayer || !winningRoom) break;
 
@@ -540,40 +530,85 @@ export async function registerRoutes(app: Express): Promise<Server> {
               trophies: winningPlayer.trophies + 1
             });
 
-            // Check win condition
-            if (winningPlayer.trophies + 1 >= 5) {
+            // Check if current judge still has players with caption cards
+            const nonJudgePlayers = allPlayers.filter(p => p.id !== winningRoom.currentJudgeId);
+            const playersWithCards = nonJudgePlayers.filter(p => {
+              const hand = JSON.parse(p.hand as string);
+              return hand.length > 0;
+            });
+
+            // Reset round state for next photo selection
+            await storage.updateRoom(ws.roomId, {
+              selectedPhotoCard: null,
+              submittedCards: "[]"
+            });
+
+            // Reset player submission status
+            for (const player of nonJudgePlayers) {
+              await storage.updatePlayer(player.id, {
+                hasSubmittedCard: false,
+                hasExchangedCard: false
+              });
+            }
+
+            if (playersWithCards.length > 0) {
+              // Same judge continues - just clear the round for next photo selection
               await storage.updateRoom(ws.roomId, {
-                status: "finished"
+                currentRound: winningRoom.currentRound + 1
               });
 
-              const finalState = await getGameState(ws.roomId);
+              const continueState = await getGameState(ws.roomId);
               broadcastToRoom(ws.roomId, {
-                type: 'game_finished',
+                type: 'round_continues',
                 winner: winningPlayer,
-                gameState: finalState
+                gameState: continueState
               });
             } else {
-              // Prepare next round
-              const allPlayers = await storage.getPlayersByRoom(ws.roomId);
+              // All caption cards exhausted - rotate judge or end game
               const currentJudgeIndex = allPlayers.findIndex(p => p.id === winningRoom.currentJudgeId);
               const nextJudgeIndex = (currentJudgeIndex + 1) % allPlayers.length;
-              const nextJudge = allPlayers[nextJudgeIndex];
-
-              await storage.updateRoom(ws.roomId, {
-                currentJudgeId: nextJudge.id,
-                currentRound: winningRoom.currentRound + 1,
-                selectedPhotoCard: null,
-                submittedCards: "[]"
+              
+              // Check if we've completed a full rotation (all players have been judge)
+              const hasEveryoneBeenJudge = allPlayers.every(player => {
+                // Simple check: if we're back to the first player and this isn't the first judge round
+                return currentJudgeIndex === allPlayers.length - 1;
               });
 
-              await dealCards(ws.roomId);
+              if (hasEveryoneBeenJudge) {
+                // Game finished - find winner with most trophies
+                const winner = allPlayers.reduce((prev, current) => 
+                  (current.trophies > prev.trophies) ? current : prev
+                );
 
-              const nextRoundState = await getGameState(ws.roomId);
-              broadcastToRoom(ws.roomId, {
-                type: 'round_winner_selected',
-                winner: winningPlayer,
-                gameState: nextRoundState
-              });
+                await storage.updateRoom(ws.roomId, {
+                  status: "finished"
+                });
+
+                const finalState = await getGameState(ws.roomId);
+                broadcastToRoom(ws.roomId, {
+                  type: 'game_finished',
+                  winner: winner,
+                  gameState: finalState
+                });
+              } else {
+                // Rotate to next judge and deal new cards
+                const nextJudge = allPlayers[nextJudgeIndex];
+
+                await storage.updateRoom(ws.roomId, {
+                  currentJudgeId: nextJudge.id,
+                  currentRound: 1 // Reset round counter for new judge
+                });
+
+                await dealCards(ws.roomId);
+
+                const nextJudgeState = await getGameState(ws.roomId);
+                broadcastToRoom(ws.roomId, {
+                  type: 'judge_rotated',
+                  winner: winningPlayer,
+                  newJudge: nextJudge,
+                  gameState: nextJudgeState
+                });
+              }
             }
             break;
 
