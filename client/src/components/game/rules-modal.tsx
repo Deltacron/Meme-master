@@ -28,7 +28,7 @@ export function RulesModal({ isOpen, onClose }: RulesModalProps) {
               <li>• 3+ players needed to start</li>
               <li>• Everyone gets a number card</li>
               <li>• Lowest number becomes first Judge</li>
-              <li>• Players get 4 cards (3 players) or 7 cards (4+ players)</li>
+              <li>• Players get 7 cards (3 players) or 4 cards (4+ players)</li>
             </ul>
           </div>
 
