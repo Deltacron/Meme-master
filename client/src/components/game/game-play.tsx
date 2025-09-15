@@ -2,10 +2,25 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { type Player, type GameState, type CaptionCard, type PhotoCard } from "@shared/schema";
-import { Trophy, Gavel, NotebookPen, RotateCcw, Check, Medal } from "lucide-react";
+import { Trophy, NotebookPen, RotateCcw, Check, Medal } from "lucide-react";
 import { WinnerAnnouncement } from "./winner-announcement";
 import { cn } from "@/lib/utils";
 import { getApiUrl } from "@/lib/config";
+import judgeIconMain from "../../assests/icons/judge-icon.svg";
+// Simple Judge Gavel Icon Component
+const JudgeIcon = ({ className }: { className?: string }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24"
+    className={className}
+    fill="currentColor"
+  >
+    <rect x="2" y="8" width="8" height="4" rx="1" fill="currentColor"/>
+    <rect x="8" y="10" width="10" height="2" rx="1" fill="currentColor"/>
+    <rect x="18" y="14" width="4" height="4" rx="1" fill="currentColor"/>
+    <line x1="17" y1="17" x2="19" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
 
 interface GamePlayProps {
   gameState: GameState;
@@ -145,7 +160,8 @@ export function GamePlay({
                   <span className="font-semibold text-white" data-testid="judge-name">
                     {judgePlayer?.name}
                   </span>
-                  <Gavel className="w-5 h-5 text-amber-300" />
+                  {/* <JudgeIcon className="w-5 h-5 text-amber-300" /> */}
+                  <img src={judgeIconMain} alt="Judge Icon" className="w-5 h-5 text-amber-300" />
                 </div>
               </div>
             </div>
@@ -223,7 +239,8 @@ export function GamePlay({
                     <div className="flex justify-center mb-6">
                       <div className="relative">
                         <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center shadow-2xl animate-pulse">
-                          <Gavel className="w-10 h-10 text-white animate-bounce" />
+                          {/* <JudgeIcon className="w-10 h-10 text-white animate-bounce" /> */}
+                          <img src={judgeIconMain} alt="Judge Icon" className="w-10 h-10 text-white animate-bounce" />
                         </div>
                         <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center animate-ping">
                           <div className="w-4 h-4 bg-white rounded-full" />
@@ -325,7 +342,9 @@ export function GamePlay({
                   <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">Current Phase</div>
                   <div className="flex items-center space-x-2">
                     {!selectedPhotoCard ? (
-                      <><Gavel className="w-4 h-4 text-amber-500" /><span className="font-medium text-amber-600 dark:text-amber-400">Photo Selection</span></>
+                     <>
+                     <img src={judgeIconMain} alt="Judge Icon" className="w-4 h-4 text-amber-500" />
+                     <span className="font-medium text-amber-600 dark:text-amber-400">Photo Selection</span></>
                     ) : !allPlayersSubmitted ? (
                       <><NotebookPen className="w-4 h-4 text-blue-500" /><span className="font-medium text-blue-600 dark:text-blue-400">Caption Submission</span></>
                     ) : (
@@ -479,7 +498,8 @@ export function GamePlay({
               {isJudge && allPlayersSubmitted && (
                 <Card className="p-6 shadow-lg" data-testid="judge-review">
                   <h3 className="text-lg font-semibold text-foreground mb-4">
-                    <Gavel className="inline mr-2 h-5 w-5" />
+                    {/* <JudgeIcon className="inline mr-2 h-5 w-5" /> */}
+                    <img src={judgeIconMain} alt="Judge Icon" className="inline mr-2 h-5 w-5" />
                     Judge's Decision
                   </h3>
                   

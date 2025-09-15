@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { type Player, type GameState, type CaptionCard, type PhotoCard } from "@shared/schema";
-import { Trophy, Gavel, NotebookPen, RotateCcw, Check, Medal } from "lucide-react";
+import { Trophy, NotebookPen, RotateCcw, Check, Medal } from "lucide-react";
 import { WinnerAnnouncement } from "./winner-announcement";
 import { cn } from "@/lib/utils";
+import { getApiUrl } from "@/lib/config";
+import judgeIconMain from "../../assests/icons/judge-icon.svg";
 
 interface GamePlayProps {
   gameState: GameState;
@@ -62,7 +64,7 @@ export function GamePlay({
 
   const fetchPhotoCards = async () => {
     try {
-      const response = await fetch('/api/cards/photo');
+      const response = await fetch(getApiUrl('/api/cards/photo'));
       if (response.ok) {
         const cards = await response.json();
         // Get 6 random photo cards for selection
@@ -137,7 +139,7 @@ export function GamePlay({
                   <span className="font-semibold text-white" data-testid="judge-name">
                     {judgePlayer?.name}
                   </span>
-                  <Gavel className="w-5 h-5 text-amber-300" />
+                  <img src={judgeIconMain} alt="Judge Icon" className="w-5 h-5 text-amber-300" />
                 </div>
               </div>
             </div>
@@ -385,7 +387,7 @@ export function GamePlay({
             {isJudge && allPlayersSubmitted && (
               <Card className="p-6 shadow-lg" data-testid="judge-review">
                 <h3 className="text-lg font-semibold text-foreground mb-4">
-                  <Gavel className="inline mr-2 h-5 w-5" />
+              <img src={judgeIconMain} alt="Judge Icon" className="inline mr-2 h-5 w-5" />
                   Judge's Decision
                 </h3>
                 
