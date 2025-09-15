@@ -321,7 +321,6 @@ export function GamePlay({
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                           </div>
-                          <p className="text-sm text-slate-300 font-medium text-center leading-tight">{card.description}</p>
                           <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                             <Check className="w-4 h-4 text-white" />
                           </div>
@@ -396,7 +395,7 @@ export function GamePlay({
               {selectedPhotoCard && (
                 <div data-testid="selected-photo-card" className="relative">
                   <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 shadow-2xl border border-slate-700 max-w-lg mx-auto">
-                    <div className="relative overflow-hidden rounded-xl mb-4">
+                    <div className="relative overflow-hidden rounded-xl mb-0">
                       <img 
                         src={selectedPhotoCard.imageUrl} 
                         alt={selectedPhotoCard.description}
@@ -404,12 +403,7 @@ export function GamePlay({
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                     </div>
-                    <p className="text-white font-medium text-center text-lg leading-relaxed">
-                      {selectedPhotoCard.description}
-                    </p>
-                    <div className="mt-3 text-center">
-                      <span className="text-xs text-slate-400 font-mono uppercase tracking-wider">Photo Card</span>
-                    </div>
+                   
                   </div>
                 </div>
               )}

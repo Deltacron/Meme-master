@@ -31,9 +31,9 @@ export function JudgeSelection({
         <div className="container mx-auto px-4 py-8">
           <div className="text-center text-white">
             <div className="flex items-center justify-center space-x-3 mb-4">
-              <Crown className="w-10 h-10 text-amber-300 animate-bounce" />
+              <Crown className="w-10 h-10 text-amber-300 " />
               <h1 className="text-4xl md:text-5xl font-bold drop-shadow-lg">Judge Selection</h1>
-              <Crown className="w-10 h-10 text-amber-300 animate-bounce" />
+              <Crown className="w-10 h-10 text-amber-300 " />
             </div>
             <p className="text-lg md:text-xl text-blue-100 font-medium max-w-2xl mx-auto leading-relaxed mb-6">
               Click your mystery card to reveal your number. Lowest number becomes the Judge!
@@ -201,11 +201,11 @@ export function JudgeSelection({
             <div className="relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-6 md:p-8 lg:p-12 text-center shadow-2xl border-2 border-amber-300 dark:border-amber-600">
               {/* Floating Crown Animation */}
               <div className="relative mb-6">
-                <Crown className="w-16 h-16 md:w-20 md:h-20 text-amber-500 mx-auto animate-bounce drop-shadow-lg" />
+                <Crown className="w-16 h-16 md:w-20 md:h-20 text-amber-500 mx-auto  drop-shadow-lg" />
                 <div className="absolute -top-2 -left-2 w-4 h-4 md:w-6 md:h-6 bg-yellow-400 rounded-full animate-ping" />
                 <div className="absolute -top-2 -right-2 w-3 h-3 md:w-4 md:h-4 bg-amber-400 rounded-full animate-ping delay-300" />
-                <Sparkles className="absolute -bottom-1 -left-3 w-5 h-5 text-yellow-500 animate-pulse delay-500" />
-                <Sparkles className="absolute -bottom-1 -right-3 w-5 h-5 text-yellow-500 animate-pulse delay-700" />
+                <Sparkles className="absolute -bottom-1 -left-3 w-5 h-5 text-yellow-500  delay-500" />
+                <Sparkles className="absolute -bottom-1 -right-3 w-5 h-5 text-yellow-500  delay-700" />
               </div>
               
               {/* Winner Announcement */}
@@ -225,11 +225,11 @@ export function JudgeSelection({
               
               {/* Celebration Elements */}
               <div className="flex items-center justify-center space-x-2 md:space-x-4 mb-6 text-2xl md:text-4xl">
-                <span className="animate-bounce">🎉</span>
-                <span className="animate-bounce delay-100">👑</span>
-                <span className="animate-bounce delay-200">⭐</span>
-                <span className="animate-bounce delay-300">🎊</span>
-                <span className="animate-bounce delay-400">🏆</span>
+                <span className="">🎉</span>
+                <span className=" ">👑</span>
+                <span className=" delay-200">⭐</span>
+                <span className=" delay-300">🎊</span>
+                <span className=" delay-400">🏆</span>
               </div>
               
               {/* Game Info */}
