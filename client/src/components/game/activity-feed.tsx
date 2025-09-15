@@ -274,7 +274,7 @@ export function ActivityFeed({ gameState, currentPlayerId, isVisible, onToggle }
       {/* Aesthetic Toggle Button */}
       <div className={cn(
         "hidden lg:block fixed top-[calc(50%+60px)] -translate-y-1/2 z-50 transition-all duration-300",
-        isVisible ? "left-[400px]" : "left-4"
+        isVisible ? "left-[380px]" : "left-4"
       )}>
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/50 to-pink-500/50 rounded-2xl blur-md opacity-40 animate-pulse" />

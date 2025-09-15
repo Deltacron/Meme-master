@@ -43,7 +43,7 @@ export function GamePlay({
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const [exchangeCardId, setExchangeCardId] = useState<string | null>(null);
   const [availablePhotoCards, setAvailablePhotoCards] = useState<PhotoCard[]>([]);
-  const [showActivityFeed, setShowActivityFeed] = useState(true);
+  const [showActivityFeed, setShowActivityFeed] = useState(false);
 
 
   const currentPlayer = gameState.players.find(p => p.id === currentPlayerId);
@@ -189,7 +189,110 @@ export function GamePlay({
           </div>
         </div>
 
-        <div className={`relative z-10 container mx-auto px-4 py-8 max-w-7xl ${showActivityFeed ? "lg:ml-[450px]" : ""}`}>
+        <div className={`relative z-10 container mx-auto px-4 py-8 max-w-7xl ${showActivityFeed ? "lg:ml-[350px]" : ""}`}>
+
+           {/* Enhanced Round Status with Progress Bar */}
+           <div className="mb-8">
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/30 max-w-4xl mx-auto">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-lg">R{gameState.room.currentRound}</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-white">Round {gameState.room.currentRound}</h3>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      {!selectedPhotoCard ? (
+                        <>🎭 <span className="font-medium">{judgePlayer?.name}</span> is selecting a photo card...</>
+                      ) : !allPlayersSubmitted ? (
+                        <>📝 Players are submitting their funniest captions...</>
+                      ) : (
+                        <>⚖️ <span className="font-medium">{judgePlayer?.name}</span> is choosing the winner...</>
+                      )}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="text-right">
+                  <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">Current Phase</div>
+                  <div className="flex items-center space-x-2">
+                    {!selectedPhotoCard ? (
+                     <>
+                     <img src={judgeIconMain} alt="Judge Icon" className="w-4 h-4 text-amber-500" />
+                     <span className="font-medium text-amber-600 dark:text-amber-400">Photo Selection</span></>
+                    ) : !allPlayersSubmitted ? (
+                      <><NotebookPen className="w-4 h-4 text-blue-500" /><span className="font-medium text-blue-600 dark:text-blue-400">Caption Submission</span></>
+                    ) : (
+                      <><Trophy className="w-4 h-4 text-green-500" /><span className="font-medium text-green-600 dark:text-green-400">Winner Selection</span></>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Enhanced Progress Bar */}
+              <div className="mt-6 relative">
+                <div className="bg-slate-200 dark:bg-slate-700 rounded-full h-3">
+                  <div 
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500 relative overflow-hidden"
+                    style={{ 
+                      width: !selectedPhotoCard ? '33%' : !allPlayersSubmitted ? '66%' : '100%' 
+                    }}
+                  >
+                    {/* Animated shine effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
+                  </div>
+                </div>
+                
+                {/* Step indicators */}
+                <div className="absolute -top-1 left-0 w-full flex justify-between">
+                  <div className={cn(
+                    "w-5 h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
+                    !selectedPhotoCard ? "border-blue-500 bg-blue-500" : "border-green-500 bg-green-500"
+                  )}>
+                    {selectedPhotoCard && <Check className="w-3 h-3 text-white m-0.5" />}
+                  </div>
+                  <div className={cn(
+                    "w-5 h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
+                    selectedPhotoCard && !allPlayersSubmitted ? "border-blue-500 bg-blue-500" : 
+                    allPlayersSubmitted ? "border-green-500 bg-green-500" : "border-slate-300"
+                  )}>
+                    {allPlayersSubmitted && <Check className="w-3 h-3 text-white m-0.5" />}
+                  </div>
+                  <div className={cn(
+                    "w-5 h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
+                    allPlayersSubmitted ? "border-blue-500 bg-blue-500" : "border-slate-300"
+                  )}>
+                    {allPlayersSubmitted && <Trophy className="w-3 h-3 text-white m-0.5" />}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Progress Labels */}
+              <div className="flex justify-between text-sm text-slate-500 dark:text-slate-400 mt-6">
+                <span className={cn(
+                  "font-medium transition-colors duration-300",
+                  !selectedPhotoCard ? "text-blue-600 dark:text-blue-400" : 
+                  selectedPhotoCard ? "text-green-600 dark:text-green-400" : ""
+                )}>
+                  Photo Selection
+                </span>
+                <span className={cn(
+                  "font-medium transition-colors duration-300",
+                  selectedPhotoCard && !allPlayersSubmitted ? "text-blue-600 dark:text-blue-400" : 
+                  allPlayersSubmitted ? "text-green-600 dark:text-green-400" : ""
+                )}>
+                  Caption Submission
+                </span>
+                <span className={cn(
+                  "font-medium transition-colors duration-300",
+                  allPlayersSubmitted ? "text-blue-600 dark:text-blue-400" : ""
+                )}>
+                  Winner Selection
+                </span>
+              </div>
+            </div>
+          </div>
+
           <div className="text-center mb-12">
             <div className="inline-block bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/30">
               <div className="flex items-center justify-center space-x-2 mb-6">
@@ -313,108 +416,7 @@ export function GamePlay({
             </div>
           </div>
 
-          {/* Enhanced Round Status with Progress Bar */}
-          <div className="mb-8">
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/30 max-w-4xl mx-auto">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-white font-bold text-lg">R{gameState.room.currentRound}</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-slate-800 dark:text-white">Round {gameState.room.currentRound}</h3>
-                    <p className="text-slate-600 dark:text-slate-400">
-                      {!selectedPhotoCard ? (
-                        <>🎭 <span className="font-medium">{judgePlayer?.name}</span> is selecting a photo card...</>
-                      ) : !allPlayersSubmitted ? (
-                        <>📝 Players are submitting their funniest captions...</>
-                      ) : (
-                        <>⚖️ <span className="font-medium">{judgePlayer?.name}</span> is choosing the winner...</>
-                      )}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="text-right">
-                  <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">Current Phase</div>
-                  <div className="flex items-center space-x-2">
-                    {!selectedPhotoCard ? (
-                     <>
-                     <img src={judgeIconMain} alt="Judge Icon" className="w-4 h-4 text-amber-500" />
-                     <span className="font-medium text-amber-600 dark:text-amber-400">Photo Selection</span></>
-                    ) : !allPlayersSubmitted ? (
-                      <><NotebookPen className="w-4 h-4 text-blue-500" /><span className="font-medium text-blue-600 dark:text-blue-400">Caption Submission</span></>
-                    ) : (
-                      <><Trophy className="w-4 h-4 text-green-500" /><span className="font-medium text-green-600 dark:text-green-400">Winner Selection</span></>
-                    )}
-                  </div>
-                </div>
-              </div>
-              
-              {/* Enhanced Progress Bar */}
-              <div className="mt-6 relative">
-                <div className="bg-slate-200 dark:bg-slate-700 rounded-full h-3">
-                  <div 
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500 relative overflow-hidden"
-                    style={{ 
-                      width: !selectedPhotoCard ? '33%' : !allPlayersSubmitted ? '66%' : '100%' 
-                    }}
-                  >
-                    {/* Animated shine effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
-                  </div>
-                </div>
-                
-                {/* Step indicators */}
-                <div className="absolute -top-1 left-0 w-full flex justify-between">
-                  <div className={cn(
-                    "w-5 h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
-                    !selectedPhotoCard ? "border-blue-500 bg-blue-500" : "border-green-500 bg-green-500"
-                  )}>
-                    {selectedPhotoCard && <Check className="w-3 h-3 text-white m-0.5" />}
-                  </div>
-                  <div className={cn(
-                    "w-5 h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
-                    selectedPhotoCard && !allPlayersSubmitted ? "border-blue-500 bg-blue-500" : 
-                    allPlayersSubmitted ? "border-green-500 bg-green-500" : "border-slate-300"
-                  )}>
-                    {allPlayersSubmitted && <Check className="w-3 h-3 text-white m-0.5" />}
-                  </div>
-                  <div className={cn(
-                    "w-5 h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
-                    allPlayersSubmitted ? "border-blue-500 bg-blue-500" : "border-slate-300"
-                  )}>
-                    {allPlayersSubmitted && <Trophy className="w-3 h-3 text-white m-0.5" />}
-                  </div>
-                </div>
-              </div>
-              
-              {/* Progress Labels */}
-              <div className="flex justify-between text-sm text-slate-500 dark:text-slate-400 mt-6">
-                <span className={cn(
-                  "font-medium transition-colors duration-300",
-                  !selectedPhotoCard ? "text-blue-600 dark:text-blue-400" : 
-                  selectedPhotoCard ? "text-green-600 dark:text-green-400" : ""
-                )}>
-                  Photo Selection
-                </span>
-                <span className={cn(
-                  "font-medium transition-colors duration-300",
-                  selectedPhotoCard && !allPlayersSubmitted ? "text-blue-600 dark:text-blue-400" : 
-                  allPlayersSubmitted ? "text-green-600 dark:text-green-400" : ""
-                )}>
-                  Caption Submission
-                </span>
-                <span className={cn(
-                  "font-medium transition-colors duration-300",
-                  allPlayersSubmitted ? "text-blue-600 dark:text-blue-400" : ""
-                )}>
-                  Winner Selection
-                </span>
-              </div>
-            </div>
-          </div>
-
+         
 
 
           <div className="flex justify-center">

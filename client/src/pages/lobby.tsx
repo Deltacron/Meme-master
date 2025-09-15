@@ -96,18 +96,7 @@ export default function Lobby({ params }: LobbyProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         
         {/* Floating Gaming Elements */}
-        <div className="absolute top-20 left-10 animate-bounce delay-1000">
-          <Crown className="w-8 h-8 text-amber-400 opacity-60 animate-pulse" />
-        </div>
-        <div className="absolute top-40 right-20 animate-bounce delay-2000">
-          <Trophy className="w-10 h-10 text-yellow-500 animate-spin-slow" />
-        </div>
-        <div className="absolute bottom-32 left-20 animate-bounce delay-3000">
-          <Star className="w-6 h-6 text-blue-400 animate-ping" />
-        </div>
-        <div className="absolute top-1/3 right-10 animate-bounce delay-500">
-          <Gamepad2 className="w-12 h-12 text-purple-400 animate-pulse" />
-        </div>
+       
         <div className="absolute bottom-20 right-40 animate-bounce delay-4000">
           <Sparkles className="w-8 h-8 text-pink-400 animate-pulse" />
         </div>
@@ -121,7 +110,7 @@ export default function Lobby({ params }: LobbyProps) {
               <h1 className="text-6xl md:text-7xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-2xl mb-4">
                 🏰 Battle Arena
               </h1>
-              <div className="absolute -top-4 -right-8 animate-spin-slow">
+              <div className="absolute -top-4 -right-8 animate-bounce">
                 <Crown className="w-12 h-12 text-yellow-400 drop-shadow-lg" />
               </div>
               <div className="absolute -bottom-2 -left-8 animate-bounce">
@@ -182,9 +171,9 @@ export default function Lobby({ params }: LobbyProps) {
                 const playerColor = colors[index % colors.length];
                 
                 return (
-                  <div key={player.id} className="relative group">
-                    <div className={`absolute inset-0 bg-gradient-to-r ${playerColor} rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-300`} />
-                    <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-6 shadow-2xl transform group-hover:scale-105 transition-all duration-300">
+                  <div key={player.id} className="relative">
+                    <div className={`absolute inset-0 bg-gradient-to-r ${playerColor} rounded-3xl blur-xl opacity-30`} />
+                    <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-6 shadow-2xl">
                       {/* Player Header */}
                       <div className="flex items-center space-x-4 mb-4">
                         <div className={`relative w-16 h-16 bg-gradient-to-r ${playerColor} rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg`}>
@@ -248,7 +237,6 @@ export default function Lobby({ params }: LobbyProps) {
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                   <div className="flex-1">
                     <h3 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center mb-4">
-                      <Rocket className="mr-3 h-6 w-6 lg:h-8 lg:w-8 text-blue-500 animate-bounce" />
                       🚀 Battle Status
                     </h3>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
