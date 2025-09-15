@@ -175,21 +175,7 @@ export function ActivityFeed({ gameState, currentPlayerId, isVisible, onToggle }
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-3xl" />
           
           {/* Floating Gaming Elements */}
-          <div className="absolute top-20 right-6 animate-bounce delay-1000">
-            <div className="w-6 h-6 bg-yellow-400 rounded-full opacity-60 animate-pulse" />
-          </div>
-          <div className="absolute top-40 left-6 animate-bounce delay-2000">
-            <Crown className="w-8 h-8 text-amber-400 animate-spin-slow" />
-          </div>
-          <div className="absolute bottom-32 right-6 animate-bounce delay-3000">
-            <Trophy className="w-8 h-8 text-yellow-500 animate-pulse" />
-          </div>
-          <div className="absolute top-32 left-8 animate-bounce delay-1500">
-            <Star className="w-5 h-5 text-blue-400 animate-ping" />
-          </div>
-          <div className="absolute bottom-20 left-8 animate-bounce delay-3500">
-            <Sparkles className="w-6 h-6 text-purple-400 animate-pulse" />
-          </div>
+         
         </div>
 
         <div className="relative z-10 p-6 h-full flex flex-col">
@@ -248,50 +234,39 @@ export function ActivityFeed({ gameState, currentPlayerId, isVisible, onToggle }
             </div>
           </div>
 
-          {/* Activity Feed - Vertical Cards */}
+          {/* Selected Photo Card or Activity Feed */}
           <div className="flex-1 overflow-hidden">
-            <h3 className="font-bold text-white mb-4 text-lg">🎯 Battle Events</h3>
-            <div className="space-y-3 overflow-y-auto h-full pr-2 pb-12 scrollbar-hide" style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
-              {activities.map((activity, index) => {
-                const colors = [
-                  "from-purple-500 to-pink-500",
-                  "from-blue-500 to-cyan-500", 
-                  "from-green-500 to-emerald-500",
-                  "from-yellow-500 to-orange-500",
-                  "from-red-500 to-rose-500"
-                ];
-                const cardColor = colors[index % colors.length];
-                
-                return (
-                  <div key={activity.id} className="relative group">
-                    <div className={`absolute inset-0 bg-gradient-to-r ${cardColor} rounded-2xl blur-md opacity-30 group-hover:opacity-50 transition-opacity duration-300`} />
-                    <div className="relative bg-white/90 backdrop-blur-sm border-2 border-white/30 rounded-2xl p-3 shadow-xl transform group-hover:scale-105 transition-all duration-300">
-                      <div className="flex items-start space-x-3">
-                        <div className={`w-10 h-10 bg-gradient-to-r ${cardColor} rounded-xl flex items-center justify-center text-white shadow-lg flex-shrink-0`}>
-                          {activity.icon}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-bold text-gray-900">{activity.message}</p>
-                          <p className="text-xs text-gray-500 font-medium">
-                            {activity.timestamp.toLocaleTimeString([], {
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            })}
-                          </p>
-                        </div>
+            {selectedPhotoCard ? (
+              <>
+                <h3 className="font-bold text-white mb-4 text-lg">🖼️ Selected Photo</h3>
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur-md opacity-30 animate-pulse" />
+                  <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-4 shadow-2xl">
+                    <div className="relative overflow-hidden rounded-2xl mb-4">
+                      <img 
+                        src={selectedPhotoCard.imageUrl} 
+                        alt={selectedPhotoCard.description}
+                        className="w-full h-48 object-cover rounded-2xl"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-2xl" />
+                    </div>
+                    <div className="text-center">
+                      <p className="text-gray-900 font-bold text-lg mb-2">
+                        {selectedPhotoCard.description}
+                      </p>
+                      <div className="flex items-center justify-center space-x-2 text-gray-600">
+                        <Camera className="w-4 h-4" />
+                        <span className="text-sm font-medium">Write your funniest caption!</span>
                       </div>
                     </div>
                   </div>
-                );
-              })}
-              {activities.length === 0 && (
-                <div className="text-center py-8 text-white/70">
-                  <Clock className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p className="font-medium">Battle events will appear here!</p>
-                  <p className="text-sm text-white/50">Ready for epic meme warfare! 🎮</p>
                 </div>
-              )}
-            </div>
+              </>
+            ) : (
+              <>
+               ""
+              </>
+            )}
           </div>
         </div>
       </div>
