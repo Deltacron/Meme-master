@@ -39,7 +39,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     if (!deck) return;
 
     const captionCards: CaptionCard[] = JSON.parse(deck.captionDeck as string);
-    const cardsPerPlayer = players.length === 3 ? 4 : 7;
+    const cardsPerPlayer = players.length === 3 ? 7 : 4;
 
     let cardIndex = 0;
     for (const player of players) {
