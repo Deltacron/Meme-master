@@ -12,6 +12,7 @@ import { Plus, LogIn, HelpCircle, Smile, Sparkles, Trophy, Users, Zap, Crown, St
 export default function Home() {
   const [, setLocation] = useLocation();
   const [playerName, setPlayerName] = useState("");
+  const [joinPlayerName, setJoinPlayerName] = useState("");
   const [roomCode, setRoomCode] = useState("");
   const [showRules, setShowRules] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +62,7 @@ export default function Home() {
   };
 
   const handleJoinRoom = async () => {
-    if (!playerName.trim()) {
+    if (!joinPlayerName.trim()) {
       toast({
         variant: "destructive",
         title: "Name required", 
@@ -82,14 +83,14 @@ export default function Home() {
     setIsLoading(true);
     try {
       const response = await apiRequest("POST", `/api/rooms/${roomCode.trim().toUpperCase()}/join`, {
-        name: playerName.trim()
+        name: joinPlayerName.trim()
       });
 
       const { player } = await response.json();
 
       // Store player info in localStorage
       localStorage.setItem("currentPlayer", JSON.stringify(player));
-      localStorage.setItem("playerName", playerName.trim());
+      localStorage.setItem("playerName", joinPlayerName.trim());
 
       setLocation(`/lobby/${roomCode.trim().toUpperCase()}`);
     } catch (error) {
@@ -214,6 +215,26 @@ export default function Home() {
 
                 {/* Join Room Section */}
                 <div className="space-y-4">
+                  <div className="relative">
+                    <Label htmlFor="joinPlayerName" className="block text-lg font-bold text-gray-700 mb-3">
+                      🎭 Your Name 
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id="joinPlayerName"
+                        type="text"
+                        placeholder="Enter your name..."
+                        value={joinPlayerName}
+                        onChange={(e) => setJoinPlayerName(e.target.value)}
+                        className="w-full text-lg p-4 border-2 border-green-300 rounded-2xl focus:border-green-500 focus:ring-4 focus:ring-green-200 bg-gradient-to-r from-white to-green-50 font-semibold placeholder:text-gray-400"
+                        data-testid="join-player-name-input"
+                      />
+                      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                        <Sparkles className="w-5 h-5 text-green-400 animate-pulse" />
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="relative">
                     <Label htmlFor="roomCode" className="block text-lg font-bold text-gray-700 mb-3">
                       🎯 Room Code
