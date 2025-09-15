@@ -245,13 +245,13 @@ export default function Lobby({ params }: LobbyProps) {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur-xl opacity-30 animate-pulse" />
               <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-8 shadow-2xl">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center mb-2">
-                      <Rocket className="mr-3 h-8 w-8 text-blue-500 animate-bounce" />
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                  <div className="flex-1">
+                    <h3 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center mb-4">
+                      <Rocket className="mr-3 h-6 w-6 lg:h-8 lg:w-8 text-blue-500 animate-bounce" />
                       🚀 Battle Status
                     </h3>
-                    <div className="flex items-center space-x-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                       <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl px-4 py-2">
                         <span className="text-lg font-bold text-blue-700">
                           <span data-testid="player-count">{gameState.players.length}</span> Warriors Ready
@@ -264,23 +264,23 @@ export default function Lobby({ params }: LobbyProps) {
                       </div>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="flex-shrink-0 w-full lg:w-auto">
                     {isHost ? (
                       <Button
                         onClick={handleStartGame}
                         disabled={!canStart}
-                        className={`px-8 py-4 text-xl font-bold rounded-2xl shadow-2xl transform transition-all duration-300 ${
+                        className={`w-full lg:w-auto px-6 lg:px-8 py-3 lg:py-4 text-lg lg:text-xl font-bold rounded-2xl shadow-2xl transform transition-all duration-300 ${
                           canStart 
                             ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white hover:scale-110 hover:shadow-green-500/50" 
                             : "bg-gray-400 text-gray-600 cursor-not-allowed"
                         }`}
                         data-testid="start-game-button"
                       >
-                        <Play className="mr-3 h-6 w-6" />
+                        <Play className="mr-3 h-5 w-5 lg:h-6 lg:w-6" />
                         {canStart ? "🎮 Launch Battle!" : "Need More Warriors"}
                       </Button>
                     ) : (
-                      <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl px-6 py-4">
+                      <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl px-6 py-4 w-full lg:w-auto text-center lg:text-left">
                         <span className="text-purple-700 font-medium">⏳ Waiting for host to launch...</span>
                       </div>
                     )}
