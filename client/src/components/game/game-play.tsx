@@ -119,46 +119,47 @@ export function GamePlay({
       />
 
       <div className="bg-gradient-to-r from-purple-800/95 via-blue-800/95 to-indigo-800/95 backdrop-blur-sm shadow-lg sticky top-0 z-40 border-b border-white/20">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-8">
-              <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-4 py-2">
-                <h1 className="text-2xl font-bold text-white">
+        <div className="container mx-auto px-2 sm:px-4 py-3 sm:py-6">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
+            {/* Left Section - Round and Judge */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 w-full lg:w-auto">
+              <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-3 sm:px-4 py-2">
+                <h1 className="text-xl sm:text-2xl font-bold text-white text-center">
                   Round <span data-testid="current-round">{gameState.room.currentRound}</span>
                 </h1>
               </div>
-              <div className="flex items-center space-x-4">
-                <span className="text-blue-100 font-medium">Judge:</span>
-                <div className="flex items-center space-x-3 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
-                  <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+              <div className="flex items-center gap-2 sm:gap-4">
+                <span className="text-blue-100 font-medium text-sm sm:text-base">Judge:</span>
+                <div className="flex items-center gap-2 sm:gap-3 bg-white/20 backdrop-blur-sm rounded-full px-3 sm:px-4 py-2">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg">
                     <span data-testid="judge-initials">
                       {judgePlayer?.name.charAt(0).toUpperCase()}
                     </span>
                   </div>
-                  <span className="font-semibold text-white" data-testid="judge-name">
+                  <span className="font-semibold text-white text-sm sm:text-base" data-testid="judge-name">
                     {judgePlayer?.name}
                   </span>
-                  {/* <JudgeIcon className="w-5 h-5 text-amber-300" /> */}
-                  <img src={judgeIconMain} alt="Judge Icon" className="w-5 h-5 text-amber-300" />
+                  <img src={judgeIconMain} alt="Judge Icon" className="w-4 h-4 sm:w-5 sm:h-5 text-amber-300" />
                 </div>
               </div>
             </div>
             
-            <div className="flex items-center space-x-6">
+            {/* Right Section - Player Scores */}
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 lg:gap-6 w-full lg:w-auto">
               {gameState.players.map((player, index) => (
-                <div key={player.id} className="flex items-center space-x-3 bg-white/20 backdrop-blur-sm rounded-2xl px-4 py-3 transition-all hover:bg-white/30">
-                  <div className="flex items-center space-x-2">
+                <div key={player.id} className="flex items-center gap-2 sm:gap-3 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl px-2 sm:px-4 py-2 sm:py-3 transition-all hover:bg-white/30">
+                  <div className="flex items-center gap-1 sm:gap-2">
                     <div className={cn(
-                      "w-3 h-3 rounded-full",
+                      "w-2 h-2 sm:w-3 sm:h-3 rounded-full",
                       index === 0 ? "bg-amber-400" : index === 1 ? "bg-gray-300" : "bg-orange-400"
                     )} />
-                    <span className="text-sm text-white font-medium" data-testid={`player-name-${player.id}`}>
+                    <span className="text-xs sm:text-sm text-white font-medium" data-testid={`player-name-${player.id}`}>
                       {player.name}
                     </span>
                   </div>
-                  <div className="flex items-center text-amber-300 bg-black/20 rounded-full px-3 py-1">
-                    <Trophy className="h-4 w-4 mr-1" />
-                    <span className="font-bold text-sm" data-testid={`player-trophies-${player.id}`}>
+                  <div className="flex items-center text-amber-300 bg-black/20 rounded-full px-2 sm:px-3 py-1">
+                    <Trophy className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                    <span className="font-bold text-xs sm:text-sm" data-testid={`player-trophies-${player.id}`}>
                       {player.trophies}
                     </span>
                   </div>
@@ -189,51 +190,51 @@ export function GamePlay({
           </div>
         </div>
 
-        <div className={`relative z-10 container mx-auto px-4 py-8 max-w-7xl ${showActivityFeed ? "lg:ml-[350px]" : ""}`}>
+        <div className={`relative z-10 container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-7xl ${showActivityFeed ? "lg:ml-[350px]" : ""}`}>
 
            {/* Enhanced Round Status with Progress Bar */}
-           <div className="mb-8">
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/30 max-w-4xl mx-auto">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-white font-bold text-lg">R{gameState.room.currentRound}</span>
+           <div className="mb-4 sm:mb-8">
+            <div className="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-xl border border-white/30 max-w-4xl mx-auto">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-sm sm:text-lg">R{gameState.room.currentRound}</span>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-slate-800 dark:text-white">Round {gameState.room.currentRound}</h3>
-                    <p className="text-slate-600 dark:text-slate-400">
+                  <div className="text-center sm:text-left">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">Round {gameState.room.currentRound}</h3>
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
                       {!selectedPhotoCard ? (
-                        <>🎭 <span className="font-medium">{judgePlayer?.name}</span> is selecting a photo card...</>
+                        <>🎭 <span className="font-medium">{judgePlayer?.name}</span> is selecting...</>
                       ) : !allPlayersSubmitted ? (
-                        <>📝 Players are submitting their funniest captions...</>
+                        <>📝 Players are submitting captions...</>
                       ) : (
-                        <>⚖️ <span className="font-medium">{judgePlayer?.name}</span> is choosing the winner...</>
+                        <>⚖️ <span className="font-medium">{judgePlayer?.name}</span> is choosing winner...</>
                       )}
                     </p>
                   </div>
                 </div>
                 
-                <div className="text-right">
-                  <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">Current Phase</div>
-                  <div className="flex items-center space-x-2">
+                <div className="text-center sm:text-right">
+                  <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-1">Current Phase</div>
+                  <div className="flex items-center justify-center sm:justify-end gap-1 sm:gap-2">
                     {!selectedPhotoCard ? (
                      <>
-                     <img src={judgeIconMain} alt="Judge Icon" className="w-4 h-4 text-amber-500" />
-                     <span className="font-medium text-amber-600 dark:text-amber-400">Photo Selection</span></>
+                     <img src={judgeIconMain} alt="Judge Icon" className="w-3 h-3 sm:w-4 sm:h-4 text-amber-500" />
+                     <span className="font-medium text-amber-600 dark:text-amber-400 text-xs sm:text-sm">Photo Selection</span></>
                     ) : !allPlayersSubmitted ? (
-                      <><NotebookPen className="w-4 h-4 text-blue-500" /><span className="font-medium text-blue-600 dark:text-blue-400">Caption Submission</span></>
+                      <><NotebookPen className="w-3 h-3 sm:w-4 sm:h-4 text-blue-500" /><span className="font-medium text-blue-600 dark:text-blue-400 text-xs sm:text-sm">Caption Submission</span></>
                     ) : (
-                      <><Trophy className="w-4 h-4 text-green-500" /><span className="font-medium text-green-600 dark:text-green-400">Winner Selection</span></>
+                      <><Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" /><span className="font-medium text-green-600 dark:text-green-400 text-xs sm:text-sm">Winner Selection</span></>
                     )}
                   </div>
                 </div>
               </div>
               
               {/* Enhanced Progress Bar */}
-              <div className="mt-6 relative">
-                <div className="bg-slate-200 dark:bg-slate-700 rounded-full h-3">
+              <div className="mt-4 sm:mt-6 relative">
+                <div className="bg-slate-200 dark:bg-slate-700 rounded-full h-2 sm:h-3">
                   <div 
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500 relative overflow-hidden"
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 sm:h-3 rounded-full transition-all duration-500 relative overflow-hidden"
                     style={{ 
                       width: !selectedPhotoCard ? '33%' : !allPlayersSubmitted ? '66%' : '100%' 
                     }}
@@ -246,45 +247,45 @@ export function GamePlay({
                 {/* Step indicators */}
                 <div className="absolute -top-1 left-0 w-full flex justify-between">
                   <div className={cn(
-                    "w-5 h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
+                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
                     !selectedPhotoCard ? "border-blue-500 bg-blue-500" : "border-green-500 bg-green-500"
                   )}>
-                    {selectedPhotoCard && <Check className="w-3 h-3 text-white m-0.5" />}
+                    {selectedPhotoCard && <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5" />}
                   </div>
                   <div className={cn(
-                    "w-5 h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
+                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
                     selectedPhotoCard && !allPlayersSubmitted ? "border-blue-500 bg-blue-500" : 
                     allPlayersSubmitted ? "border-green-500 bg-green-500" : "border-slate-300"
                   )}>
-                    {allPlayersSubmitted && <Check className="w-3 h-3 text-white m-0.5" />}
+                    {allPlayersSubmitted && <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5" />}
                   </div>
                   <div className={cn(
-                    "w-5 h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
+                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
                     allPlayersSubmitted ? "border-blue-500 bg-blue-500" : "border-slate-300"
                   )}>
-                    {allPlayersSubmitted && <Trophy className="w-3 h-3 text-white m-0.5" />}
+                    {allPlayersSubmitted && <Trophy className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5" />}
                   </div>
                 </div>
               </div>
               
               {/* Progress Labels */}
-              <div className="flex justify-between text-sm text-slate-500 dark:text-slate-400 mt-6">
+              <div className="flex justify-between text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-4 sm:mt-6">
                 <span className={cn(
-                  "font-medium transition-colors duration-300",
+                  "font-medium transition-colors duration-300 text-center",
                   !selectedPhotoCard ? "text-blue-600 dark:text-blue-400" : 
                   selectedPhotoCard ? "text-green-600 dark:text-green-400" : ""
                 )}>
                   Photo Selection
                 </span>
                 <span className={cn(
-                  "font-medium transition-colors duration-300",
+                  "font-medium transition-colors duration-300 text-center",
                   selectedPhotoCard && !allPlayersSubmitted ? "text-blue-600 dark:text-blue-400" : 
                   allPlayersSubmitted ? "text-green-600 dark:text-green-400" : ""
                 )}>
                   Caption Submission
                 </span>
                 <span className={cn(
-                  "font-medium transition-colors duration-300",
+                  "font-medium transition-colors duration-300 text-center",
                   allPlayersSubmitted ? "text-blue-600 dark:text-blue-400" : ""
                 )}>
                   Winner Selection
@@ -293,18 +294,18 @@ export function GamePlay({
             </div>
           </div>
 
-          <div className="text-center mb-12">
-            <div className="inline-block bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/30">
-              <div className="flex items-center justify-center space-x-2 mb-6">
-                <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Photo Card</h2>
-                <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full" />
+          <div className="text-center mb-6 sm:mb-12">
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-2xl border border-white/30 mx-2 sm:mx-0">
+              <div className="flex items-center justify-center gap-2 mb-4 sm:mb-6">
+                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Photo Card</h2>
+                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full" />
               </div>
               
               {isJudge && !selectedPhotoCard && (
                 <div data-testid="photo-selection">
-                  <p className="text-slate-600 dark:text-slate-300 mb-6 text-lg">Choose a photo card for this round:</p>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl">
+                  <p className="text-slate-600 dark:text-slate-300 mb-4 sm:mb-6 text-sm sm:text-lg">Choose a photo card for this round:</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 max-w-4xl mx-auto">
                     {availablePhotoCards.map((card) => (
                       <div
                         key={card.id}
@@ -312,17 +313,18 @@ export function GamePlay({
                         className="relative group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2"
                         data-testid={`photo-card-option-${card.id}`}
                       >
-                        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-4 shadow-2xl border border-slate-700 hover:border-blue-400 transition-all duration-300">
-                          <div className="relative overflow-hidden rounded-xl mb-3">
+                        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-2xl border border-slate-700 hover:border-blue-400 transition-all duration-300">
+                          <div className="relative overflow-hidden rounded-lg sm:rounded-xl mb-2 sm:mb-3">
                             <img 
                               src={card.imageUrl} 
                               alt={card.description}
-                              className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-110"
+                              className="w-full h-32 sm:h-40 object-cover transition-transform duration-300 group-hover:scale-110"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                           </div>
-                          <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <Check className="w-4 h-4 text-white" />
+                          <p className="text-xs sm:text-sm text-slate-300 font-medium text-center leading-tight">{card.description}</p>
+                          <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-5 h-5 sm:w-6 sm:h-6 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <Check className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                           </div>
                         </div>
                       </div>
@@ -333,33 +335,32 @@ export function GamePlay({
 
               {!isJudge && !selectedPhotoCard && (
                 <div className="relative" data-testid="waiting-for-judge">
-                  <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl p-8 shadow-2xl border-2 border-amber-200 dark:border-amber-700 max-w-2xl mx-auto">
+                  <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-2xl border-2 border-amber-200 dark:border-amber-700 max-w-2xl mx-auto">
                     {/* Animated Judge Icon */}
-                    <div className="flex justify-center mb-6">
+                    <div className="flex justify-center mb-4 sm:mb-6">
                       <div className="relative">
-                        <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center shadow-2xl animate-pulse">
-                          {/* <JudgeIcon className="w-10 h-10 text-white animate-bounce" /> */}
-                          <img src={judgeIconMain} alt="Judge Icon" className="w-10 h-10 text-white animate-bounce" />
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center shadow-2xl animate-pulse">
+                          <img src={judgeIconMain} alt="Judge Icon" className="w-8 h-8 sm:w-10 sm:h-10 text-white animate-bounce" />
                         </div>
-                        <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center animate-ping">
-                          <div className="w-4 h-4 bg-white rounded-full" />
+                        <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center animate-ping">
+                          <div className="w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full" />
                         </div>
                       </div>
                     </div>
                     
                     {/* Waiting Message */}
                     <div className="text-center">
-                      <h3 className="text-2xl font-bold text-amber-700 dark:text-amber-300 mb-3">
+                      <h3 className="text-xl sm:text-2xl font-bold text-amber-700 dark:text-amber-300 mb-2 sm:mb-3">
                         🎭 Judge is Selecting...
                       </h3>
-                      <p className="text-lg text-amber-600 dark:text-amber-400 font-medium mb-4">
-                        <span className="font-bold">{judgePlayer?.name}</span> is choosing the perfect photo card for this round
+                      <p className="text-sm sm:text-lg text-amber-600 dark:text-amber-400 font-medium mb-3 sm:mb-4">
+                        <span className="font-bold">{judgePlayer?.name}</span> is choosing the perfect photo card
                       </p>
-                      <div className="flex items-center justify-center space-x-2 text-amber-500 dark:text-amber-400">
+                      <div className="flex items-center justify-center gap-2 text-amber-500 dark:text-amber-400">
                         <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" />
                         <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce delay-100" />
                         <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce delay-200" />
-                        <span className="text-sm font-medium ml-2">Please wait...</span>
+                        <span className="text-xs sm:text-sm font-medium ml-2">Please wait...</span>
                       </div>
                     </div>
                     
@@ -394,16 +395,21 @@ export function GamePlay({
 
               {selectedPhotoCard && (
                 <div data-testid="selected-photo-card" className="relative">
-                  <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 shadow-2xl border border-slate-700 max-w-lg mx-auto">
-                    <div className="relative overflow-hidden rounded-xl mb-0">
+                  <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-2xl border border-slate-700 max-w-lg mx-auto">
+                    <div className="relative overflow-hidden rounded-lg sm:rounded-xl">
                       <img 
                         src={selectedPhotoCard.imageUrl} 
                         alt={selectedPhotoCard.description}
-                        className="w-full h-64 object-cover"
+                        className="w-full h-48 sm:h-64 object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                     </div>
-                   
+                    <p className="text-white font-medium text-center text-sm sm:text-lg leading-relaxed mt-3 sm:mt-4">
+                      {selectedPhotoCard.description}
+                    </p>
+                    <div className="mt-2 sm:mt-3 text-center">
+                      <span className="text-xs text-slate-400 font-mono uppercase tracking-wider">Photo Card</span>
+                    </div>
                   </div>
                 </div>
               )}
@@ -415,28 +421,28 @@ export function GamePlay({
 
           <div className="flex justify-center">
             {!isJudge && selectedPhotoCard && (
-              <div className="w-full max-w-4xl">
+              <div className="w-full max-w-4xl mx-2 sm:mx-0">
                 {/* Beautiful Caption Cards Section - Lobby Style */}
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl blur-xl opacity-30 animate-pulse" />
-                  <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-8 shadow-2xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl sm:rounded-3xl blur-xl opacity-30 animate-pulse" />
+                  <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-2xl">
                     
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-8">
-                      <div className="relative">
-                        <h3 className="text-3xl font-black bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 sm:mb-8">
+                      <div className="relative text-center sm:text-left">
+                        <h3 className="text-xl sm:text-2xl lg:text-3xl font-black bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
                           🎭 Your Caption Arsenal
                         </h3>
-                        <div className="absolute -top-2 -right-8 animate-bounce">
-                          <NotebookPen className="w-6 h-6 text-purple-400" />
+                        <div className="hidden sm:block absolute -top-2 -right-8 animate-bounce">
+                          <NotebookPen className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
                         </div>
                       </div>
                       <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur-md opacity-30" />
-                        <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl px-4 py-2 shadow-lg">
-                          <div className="flex items-center space-x-2">
-                            <Trophy className="w-5 h-5 text-blue-600" />
-                            <span className="font-bold text-gray-700" data-testid="hand-count">{playerHand.length} Cards</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl sm:rounded-2xl blur-md opacity-30" />
+                        <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2 shadow-lg">
+                          <div className="flex items-center gap-2">
+                            <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                            <span className="font-bold text-gray-700 text-sm sm:text-base" data-testid="hand-count">{playerHand.length} Cards</span>
                           </div>
                         </div>
                       </div>
@@ -477,7 +483,7 @@ export function GamePlay({
                     )} */}
 
                     {/* Caption Cards Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
                       {playerHand.map((card, index) => {
                         const colors = [
                           "from-purple-500 to-pink-500",
@@ -512,35 +518,35 @@ export function GamePlay({
                             data-testid={`caption-card-${card.id}`}
                           >
                             <div className={cn(
-                              `absolute inset-0 bg-gradient-to-r ${cardColor} rounded-3xl blur-md opacity-30 group-hover:opacity-50 transition-opacity duration-300`,
+                              `absolute inset-0 bg-gradient-to-r ${cardColor} rounded-2xl sm:rounded-3xl blur-md opacity-30 group-hover:opacity-50 transition-opacity duration-300`,
                               selectedCardId === card.id && "opacity-60 animate-pulse",
                               exchangeCardId === card.id && "opacity-60 animate-pulse"
                             )} />
-                            <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-4 shadow-2xl min-h-[140px] flex flex-col justify-between">
+                            <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-2xl min-h-[120px] sm:min-h-[140px] flex flex-col justify-between">
                               
                               {/* Card Content */}
                               <div className="flex-1 flex items-center justify-center">
-                                <p className="text-gray-900 font-bold text-center leading-relaxed text-sm">{card.text}</p>
+                                <p className="text-gray-900 font-bold text-center leading-relaxed text-xs sm:text-sm">{card.text}</p>
                               </div>
                               
                               {/* Card Footer */}
-                              <div className="mt-4 flex items-center justify-between">
+                              <div className="mt-3 sm:mt-4 flex items-center justify-between">
                                 <div className="text-xs text-gray-500 font-bold uppercase tracking-wider">Caption Card</div>
-                                <div className="flex items-center space-x-2">
+                                <div className="flex items-center gap-2">
                                   {selectedCardId === card.id && (
-                                    <div className="flex items-center space-x-1 text-green-600">
-                                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                                        <Check className="h-3 w-3 text-white" data-testid="card-selected-icon" />
+                                    <div className="flex items-center gap-1 text-green-600">
+                                      <div className="w-5 h-5 sm:w-6 sm:h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                        <Check className="h-2 w-2 sm:h-3 sm:w-3 text-white" data-testid="card-selected-icon" />
                                       </div>
-                                      <span className="text-xs font-bold">Selected</span>
+                                      <span className="text-xs font-bold hidden sm:inline">Selected</span>
                                     </div>
                                   )}
                                   {exchangeCardId === card.id && (
-                                    <div className="flex items-center space-x-1 text-orange-600">
-                                      <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
-                                        <RotateCcw className="h-3 w-3 text-white" data-testid="card-exchange-icon" />
+                                    <div className="flex items-center gap-1 text-orange-600">
+                                      <div className="w-5 h-5 sm:w-6 sm:h-6 bg-orange-500 rounded-full flex items-center justify-center">
+                                        <RotateCcw className="h-2 w-2 sm:h-3 sm:w-3 text-white" data-testid="card-exchange-icon" />
                                       </div>
-                                      <span className="text-xs font-bold">Exchange</span>
+                                      <span className="text-xs font-bold hidden sm:inline">Exchange</span>
                                     </div>
                                   )}
                                 </div>
@@ -555,14 +561,14 @@ export function GamePlay({
                     {!currentPlayer?.hasSubmittedCard && (
                       <div className="text-center">
                         <div className="relative inline-block">
-                          <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl blur-md opacity-30 animate-pulse" />
+                          <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl sm:rounded-2xl blur-md opacity-30 animate-pulse" />
                           <Button
                             onClick={handleSubmitCard}
                             disabled={!selectedCardId}
-                            className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl px-8 py-4 shadow-2xl transform hover:scale-110 transition-all duration-300 text-green-600 hover:text-green-700 font-bold text-xl disabled:opacity-50"
+                            className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-xl sm:rounded-2xl px-6 sm:px-8 py-3 sm:py-4 shadow-2xl transform hover:scale-110 transition-all duration-300 text-green-600 hover:text-green-700 font-bold text-lg sm:text-xl disabled:opacity-50"
                             data-testid="submit-caption-button"
                           >
-                            <NotebookPen className="mr-3 h-6 w-6" />
+                            <NotebookPen className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6" />
                             🚀 Submit Caption
                           </Button>
                         </div>
@@ -574,27 +580,27 @@ export function GamePlay({
             )}
 
             {isJudge && allPlayersSubmitted && (
-              <div className="w-full max-w-4xl mx-auto mt-8">
+              <div className="w-full max-w-4xl mx-auto mt-6 sm:mt-8 px-2 sm:px-0">
                 {/* Beautiful Judge Decision Section - Lobby Style */}
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-3xl blur-xl opacity-30 animate-pulse" />
-                  <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-8 shadow-2xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-2xl sm:rounded-3xl blur-xl opacity-30 animate-pulse" />
+                  <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-2xl">
                     
                     {/* Header */}
-                    <div className="text-center mb-8">
+                    <div className="text-center mb-6 sm:mb-8">
                       <div className="relative">
-                        <h3 className="text-3xl font-black bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
+                        <h3 className="text-xl sm:text-2xl lg:text-3xl font-black bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
                           ⚖️ Judge's Decision
                         </h3>
-                        <div className="absolute -top-2 -right-8 animate-bounce">
-                          <img src={judgeIconMain} alt="Judge Icon" className="w-8 h-8" />
+                        <div className="hidden sm:block absolute -top-2 -right-8 animate-bounce">
+                          <img src={judgeIconMain} alt="Judge Icon" className="w-6 h-6 sm:w-8 sm:h-8" />
                         </div>
                       </div>
-                      <p className="text-gray-600 font-medium mt-2">Choose the funniest caption!</p>
+                      <p className="text-gray-600 font-medium mt-2 text-sm sm:text-base">Choose the funniest caption!</p>
                     </div>
                     
                     {/* Submitted Cards Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                       {submittedCards.map((card: any, index: number) => {
                         const colors = [
                           "from-purple-500 to-pink-500",
@@ -613,19 +619,19 @@ export function GamePlay({
                             className="relative group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2"
                             data-testid={`submitted-card-${index}`}
                           >
-                            <div className={`absolute inset-0 bg-gradient-to-r ${cardColor} rounded-3xl blur-md opacity-30 group-hover:opacity-50 transition-opacity duration-300`} />
-                            <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-4 shadow-2xl min-h-[140px] flex flex-col justify-between">
+                            <div className={`absolute inset-0 bg-gradient-to-r ${cardColor} rounded-2xl sm:rounded-3xl blur-md opacity-30 group-hover:opacity-50 transition-opacity duration-300`} />
+                            <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-2xl min-h-[120px] sm:min-h-[140px] flex flex-col justify-between">
                               
                               {/* Card Content */}
                               <div className="flex-1 flex items-center justify-center">
-                                <p className="text-gray-900 font-bold text-center leading-relaxed text-sm">{card.text}</p>
+                                <p className="text-gray-900 font-bold text-center leading-relaxed text-xs sm:text-sm">{card.text}</p>
                               </div>
                               
                               {/* Card Footer */}
-                              <div className="mt-4 flex items-center justify-between">
-                                <div className="text-xs text-gray-500 font-bold uppercase tracking-wider">Anonymous Submission</div>
-                                <div className="text-xs text-yellow-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                  Click to select winner 🏆
+                              <div className="mt-3 sm:mt-4 flex items-center justify-between">
+                                <div className="text-xs text-gray-500 font-bold uppercase tracking-wider">Anonymous</div>
+                                <div className="text-xs text-yellow-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:block">
+                                  Click to select 🏆
                                 </div>
                               </div>
                             </div>
