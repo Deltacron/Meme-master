@@ -44,6 +44,7 @@ export function GamePlay({
   const [exchangeCardId, setExchangeCardId] = useState<string | null>(null);
   const [availablePhotoCards, setAvailablePhotoCards] = useState<PhotoCard[]>([]);
   const [showActivityFeed, setShowActivityFeed] = useState(false);
+  const [submittedCardId, setSubmittedCardId] = useState<string | null>(null);
 
 
   const currentPlayer = gameState.players.find(p => p.id === currentPlayerId);
@@ -62,6 +63,13 @@ export function GamePlay({
       fetchPhotoCards();
     }
   }, [isJudge, selectedPhotoCard]);
+
+  // Clear submitted card ID when player submission status changes (judge selected winner)
+  useEffect(() => {
+    if (!currentPlayer?.hasSubmittedCard) {
+      setSubmittedCardId(null);
+    }
+  }, [currentPlayer?.hasSubmittedCard]);
 
   // Winner announcements are now handled by toast notifications in useGameState hook
 
@@ -93,6 +101,7 @@ export function GamePlay({
 
   const handleSubmitCard = () => {
     if (selectedCardId) {
+      setSubmittedCardId(selectedCardId); // Track which card was submitted
       onSubmitCaptionCard(selectedCardId);
       setSelectedCardId(null);
     }
@@ -467,7 +476,7 @@ export function GamePlay({
                         </div>
                         <div className="relative">
                           <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl sm:rounded-2xl blur-md opacity-30" />
-                          <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2 shadow-lg">
+                          <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-xl sm:rounded-2xl px-3 sm:px-2 py-2 shadow-lg">
                             <div className="flex items-center gap-2">
                               <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
                               <span className="font-bold text-gray-700 text-sm sm:text-base" data-testid="hand-count">{playerHand.length} Cards</span>
@@ -551,7 +560,7 @@ export function GamePlay({
                               selectedCardId === card.id && "opacity-60 animate-pulse",
                               exchangeCardId === card.id && "opacity-60 animate-pulse"
                             )} />
-                            <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-2xl min-h-[120px] sm:min-h-[140px] flex flex-col justify-between">
+                            <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl sm:rounded-3xl p-3 sm:p-1  shadow-2xl min-h-[120px] sm:min-h-[140px] flex flex-col justify-between">
                               
                               {/* Card Content */}
                               <div className="flex-1 flex items-center justify-center">
@@ -559,11 +568,18 @@ export function GamePlay({
                               </div>
                               
                               {/* Card Footer */}
-                              <div className="mt-3 sm:mt-4 flex items-center justify-between">
-                                {/* <div className="text-xs text-gray-500 font-bold uppercase tracking-wider">Caption Card</div> */}
+                              <div className="mt-3 sm:mt-0 flex items-center justify-center">
                                 <div className="flex items-center gap-2">
-                                  {selectedCardId === card.id && (
-                                    <div className="flex items-center gap-1 text-green-600">
+                                  {currentPlayer?.hasSubmittedCard && submittedCardId === card.id && (
+                                    <div className="flex items-center gap-1 text-blue-600">
+                                      <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                                        <Check className="h-2 w-2 sm:h-3 sm:w-3 text-white" data-testid="card-submitted-icon" />
+                                      </div>
+                                      <span className="text-xs font-bold hidden sm:inline">Submitted</span>
+                                    </div>
+                                  )}
+                                  {!currentPlayer?.hasSubmittedCard && selectedCardId === card.id && (
+                                    <div className="flex items-center gap-1 text-green-600 sm:pb-3 justify-center sm:justify-center">
                                       <div className="w-5 h-5 sm:w-6 sm:h-6 bg-green-500 rounded-full flex items-center justify-center">
                                         <Check className="h-2 w-2 sm:h-3 sm:w-3 text-white" data-testid="card-selected-icon" />
                                       </div>
