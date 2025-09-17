@@ -568,51 +568,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 gameState: continueState
               });
             } else {
-              // All caption cards exhausted - rotate judge or end game
+              // All caption cards exhausted - rotate judge
               const currentJudgeIndex = allPlayers.findIndex(p => p.id === winningRoom.currentJudgeId);
               const nextJudgeIndex = (currentJudgeIndex + 1) % allPlayers.length;
-              
-              // Check if we've completed a full rotation (all players have been judge)
-              const hasEveryoneBeenJudge = allPlayers.every(player => {
-                // Simple check: if we're back to the first player and this isn't the first judge round
-                return currentJudgeIndex === allPlayers.length - 1;
+              const nextJudge = allPlayers[nextJudgeIndex];
+
+              // Always rotate to next judge and deal new cards
+              // Game continues indefinitely until players manually end it
+              await storage.updateRoom(ws.roomId, {
+                currentJudgeId: nextJudge.id,
+                currentRound: 1 // Reset round counter for new judge
               });
 
-              if (hasEveryoneBeenJudge) {
-                // Game finished - find winner with most trophies
-                const winner = allPlayers.reduce((prev, current) => 
-                  (current.trophies > prev.trophies) ? current : prev
-                );
+              await dealCards(ws.roomId);
 
-                await storage.updateRoom(ws.roomId, {
-                  status: "finished"
-                });
-
-                const finalState = await getGameState(ws.roomId);
-                broadcastToRoom(ws.roomId, {
-                  type: 'game_finished',
-                  winner: winner,
-                  gameState: finalState
-                });
-              } else {
-                // Rotate to next judge and deal new cards
-                const nextJudge = allPlayers[nextJudgeIndex];
-
-                await storage.updateRoom(ws.roomId, {
-                  currentJudgeId: nextJudge.id,
-                  currentRound: 1 // Reset round counter for new judge
-                });
-
-                await dealCards(ws.roomId);
-
-                const nextJudgeState = await getGameState(ws.roomId);
-                broadcastToRoom(ws.roomId, {
-                  type: 'judge_rotated',
-                  winner: winningPlayer,
-                  newJudge: nextJudge,
-                  gameState: nextJudgeState
-                });
-              }
+              const nextJudgeState = await getGameState(ws.roomId);
+              broadcastToRoom(ws.roomId, {
+                type: 'judge_rotated',
+                winner: winningPlayer,
+                newJudge: nextJudge,
+                gameState: nextJudgeState
+              });
             }
             break;
 

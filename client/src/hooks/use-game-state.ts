@@ -9,6 +9,7 @@ export function useGameState() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('disconnected');
+  const [gameWinner, setGameWinner] = useState<Player | null>(null);
   const { send, on, off } = useSocket();
   const { toast } = useToast();
 
@@ -84,6 +85,16 @@ export function useGameState() {
 
     const handleGameFinished = (data: any) => {
       setGameState(data.gameState);
+      
+      // Store the server-determined winner
+      if (data.winner) {
+        setGameWinner(data.winner);
+        toast({
+          title: `🎉 Game Over!`,
+          description: `${data.winner.name} wins with ${data.winner.trophies} trophies!`,
+          duration: 5000,
+        });
+      }
     };
 
     const handleGameRestarted = (data: any) => {
@@ -235,6 +246,7 @@ export function useGameState() {
   return {
     gameState,
     currentPlayer,
+    gameWinner,
     isLoading,
     error,
     connectionStatus,

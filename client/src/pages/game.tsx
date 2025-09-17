@@ -15,6 +15,7 @@ export default function Game({ params }: GameProps) {
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null);
   const {
     gameState,
+    gameWinner,
     setCurrentPlayer: setGameStatePlayer,
     joinRoom,
     revealNumberCard,
@@ -96,20 +97,17 @@ export default function Game({ params }: GameProps) {
   // Calculate game duration (mock for now)
   const gameTime = "12:34";
 
-  if (gameState.room.status === "finished") {
-    const winner = gameState.players.find((p) => p.trophies >= 5);
-    if (winner) {
-      return (
-        <GameEnd
-          winner={winner}
-          players={gameState.players}
-          totalRounds={gameState.room.currentRound}
-          gameTime={gameTime}
-          onPlayAgain={handlePlayAgain}
-          onNewRoom={handleNewRoom}
-        />
-      );
-    }
+  if (gameState.room.status === "finished" && gameWinner) {
+    return (
+      <GameEnd
+        winner={gameWinner}
+        players={gameState.players}
+        totalRounds={gameState.room.currentRound}
+        gameTime={gameTime}
+        onPlayAgain={handlePlayAgain}
+        onNewRoom={handleNewRoom}
+      />
+    );
   }
 
   if (gameState.room.status === "selecting_judge") {
