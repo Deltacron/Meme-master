@@ -191,7 +191,7 @@ export default function Home() {
                 </div>
 
                 {/* Stylish Divider */}
-                <div className="relative py-4">
+                <div className="relative">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t-2 border-gradient-to-r from-purple-300 via-blue-300 to-pink-300"></div>
                   </div>

@@ -288,7 +288,7 @@ export function ActivityFeed({ gameState, currentPlayerId, isVisible, onToggle }
       </div>
 
       {/* Mobile - Simple Activity Status */}
-      <div className="lg:hidden">
+      {/* <div className="lg:hidden">
         <Card className="bg-white/95 backdrop-blur-sm border-gray-200 shadow-lg">
           <CardContent className="p-3">
             <div className="flex items-center justify-between">
@@ -307,7 +307,7 @@ export function ActivityFeed({ gameState, currentPlayerId, isVisible, onToggle }
             </div>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
     </>
   );
 } 
