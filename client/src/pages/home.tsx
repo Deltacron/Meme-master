@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,38 @@ export default function Home() {
   const [roomCode, setRoomCode] = useState("");
   const [showRules, setShowRules] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [serverStatus, setServerStatus] = useState<"waking" | "ready" | "unknown">("waking");
   const { toast } = useToast();
+
+  // Wake up the backend server when the home page loads
+  useEffect(() => {
+    const wakeUpServer = async () => {
+      setServerStatus("waking");
+      
+      try {
+        // Make a simple health check API call to wake up the server
+        await apiRequest("GET", "/health");
+        console.log("✅ Backend server wake-up successful");
+        setServerStatus("ready");
+      } catch (error) {
+        console.log("⏳ Backend server is starting up...");
+        
+        // Try a backup wake-up call to root endpoint after a short delay
+        setTimeout(async () => {
+          try {
+            await apiRequest("GET", "/");
+            console.log("✅ Backend server wake-up successful (backup)");
+            setServerStatus("ready");
+          } catch (backupError) {
+            console.log("⏳ Backend server still starting up...");
+            setServerStatus("unknown");
+          }
+        }, 2000);
+      }
+    };
+
+    wakeUpServer();
+  }, []);
 
   const handleCreateRoom = async () => {
     if (!playerName.trim()) {
@@ -139,6 +170,25 @@ export default function Home() {
               Create hilarious captions • Battle friends • Become the Meme Master!
             </p>
           </div>
+
+          {/* Server Status Indicator
+          {serverStatus === "waking" && (
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-500/30 rounded-full px-4 py-2 backdrop-blur-sm">
+                <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+                <span className="text-amber-200 text-sm font-medium">Server starting up...</span>
+              </div>
+            </div>
+          )}
+
+          {serverStatus === "ready" && (
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center gap-2 bg-green-500/20 border border-green-500/30 rounded-full px-4 py-2 backdrop-blur-sm">
+                <div className="w-2 h-2 bg-green-400 rounded-full" />
+                <span className="text-green-200 text-sm font-medium">Server ready!</span>
+              </div>
+            </div>
+          )} */}
 
          
 
