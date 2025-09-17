@@ -450,12 +450,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
             if (!submittedCard) break;
 
-            // Remove submitted card from hand (don't replace - players lose cards each round)
-            const updatedHand = hand.filter(c => c.id !== submittedCardId);
-
+            // Keep submitted card in hand but mark player as having submitted
+            // Card will be removed when judge selects winner
             await storage.updatePlayer(ws.playerId, {
-              hasSubmittedCard: true,
-              hand: JSON.stringify(updatedHand)
+              hasSubmittedCard: true
+              // Don't update hand - keep the card visible but disabled
             });
 
             const currentSubmissions = JSON.parse(submittingRoom.submittedCards as string);
@@ -534,26 +533,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
               trophies: winningPlayer.trophies + 1
             });
 
-            // Check if current judge still has players with caption cards
+            // Get submitted cards before clearing them
+            const submittedCards = JSON.parse(winningRoom.submittedCards as string);
             const nonJudgePlayers = allPlayers.filter(p => p.id !== winningRoom.currentJudgeId);
-            const playersWithCards = nonJudgePlayers.filter(p => {
-              const hand = JSON.parse(p.hand as string);
-              return hand.length > 0;
-            });
 
             // Reset round state for next photo selection
             await storage.updateRoom(ws.roomId, {
               selectedPhotoCard: null,
               submittedCards: "[]"
             });
-
-            // Reset player submission status
+            
+            // Reset player submission status and remove submitted cards from hands
             for (const player of nonJudgePlayers) {
-              await storage.updatePlayer(player.id, {
-                hasSubmittedCard: false,
-                hasExchangedCard: false
-              });
+              // Find the submitted card for this player
+              const playerSubmission = submittedCards.find((sub: any) => sub.playerId === player.id);
+              
+              if (playerSubmission && player.hasSubmittedCard) {
+                // Remove the submitted card from the player's hand
+                const hand: CaptionCard[] = JSON.parse(player.hand as string);
+                const updatedHand = hand.filter(c => c.id !== playerSubmission.cardId);
+                
+                await storage.updatePlayer(player.id, {
+                  hasSubmittedCard: false,
+                  hasExchangedCard: false,
+                  hand: JSON.stringify(updatedHand)
+                });
+              } else {
+                // Just reset flags if no card was submitted
+                await storage.updatePlayer(player.id, {
+                  hasSubmittedCard: false,
+                  hasExchangedCard: false
+                });
+              }
             }
+
+            // Check if players still have cards AFTER removing submitted cards
+            const updatedPlayers = await storage.getPlayersByRoom(ws.roomId);
+            const updatedNonJudgePlayers = updatedPlayers.filter(p => p.id !== winningRoom.currentJudgeId);
+            const playersWithCards = updatedNonJudgePlayers.filter(p => {
+              const hand = JSON.parse(p.hand as string);
+              return hand.length > 0;
+            });
 
             if (playersWithCards.length > 0) {
               // Same judge continues - just clear the round for next photo selection
