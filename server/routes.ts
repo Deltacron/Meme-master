@@ -41,9 +41,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const captionCards: CaptionCard[] = JSON.parse(deck.captionDeck as string);
     const cardsPerPlayer = players.length === 3 ? 7 : 4;
 
+    // Shuffle the deck before dealing to ensure random distribution
+    const shuffledCards = shuffleArray(captionCards);
+
     let cardIndex = 0;
     for (const player of players) {
-      const hand = captionCards.slice(cardIndex, cardIndex + cardsPerPlayer);
+      const hand = shuffledCards.slice(cardIndex, cardIndex + cardsPerPlayer);
       await storage.updatePlayer(player.id, { 
         hand: JSON.stringify(hand),
         hasSubmittedCard: false,
@@ -53,7 +56,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     // Update deck with remaining cards
-    const remainingCards = captionCards.slice(cardIndex);
+    const remainingCards = shuffledCards.slice(cardIndex);
     await storage.updateGameDeck(roomId, {
       captionDeck: JSON.stringify(remainingCards)
     });
@@ -493,8 +496,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
             const discardedCard = playerHand.splice(cardIndex, 1)[0];
 
-            // Take new card from deck
-            const newCard = deckCards.shift();
+            // Take random card from deck for better randomness
+            const randomIndex = Math.floor(Math.random() * deckCards.length);
+            const newCard = deckCards.splice(randomIndex, 1)[0];
             if (!newCard) break;
 
             playerHand.push(newCard);
