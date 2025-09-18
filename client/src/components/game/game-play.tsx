@@ -275,40 +275,79 @@ export function GamePlay({
                 </div> */}
               </div>
               
-              {/* Enhanced Progress Bar */}
+              {/* Animated Progress Bar */}
               <div className="mt-4 sm:mt-6 relative">
-                <div className="bg-slate-200 dark:bg-slate-700 rounded-full h-2 sm:h-3">
+                <div className="bg-slate-200 dark:bg-slate-700 rounded-full h-3 sm:h-4 shadow-inner">
                   <div 
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 sm:h-3 rounded-full transition-all duration-500 relative overflow-hidden"
+                    className="relative h-3 sm:h-4 rounded-full transition-all duration-1000 ease-out overflow-hidden shadow-lg"
                     style={{ 
-                      width: !selectedPhotoCard ? '25%' : !allPlayersSubmitted ? '50%' : '100%' 
+                      width: !selectedPhotoCard ? '25%' : !allPlayersSubmitted ? '50%' : '100%',
+                      background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899)',
+                      backgroundSize: '200% 100%',
+                      animation: 'gradientShift 3s ease-in-out infinite'
                     }}
                   >
                     {/* Animated shine effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
+                    <div 
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                      style={{
+                        animation: 'shimmer 2s ease-in-out infinite',
+                        transform: 'skewX(-20deg)'
+                      }}
+                    />
+                    
+                    {/* Pulsing glow effect */}
+                    <div 
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        boxShadow: '0 0 20px rgba(139, 92, 246, 0.6)',
+                        animation: 'glow 2s ease-in-out infinite alternate'
+                      }}
+                    />
+                    
+                    {/* Progress dots */}
+                  
                   </div>
                 </div>
                 
-                {/* Step indicators */}
+                {/* Animated Step indicators */}
                 <div className="absolute -top-1 left-0 w-full flex justify-between">
                   <div className={cn(
-                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
-                    !selectedPhotoCard ? "border-blue-500 bg-blue-500" : "border-green-500 bg-green-500"
-                  )}>
-                    {selectedPhotoCard && <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5" />}
+                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 mt-[2px] bg-white transition-all duration-500 shadow-lg transform hover:scale-110",
+                    !selectedPhotoCard ? "border-blue-500 bg-blue-500 " : "border-green-500 bg-green-500",
+                    selectedPhotoCard && ""
+                  )}
+                  style={{
+                    boxShadow: !selectedPhotoCard 
+                      ? '0 0 15px rgba(59, 130, 246, 0.6)' 
+                      : '0 0 15px rgba(34, 197, 94, 0.6)'
+                  }}>
+                    {selectedPhotoCard && <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5 " />}
                   </div>
                   <div className={cn(
-                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
-                    selectedPhotoCard && !allPlayersSubmitted ? "border-blue-500 bg-blue-500" : 
-                    allPlayersSubmitted ? "border-green-500 bg-green-500" : "border-slate-300"
-                  )}>
-                    {allPlayersSubmitted && <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5" />}
+                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 mt-[2px] bg-white transition-all duration-500 shadow-lg transform hover:scale-110",
+                    selectedPhotoCard && !allPlayersSubmitted ? "border-blue-500 bg-blue-500 " : 
+                    allPlayersSubmitted ? "border-green-500 bg-green-500 " : "border-slate-300"
+                  )}
+                  style={{
+                    boxShadow: selectedPhotoCard && !allPlayersSubmitted
+                      ? '0 0 15px rgba(59, 130, 246, 0.6)'
+                      : allPlayersSubmitted 
+                      ? '0 0 15px rgba(34, 197, 94, 0.6)'
+                      : 'none'
+                  }}>
+                    {allPlayersSubmitted && <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5 " />}
                   </div>
                   <div className={cn(
-                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
-                    allPlayersSubmitted ? "border-blue-500 bg-blue-500" : "border-slate-300"
-                  )}>
-                    {allPlayersSubmitted && <Trophy className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5" />}
+                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 mt-[2px] bg-white transition-all duration-500 shadow-lg transform hover:scale-110",
+                    allPlayersSubmitted ? "border-blue-500 bg-blue-500 " : "border-slate-300"
+                  )}
+                  style={{
+                    boxShadow: allPlayersSubmitted 
+                      ? '0 0 15px rgba(59, 130, 246, 0.6)' 
+                      : 'none'
+                  }}>
+                    {allPlayersSubmitted && <Trophy className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5 " />}
                   </div>
                 </div>
               </div>
