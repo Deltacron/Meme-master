@@ -242,10 +242,10 @@ export function GamePlay({
             <div className="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-xl border border-white/30 max-w-4xl mx-auto transform transition-all duration-300 hover:scale-[1.01]">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                  {/* <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
                     <span className="text-white font-bold text-sm sm:text-lg">R{gameState.room.currentRound}</span>
-                  </div>
-                  <div className="text-center sm:text-left">
+                  </div> */}
+                  {/* <div className="text-center sm:text-left">
                     <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">Round {gameState.room.currentRound}</h3>
                     <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
                       {!selectedPhotoCard ? (
@@ -256,10 +256,10 @@ export function GamePlay({
                         <>⚖️ <span className="font-medium">{judgePlayer?.name}</span> is choosing winner...</>
                       )}
                     </p>
-                  </div>
+                  </div> */}
                 </div>
                 
-                <div className="text-center sm:text-right">
+                {/* <div className="text-center sm:text-right">
                   <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-1">Current Phase</div>
                   <div className="flex items-center justify-center sm:justify-end gap-1 sm:gap-2">
                     {!selectedPhotoCard ? (
@@ -272,7 +272,7 @@ export function GamePlay({
                       <><Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" /><span className="font-medium text-green-600 dark:text-green-400 text-xs sm:text-sm">Winner Selection</span></>
                     )}
                   </div>
-                </div>
+                </div> */}
               </div>
               
               {/* Enhanced Progress Bar */}
@@ -281,7 +281,7 @@ export function GamePlay({
                   <div 
                     className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 sm:h-3 rounded-full transition-all duration-500 relative overflow-hidden"
                     style={{ 
-                      width: !selectedPhotoCard ? '33%' : !allPlayersSubmitted ? '66%' : '100%' 
+                      width: !selectedPhotoCard ? '25%' : !allPlayersSubmitted ? '50%' : '100%' 
                     }}
                   >
                     {/* Animated shine effect */}
