@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { type Player, type GameState, type CaptionCard, type PhotoCard } from "@shared/schema";
-import { Trophy, NotebookPen, RotateCcw, Check, Medal, Crown, Star, Sparkles, Gamepad2, Camera } from "lucide-react";
+import { Trophy, NotebookPen, RotateCcw, Check, Medal, Crown, Star, Sparkles, Gamepad2, Camera, Shuffle } from "lucide-react";
 // import { ActivityFeed } from "./activity-feed";
 
 import { cn } from "@/lib/utils";
@@ -45,6 +45,7 @@ export function GamePlay({
   const [availablePhotoCards, setAvailablePhotoCards] = useState<PhotoCard[]>([]);
   const [showActivityFeed, setShowActivityFeed] = useState(false);
   const [submittedCardId, setSubmittedCardId] = useState<string | null>(null);
+  const [currentCardPage, setCurrentCardPage] = useState(0);
 
 
   const currentPlayer = gameState.players.find(p => p.id === currentPlayerId);
@@ -70,6 +71,11 @@ export function GamePlay({
       setSubmittedCardId(null);
     }
   }, [currentPlayer?.hasSubmittedCard]);
+
+  // Reset card page when hand changes (new round, etc.)
+  useEffect(() => {
+    setCurrentCardPage(0);
+  }, [playerHand.length]);
 
   // Winner announcements are now handled by toast notifications in useGameState hook
 
@@ -117,6 +123,36 @@ export function GamePlay({
   const allPlayersSubmitted = gameState.players
     .filter(p => p.id !== gameState.room.currentJudgeId)
     .every(p => p.hasSubmittedCard);
+
+  // Card carousel logic for desktop - always show 4 cards when possible
+  const cardsPerPage = 4; // Show 4 cards at once (one per row)
+  const totalPages = Math.ceil(playerHand.length / cardsPerPage);
+  const canShuffle = playerHand.length > 4; // Only show shuffle if more than 4 cards
+  
+  const getCurrentPageCards = () => {
+    if (playerHand.length <= 4) {
+      // If 4 or fewer cards total, show all cards
+      return playerHand;
+    }
+    
+    const startIndex = currentCardPage * cardsPerPage;
+    let pageCards = playerHand.slice(startIndex, startIndex + cardsPerPage);
+    
+    // If we don't have 4 cards on this page, fill from the beginning
+    if (pageCards.length < 4) {
+      const remainingNeeded = 4 - pageCards.length;
+      const fillCards = playerHand.slice(0, remainingNeeded);
+      pageCards = [...pageCards, ...fillCards];
+    }
+    
+    return pageCards;
+  };
+
+  const handleShuffleCards = () => {
+    if (canShuffle) {
+      setCurrentCardPage((prev) => (prev + 1) % totalPages);
+    }
+  };
 
   return (
     <>
@@ -206,10 +242,10 @@ export function GamePlay({
             <div className="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-xl border border-white/30 max-w-4xl mx-auto transform transition-all duration-300 hover:scale-[1.01]">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                  {/* <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
                     <span className="text-white font-bold text-sm sm:text-lg">R{gameState.room.currentRound}</span>
-                  </div>
-                  <div className="text-center sm:text-left">
+                  </div> */}
+                  {/* <div className="text-center sm:text-left">
                     <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">Round {gameState.room.currentRound}</h3>
                     <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
                       {!selectedPhotoCard ? (
@@ -220,10 +256,10 @@ export function GamePlay({
                         <>⚖️ <span className="font-medium">{judgePlayer?.name}</span> is choosing winner...</>
                       )}
                     </p>
-                  </div>
+                  </div> */}
                 </div>
                 
-                <div className="text-center sm:text-right">
+                {/* <div className="text-center sm:text-right">
                   <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-1">Current Phase</div>
                   <div className="flex items-center justify-center sm:justify-end gap-1 sm:gap-2">
                     {!selectedPhotoCard ? (
@@ -236,43 +272,82 @@ export function GamePlay({
                       <><Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" /><span className="font-medium text-green-600 dark:text-green-400 text-xs sm:text-sm">Winner Selection</span></>
                     )}
                   </div>
-                </div>
+                </div> */}
               </div>
               
-              {/* Enhanced Progress Bar */}
+              {/* Animated Progress Bar */}
               <div className="mt-4 sm:mt-6 relative">
-                <div className="bg-slate-200 dark:bg-slate-700 rounded-full h-2 sm:h-3">
+                <div className="bg-slate-200 dark:bg-slate-700 rounded-full h-3 sm:h-4 shadow-inner">
                   <div 
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 sm:h-3 rounded-full transition-all duration-500 relative overflow-hidden"
+                    className="relative h-3 sm:h-4 rounded-full transition-all duration-1000 ease-out overflow-hidden shadow-lg"
                     style={{ 
-                      width: !selectedPhotoCard ? '33%' : !allPlayersSubmitted ? '66%' : '100%' 
+                      width: !selectedPhotoCard ? '25%' : !allPlayersSubmitted ? '50%' : '100%',
+                      background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899)',
+                      backgroundSize: '200% 100%',
+                      animation: 'gradientShift 3s ease-in-out infinite'
                     }}
                   >
                     {/* Animated shine effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
+                    <div 
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                      style={{
+                        animation: 'shimmer 2s ease-in-out infinite',
+                        transform: 'skewX(-20deg)'
+                      }}
+                    />
+                    
+                    {/* Pulsing glow effect */}
+                    <div 
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        boxShadow: '0 0 20px rgba(139, 92, 246, 0.6)',
+                        animation: 'glow 2s ease-in-out infinite alternate'
+                      }}
+                    />
+                    
+                    {/* Progress dots */}
+                  
                   </div>
                 </div>
                 
-                {/* Step indicators */}
+                {/* Animated Step indicators */}
                 <div className="absolute -top-1 left-0 w-full flex justify-between">
                   <div className={cn(
-                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
-                    !selectedPhotoCard ? "border-blue-500 bg-blue-500" : "border-green-500 bg-green-500"
-                  )}>
-                    {selectedPhotoCard && <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5" />}
+                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 mt-[2px] bg-white transition-all duration-500 shadow-lg transform hover:scale-110",
+                    !selectedPhotoCard ? "border-blue-500 bg-blue-500 " : "border-green-500 bg-green-500",
+                    selectedPhotoCard && ""
+                  )}
+                  style={{
+                    boxShadow: !selectedPhotoCard 
+                      ? '0 0 15px rgba(59, 130, 246, 0.6)' 
+                      : '0 0 15px rgba(34, 197, 94, 0.6)'
+                  }}>
+                    {selectedPhotoCard && <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5 " />}
                   </div>
                   <div className={cn(
-                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
-                    selectedPhotoCard && !allPlayersSubmitted ? "border-blue-500 bg-blue-500" : 
-                    allPlayersSubmitted ? "border-green-500 bg-green-500" : "border-slate-300"
-                  )}>
-                    {allPlayersSubmitted && <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5" />}
+                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 mt-[2px] bg-white transition-all duration-500 shadow-lg transform hover:scale-110",
+                    selectedPhotoCard && !allPlayersSubmitted ? "border-blue-500 bg-blue-500 " : 
+                    allPlayersSubmitted ? "border-green-500 bg-green-500 " : "border-slate-300"
+                  )}
+                  style={{
+                    boxShadow: selectedPhotoCard && !allPlayersSubmitted
+                      ? '0 0 15px rgba(59, 130, 246, 0.6)'
+                      : allPlayersSubmitted 
+                      ? '0 0 15px rgba(34, 197, 94, 0.6)'
+                      : 'none'
+                  }}>
+                    {allPlayersSubmitted && <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5 " />}
                   </div>
                   <div className={cn(
-                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 bg-white transition-all duration-300 shadow-lg",
-                    allPlayersSubmitted ? "border-blue-500 bg-blue-500" : "border-slate-300"
-                  )}>
-                    {allPlayersSubmitted && <Trophy className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5" />}
+                    "w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 mt-[2px] bg-white transition-all duration-500 shadow-lg transform hover:scale-110",
+                    allPlayersSubmitted ? "border-blue-500 bg-blue-500 " : "border-slate-300"
+                  )}
+                  style={{
+                    boxShadow: allPlayersSubmitted 
+                      ? '0 0 15px rgba(59, 130, 246, 0.6)' 
+                      : 'none'
+                  }}>
+                    {allPlayersSubmitted && <Trophy className="w-2 h-2 sm:w-3 sm:h-3 text-white m-0.5 " />}
                   </div>
                 </div>
               </div>
@@ -474,14 +549,35 @@ export function GamePlay({
                             <NotebookPen className="w-5 h-5 text-purple-400" />
                           </div>
                         </div>
-                        <div className="relative">
-                          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl sm:rounded-2xl blur-md opacity-30" />
-                          <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-xl sm:rounded-2xl px-3 sm:px-2 py-2 shadow-lg">
-                            <div className="flex items-center gap-2">
-                              <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
-                              <span className="font-bold text-gray-700 text-sm sm:text-base" data-testid="hand-count">{playerHand.length} Cards</span>
+                        <div className="flex items-center gap-3">
+                          <div className="relative">
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl sm:rounded-2xl blur-md opacity-30" />
+                            <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-xl sm:rounded-2xl px-3 sm:px-2 py-2 shadow-lg">
+                              <div className="flex items-center gap-2">
+                                <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                                <span className="font-bold text-gray-700 text-sm sm:text-base" data-testid="hand-count">{playerHand.length} Cards</span>
+                              </div>
                             </div>
                           </div>
+                          
+                          {/* Shuffle Button - Desktop Only */}
+                          {canShuffle && (
+                            <div className="hidden lg:block relative">
+                              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl blur-md opacity-30" />
+                              <button
+                                onClick={handleShuffleCards}
+                                className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-xl px-3 py-2 shadow-lg hover:scale-105 transition-all duration-300 group"
+                                title="Shuffle cards view"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <Shuffle className="w-4 h-4 text-purple-600 group-hover:rotate-180 transition-transform duration-300" />
+                                  <span className="font-bold text-gray-700 text-sm">
+                                    {currentCardPage + 1}/{totalPages}
+                                  </span>
+                                </div>
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -520,8 +616,96 @@ export function GamePlay({
                     )} */}
 
                     {/* Caption Cards Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
-                      {playerHand.map((card, index) => {
+                    {/* Desktop Carousel View - 4 Cards (One Per Row) */}
+                    <div className="hidden lg:block">
+                      <div className="space-y-4 mb-6">
+                        {getCurrentPageCards().map((card, index) => {
+                          const globalIndex = currentCardPage * cardsPerPage + index;
+                          const colors = [
+                            "from-purple-500 to-pink-500",
+                            "from-blue-500 to-cyan-500", 
+                            "from-green-500 to-emerald-500",
+                            "from-yellow-500 to-orange-500",
+                            "from-red-500 to-rose-500",
+                            "from-indigo-500 to-purple-500"
+                          ];
+                          const cardColor = colors[globalIndex % colors.length];
+                          
+                          return (
+                            <div
+                              key={card.id}
+                              onClick={() => {
+                                if (!currentPlayer?.hasSubmittedCard) {
+                                  if (currentPlayer && !currentPlayer.hasExchangedCard) {
+                                    if (exchangeCardId) {
+                                      handleExchangeSelection(card.id);
+                                    } else {
+                                      handleCardSelection(card.id);
+                                    }
+                                  } else {
+                                    handleCardSelection(card.id);
+                                  }
+                                }
+                              }}
+                              className={cn(
+                                "relative group cursor-pointer transform transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-in fade-in-0 slide-in-from-bottom-4 w-full",
+                                currentPlayer?.hasSubmittedCard && "opacity-50 cursor-not-allowed"
+                              )}
+                              style={{ animationDelay: `${index * 300}ms` }}
+                              data-testid={`caption-card-${card.id}`}
+                            >
+                              <div className={cn(
+                                `absolute inset-0 bg-gradient-to-r ${cardColor} rounded-2xl blur-md opacity-30 group-hover:opacity-50 transition-opacity duration-300`,
+                                selectedCardId === card.id && "opacity-60 animate-pulse",
+                                exchangeCardId === card.id && "opacity-60 animate-pulse"
+                              )} />
+                              <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl p-3 shadow-2xl min-h-[74px] flex flex-col justify-between">
+                                
+                                {/* Card Content */}
+                                <div className="flex-1 flex items-center justify-center">
+                                  <p className="text-gray-900 font-bold text-center leading-relaxed text-sm">{card.text}</p>
+                                </div>
+                                
+                                {/* Card Footer */}
+                                <div className="mt-3 flex items-center justify-center">
+                                  <div className="flex items-center gap-2">
+                                    {currentPlayer?.hasSubmittedCard && submittedCardId === card.id && (
+                                      <div className="flex items-center gap-1 text-blue-600">
+                                        <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                                          <Check className="h-3 w-3 text-white" data-testid="card-submitted-icon" />
+                                        </div>
+                                        <span className="text-xs font-bold">Submitted</span>
+                                      </div>
+                                    )}
+                                    {!currentPlayer?.hasSubmittedCard && selectedCardId === card.id && (
+                                      <div className="flex items-center gap-1 text-green-600 justify-center">
+                                        <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                          <Check className="h-3 w-3 text-white" data-testid="card-selected-icon" />
+                                        </div>
+                                        <span className="text-xs font-bold">Selected</span>
+                                      </div>
+                                    )}
+                                    {exchangeCardId === card.id && (
+                                      <div className="flex items-center gap-1 text-orange-600">
+                                        <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
+                                          <RotateCcw className="h-3 w-3 text-white" data-testid="card-exchange-icon" />
+                                        </div>
+                                        <span className="text-xs font-bold">Exchange</span>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Mobile/Tablet View (Original Grid) */}
+                    <div className="block lg:hidden">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
+                        {playerHand.map((card, index) => {
                         const colors = [
                           "from-purple-500 to-pink-500",
                           "from-blue-500 to-cyan-500", 
@@ -600,6 +784,7 @@ export function GamePlay({
                           </div>
                         );
                       })}
+                      </div>
                     </div>
 
                     {/* Submit Button */}
