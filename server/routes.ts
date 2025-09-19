@@ -160,6 +160,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // New endpoint for judge-specific photo cards (excludes already used photos)
+  app.get("/api/cards/photo/judge/:roomId", async (req, res) => {
+    try {
+      const { roomId } = req.params;
+      const room = await storage.getRoom(roomId);
+      
+      if (!room) {
+        return res.status(404).json({ error: "Room not found" });
+      }
+
+      // Get all photo cards
+      const allPhotoCards = await storage.getCardsByType("photo");
+      
+      // Get used photo IDs for current judge (stored in room data)
+      let usedPhotoIds: string[] = [];
+      try {
+        // We'll store used photos in a custom field - using selectedPhotoCard temporarily
+        const roomData = room as any;
+        if (roomData.usedPhotos) {
+          usedPhotoIds = JSON.parse(roomData.usedPhotos);
+        }
+      } catch (error) {
+        console.log('No used photos data found, starting fresh');
+      }
+
+      // Filter out used photos
+      const availablePhotos = allPhotoCards.filter(photo => !usedPhotoIds.includes(photo.id));
+      
+      // If we've used all photos, reset and use all photos again
+      if (availablePhotos.length === 0) {
+        console.log('All photos used, resetting for judge');
+        const shuffled = [...allPhotoCards].sort(() => 0.5 - Math.random());
+        return res.json(shuffled.slice(0, 6));
+      }
+
+      // Shuffle available photos and return 6
+      const shuffled = availablePhotos.sort(() => 0.5 - Math.random());
+      res.json(shuffled.slice(0, 6));
+      
+    } catch (error) {
+      console.error('Error fetching judge photos:', error);
+      res.status(500).json({ error: "Failed to get photo cards for judge" });
+    }
+  });
+
   // Debug endpoint to test Supabase connection
   app.get("/api/debug/supabase", async (req, res) => {
     try {
@@ -390,8 +435,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             await storage.updateRoom(ws.roomId, {
               status: "playing",
               currentJudgeId: judge.id,
-              currentRound: 1
-            });
+              currentRound: 1,
+              usedPhotos: "[]" // Reset used photos for new game
+            } as any);
 
             await dealCards(ws.roomId);
 
@@ -419,12 +465,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
 
             console.log('✅ Card found, updating room with selected photo card');
+            
+            // Get current room to access used photos
+            const currentRoom = await storage.getRoom(ws.roomId);
+            let usedPhotoIds: string[] = [];
+            
+            // Get existing used photos for current judge
+            try {
+              const roomData = currentRoom as any;
+              if (roomData.usedPhotos) {
+                usedPhotoIds = JSON.parse(roomData.usedPhotos);
+              }
+            } catch (error) {
+              console.log('No used photos found, starting fresh list');
+            }
+            
+            // Add current photo to used list if not already there
+            if (!usedPhotoIds.includes(card.id)) {
+              usedPhotoIds.push(card.id);
+              console.log(`📝 Added photo ${card.id} to used list. Total used: ${usedPhotoIds.length}`);
+            }
+
             await storage.updateRoom(ws.roomId, {
               selectedPhotoCard: JSON.stringify({
                 id: card.id,
                 imageUrl: card.imageUrl,
                 description: card.description
-              })
+              }),
+              // Store used photos (we'll add this field dynamically)
+              ...(currentRoom && { usedPhotos: JSON.stringify(usedPhotoIds) } as any)
             });
 
             const photoSelectedState = await getGameState(ws.roomId);
@@ -595,10 +664,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
               // Always rotate to next judge and deal new cards
               // Game continues indefinitely until players manually end it
+              console.log(`🔄 Judge rotating from ${winningRoom.currentJudgeId} to ${nextJudge.id}, resetting used photos`);
               await storage.updateRoom(ws.roomId, {
                 currentJudgeId: nextJudge.id,
-                currentRound: 1 // Reset round counter for new judge
-              });
+                currentRound: 1, // Reset round counter for new judge
+                usedPhotos: "[]" // Reset used photos for new judge
+              } as any);
 
               await dealCards(ws.roomId);
 

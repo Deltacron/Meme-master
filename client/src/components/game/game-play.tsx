@@ -81,16 +81,32 @@ export function GamePlay({
 
   const fetchPhotoCards = async () => {
     try {
-      const response = await fetch(getApiUrl('/api/cards/photo'));
+      // Use the new judge-specific endpoint that excludes already used photos
+      const roomId = gameState.room.id;
+      const response = await fetch(getApiUrl(`/api/cards/photo/judge/${roomId}`));
       if (response.ok) {
         const cards = await response.json();
-        const shuffled = cards.sort(() => 0.5 - Math.random());
-        const selectedCards = shuffled.slice(0, 6).map((card: any) => ({
+        console.log(`🖼️ Fetched ${cards.length} available photo cards for judge (excluding used ones)`);
+        const selectedCards = cards.map((card: any) => ({
           id: card.id,
           imageUrl: card.imageUrl,
           description: card.description
         }));
         setAvailablePhotoCards(selectedCards);
+      } else {
+        console.error('Failed to fetch judge photos, falling back to all photos');
+        // Fallback to original endpoint
+        const fallbackResponse = await fetch(getApiUrl('/api/cards/photo'));
+        if (fallbackResponse.ok) {
+          const cards = await fallbackResponse.json();
+          const shuffled = cards.sort(() => 0.5 - Math.random());
+          const selectedCards = shuffled.slice(0, 6).map((card: any) => ({
+            id: card.id,
+            imageUrl: card.imageUrl,
+            description: card.description
+          }));
+          setAvailablePhotoCards(selectedCards);
+        }
       }
     } catch (error) {
       console.error('Failed to fetch photo cards:', error);
