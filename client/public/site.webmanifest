@@ -1,0 +1,21 @@
+{
+  "name": "Meme Master - Multiplayer Meme Card Game",
+  "short_name": "Meme Master",
+  "description": "Play the ultimate multiplayer meme card game! Create hilarious captions for photos and compete with friends.",
+  "icons": [
+    {
+      "src": "/teamwork.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/teamwork.ico",
+      "sizes": "180x180",
+      "type": "image/x-icon"
+    }
+  ],
+  "theme_color": "#8b5cf6",
+  "background_color": "#1e1b4b",
+  "display": "standalone",
+  "start_url": "/"
+}

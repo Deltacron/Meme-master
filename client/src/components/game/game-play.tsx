@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { type Player, type GameState, type CaptionCard, type PhotoCard } from "@shared/schema";
@@ -46,6 +46,11 @@ export function GamePlay({
   const [showActivityFeed, setShowActivityFeed] = useState(false);
   const [submittedCardId, setSubmittedCardId] = useState<string | null>(null);
   const [currentCardPage, setCurrentCardPage] = useState(0);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [showFloatingPhoto, setShowFloatingPhoto] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const originalPhotoRef = useRef<HTMLDivElement>(null);
 
 
   const currentPlayer = gameState.players.find(p => p.id === currentPlayerId);
@@ -76,6 +81,51 @@ export function GamePlay({
   useEffect(() => {
     setCurrentCardPage(0);
   }, [playerHand.length]);
+
+  // Mobile scroll handler for auto-hiding header and showing floating photo
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const isMobile = window.innerWidth < 1024; // lg breakpoint
+      
+      if (isMobile && selectedPhotoCard && originalPhotoRef.current) {
+        // Check if original photo card is significantly visible (at least 50% visible)
+        const photoRect = originalPhotoRef.current.getBoundingClientRect();
+        const photoHeight = photoRect.height;
+        const visibleTop = Math.max(photoRect.top, 0);
+        const visibleBottom = Math.min(photoRect.bottom, window.innerHeight);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        const visibilityRatio = visibleHeight / photoHeight;
+        const isOriginalPhotoVisible = visibilityRatio > 0.3; // At least 30% visible
+        
+        // Always manage floating photo visibility based on original photo visibility
+        if (isOriginalPhotoVisible) {
+          // Original photo is visible - hide floating photo
+          setShowFloatingPhoto(false);
+        } else if (currentScrollY > 100) {
+          // Original photo is not visible and we're past threshold - show floating photo
+          setShowFloatingPhoto(true);
+        }
+        
+        // Manage header visibility
+        if (currentScrollY > 100) {
+          setIsHeaderVisible(false);
+        } else if (currentScrollY <= 50) {
+          setIsHeaderVisible(true);
+        }
+      } else {
+        // Always show header on desktop or when no photo is selected
+        setIsHeaderVisible(true);
+        setShowFloatingPhoto(false);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY, selectedPhotoCard]);
 
   // Winner announcements are now handled by toast notifications in useGameState hook
 
@@ -179,7 +229,10 @@ export function GamePlay({
         onToggle={() => setShowActivityFeed(!showActivityFeed)}
       /> */}
 
-      <div className="bg-gradient-to-r from-purple-800/95 via-blue-800/95 to-indigo-800/95 backdrop-blur-sm shadow-lg sticky top-0 z-40 border-b border-white/20">
+      <div className={cn(
+        "bg-gradient-to-r from-purple-800/95 via-blue-800/95 to-indigo-800/95 backdrop-blur-sm shadow-lg sticky top-0 z-40 border-b border-white/20 transition-transform duration-300",
+        !isHeaderVisible && "lg:translate-y-0 -translate-y-full"
+      )}>
         <div className="container mx-auto px-2 sm:px-4 py-3 sm:py-6">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
             {/* Left Section - Round and Judge */}
@@ -513,7 +566,7 @@ export function GamePlay({
                   
                   {/* Left Side - Selected Photo Card */}
                   <div className="relative">
-                    <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl h-fit lg:sticky lg:top-8">
+                    <div ref={originalPhotoRef} className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl h-fit lg:sticky lg:top-8 transition-all duration-300">
                       
                       {/* Photo Header */}
                       <div className="text-center mb-4 sm:mb-6">
@@ -532,9 +585,9 @@ export function GamePlay({
                           src={selectedPhotoCard?.imageUrl || ''} 
                           alt={selectedPhotoCard?.description || ''}
                           className="w-full h-64 sm:h-80 lg:h-96 object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                      </div>
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                    </div>
                       
                       {/* Photo Description */}
                       <div className="text-center">
@@ -896,7 +949,7 @@ export function GamePlay({
                   
                   {/* Left Side - Selected Photo Card */}
                   <div className="relative">
-                    <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl h-fit lg:sticky lg:top-8">
+                    <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl h-fit lg:sticky lg:top-8 transition-all duration-300">
                       
                       {/* Photo Header */}
                       <div className="text-center mb-4 sm:mb-6">
@@ -964,6 +1017,31 @@ export function GamePlay({
               </div>
             )}
           </div>
+
+          {/* Floating Photo Overlay for Mobile */}
+          {showFloatingPhoto && selectedPhotoCard && (
+            <div className="fixed top-0 left-0 right-0 z-50 lg:hidden animate-in slide-in-from-top-4 duration-300">
+              <div className="mx-2 sm:mx-4 mt-2">
+                <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-2xl p-3 sm:p-4 shadow-2xl">
+                  
+                  {/* Compact Photo Header */}
+
+                  {/* Compact Photo Display */}
+                  <div className="relative overflow-hidden rounded-xl mb-3">
+                    <img 
+                      src={selectedPhotoCard.imageUrl} 
+                      alt={selectedPhotoCard.description}
+                      className="w-full h-52 sm:h-40 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                  </div>
+                  
+                  {/* Compact Description */}
+                
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
