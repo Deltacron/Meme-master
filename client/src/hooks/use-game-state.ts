@@ -33,6 +33,17 @@ export function useGameState() {
 
     const handleRoundStarted = (data: any) => {
       setGameState(data.gameState);
+      
+      console.log('Round started event received:', data);
+      
+      // Show notification for new round with judge info
+      if (data.gameState?.room?.currentRound === 1 && data.judge) {
+        toast({
+          title: `🎮 New Round Started!`,
+          description: `👑 ${data.judge.name} is judging this round!`,
+          duration: 3000,
+        });
+      }
     };
 
     const handlePhotoCardSelected = (data: any) => {
@@ -77,8 +88,23 @@ export function useGameState() {
       // Show judge rotation notification
       if (data.newJudge && data.winner) {
         toast({
-          title: `🏆 ${data.winner.name} Wins!`,
+          title: `🏆 ${data.winner.name} Wins the Round!`,
+          description: `👑 ${data.newJudge.name} is now the new judge!`,
+          duration: 4000,
+        });
+      } else if (data.newJudge) {
+        // Fallback if winner data is missing
+        toast({
+          title: `👑 New Judge Selected!`,
           description: `${data.newJudge.name} is now the judge!`,
+          duration: 4000,
+        });
+      } else {
+        // Fallback with generic message
+        toast({
+          title: `👑 Judge Changed!`,
+          description: `A new judge has been selected for the next round!`,
+          duration: 4000,
         });
       }
     };
