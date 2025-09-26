@@ -119,9 +119,9 @@ export default function Lobby({ params }: LobbyProps) {
             </div>
             
             {/* Epic Room Code Card */}
-            <div className="relative inline-block">
+            <div className="relative inline-block w-full max-w-md">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl blur-xl opacity-30 animate-pulse" />
-              <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-6 shadow-2xl">
+              <div className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-6 shadow-2xl w-full">
                 <div className="flex items-center space-x-4">
                   <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-3">
                     <Target className="w-8 h-8 text-white" />
