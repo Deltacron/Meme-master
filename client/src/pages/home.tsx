@@ -326,15 +326,15 @@ export default function Home() {
             </div>
           </div>
           {/* How to Play Button */}
-          <div className="mt-8 text-center">
+          <div className="mt-6 sm:mt-8 text-center px-4">
             <Button
               variant="ghost"
               onClick={() => setShowRules(true)}
-              className="text-white/90 hover:text-white hover:bg-white/20 text-lg font-semibold py-4 px-8 rounded-2xl backdrop-blur-sm border border-white/30 hover:border-white/50 transform hover:scale-105 transition-all duration-300"
+              className="text-white/90 hover:text-white hover:bg-white/20 text-sm sm:text-lg font-semibold py-3 sm:py-4 px-4 sm:px-8 rounded-xl sm:rounded-2xl backdrop-blur-sm border border-white/30 hover:border-white/50 transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
               data-testid="show-rules-button"
             >
-              <HelpCircle className="mr-3 h-6 w-6 animate-pulse" />
-              📖 How to Become a Meme Master
+              <HelpCircle className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 animate-pulse" />
+              <span className="truncate">📖 How to Become a Meme Master</span>
             </Button>
           </div>
 
